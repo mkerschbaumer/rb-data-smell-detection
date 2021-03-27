@@ -1,0 +1,6 @@
+# requirements-dev.in
+great_expectations>=0.13.15
+versioneer>=0.19
+sphinx
+sphinx-autoapi
+pip-tools

@@ -1,0 +1,7 @@
+# General development
+env
+**/__pycache__
+.idea
+*/build
+*/*.egg-info
+*/dist
