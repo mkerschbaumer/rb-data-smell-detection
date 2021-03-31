@@ -1,0 +1,69 @@
+config_version: 3.0
+
+datasources:
+  csv_data_source:
+    class_name: Datasource
+    execution_engine:
+      class_name: PandasExecutionEngine
+    data_connectors:
+      csv_data_connector:
+        class_name: ConfiguredAssetFilesystemDataConnector
+        base_directory: $data_directory
+        assets:
+          csv_asset:
+            pattern: (.*)
+            group_names:
+              - filename
+
+config_variables_file_path: uncommitted/config_variables.yml
+
+plugins_directory: plugins/
+
+stores:
+  expectations_store:
+    class_name: ExpectationsStore
+    store_backend:
+      class_name: TupleFilesystemStoreBackend
+      base_directory: expectations/
+
+  validations_store:
+    class_name: ValidationsStore
+    store_backend:
+      class_name: TupleFilesystemStoreBackend
+      base_directory: uncommitted/validations/
+
+  evaluation_parameter_store:
+    # Evaluation Parameters enable dynamic expectations. Read more here:
+    # https://docs.greatexpectations.io/en/latest/reference/core_concepts/evaluation_parameters.html
+    class_name: EvaluationParameterStore
+
+  checkpoint_store:
+    class_name: CheckpointStore
+    store_backend:
+      class_name: TupleFilesystemStoreBackend
+      base_directory: checkpoints/
+
+expectations_store_name: expectations_store
+validations_store_name: validations_store
+evaluation_parameter_store_name: evaluation_parameter_store
+checkpoint_store_name: checkpoint_store
+
+data_docs_sites:
+  # Data Docs make it simple to visualize data quality in your project. These
+  # include Expectations, Validations & Profiles. The are built for all
+  # Datasources from JSON artifacts in the local repo including validations &
+  # profiles from the uncommitted directory. Read more at https://docs.greatexpectations.io/en/latest/reference/core_concepts/data_docs.html
+  local_site:
+    class_name: SiteBuilder
+    # set to false to hide how-to buttons in Data Docs
+    show_how_to_buttons: true
+    store_backend:
+      class_name: TupleFilesystemStoreBackend
+      base_directory: uncommitted/data_docs/local_site/
+    site_index_builder:
+      class_name: DefaultSiteIndexBuilder
+
+anonymous_usage_statistics:
+  data_context_id: dc275960-93d9-4e5e-9b38-cacf47058dd3
+  enabled: false
+notebooks:
