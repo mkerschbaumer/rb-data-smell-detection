@@ -15,7 +15,9 @@ astroid==2.5.2
 async-generator==1.10
     # via nbclient
 attrs==20.3.0
-    # via jsonschema
+    # via
+    #   jsonschema
+    #   pytest
 babel==2.9.0
     # via sphinx
 backcall==0.2.0
@@ -32,6 +34,8 @@ click==7.1.2
     # via
     #   great-expectations
     #   pip-tools
+coverage==5.5
+    # via -r requirements-dev.in
 decorator==4.4.2
     # via ipython
 defusedxml==0.7.1
@@ -50,6 +54,8 @@ imagesize==1.2.0
     # via sphinx
 importlib-metadata==3.10.0
     # via great-expectations
+iniconfig==1.1.1
+    # via pytest
 ipykernel==5.5.3
     # via
     #   ipywidgets
@@ -130,6 +136,7 @@ numpy==1.19.5
 packaging==20.9
     # via
     #   bleach
+    #   pytest
     #   sphinx
 pandas==1.2.3
     # via
@@ -147,6 +154,8 @@ pickleshare==0.7.5
     # via ipython
 pip-tools==6.0.1
     # via -r requirements-dev.in
+pluggy==0.13.1
+    # via pytest
 prometheus-client==0.9.0
     # via notebook
 prompt-toolkit==3.0.18
@@ -155,6 +164,8 @@ ptyprocess==0.7.0
     # via
     #   pexpect
     #   terminado
+py==1.10.0
+    # via pytest
 pycparser==2.20
     # via cffi
 pygments==2.8.1
@@ -169,6 +180,8 @@ pyparsing==2.4.7
     #   packaging
 pyrsistent==0.17.3
     # via jsonschema
+pytest==6.2.2
+    # via -r requirements-dev.in
 python-dateutil==2.8.1
     # via
     #   great-expectations
@@ -231,7 +244,9 @@ terminado==0.9.4
 testpath==0.4.4
     # via nbconvert
 toml==0.10.2
-    # via pep517
+    # via
+    #   pep517
+    #   pytest
 toolz==0.11.1
     # via altair
 tornado==6.1
