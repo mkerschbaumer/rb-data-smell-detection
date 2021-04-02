@@ -67,6 +67,6 @@ napoleon_use_param = True
 napoleon_use_rtype = True
 
 # Show typehints in function/method definition too
-autodoc_typehints = "description"
+autodoc_typehints = "signature"
 # Combine class and __init__ documentation
 autoclass_content = "both"
