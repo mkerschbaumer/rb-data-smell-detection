@@ -29,9 +29,9 @@ author = 'Martin Kerschbaumer'
 # ones.
 extensions = [
     "sphinx.ext.todo",
+    "sphinx.ext.autodoc",
     "sphinx.ext.coverage",
-    "sphinx.ext.napoleon",
-    "autoapi.extension"
+    "sphinx.ext.napoleon"
 ]
 
 autoapi_type = "python"
