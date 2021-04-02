@@ -65,3 +65,8 @@ napoleon_google_docstring = True
 napoleon_numpy_docstring = True
 napoleon_use_param = True
 napoleon_use_rtype = True
+
+# Show typehints in function/method definition too
+autodoc_typehints = "description"
+# Combine class and __init__ documentation
+autoclass_content = "both"
