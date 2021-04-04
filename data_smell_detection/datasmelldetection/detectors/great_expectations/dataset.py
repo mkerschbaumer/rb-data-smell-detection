@@ -9,7 +9,7 @@ import datasmelldetection.core
 
 class GreatExpectationsDataset(datasmelldetection.core.Dataset):
     """
-    A thin wrapper around :class:`great_expectations.dataset.Dataset`
+    A thin wrapper around :class:`great_expectations.dataset.Dataset`.
 
     This class is required in order to allow consistent retrieval of column names.
     """
@@ -104,6 +104,7 @@ class GreatExpectationsDatasetManager(datasmelldetection.core.DatasetManager):
 
         batch_request = _build_batch_request(filename=dataset_identifier)
         batch = self._datasource.get_single_batch_from_batch_request(batch_request)
-        # Convert imported batch to DataAsset
         dataset: great_expectations.dataset.Dataset = PandasDataset(batch.data.dataframe)
+        # Construct internal dataset wrapper to enable consistent column name
+        # access.
         return GreatExpectationsDataset(dataset)
