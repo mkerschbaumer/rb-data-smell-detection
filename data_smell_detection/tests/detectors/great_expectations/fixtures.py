@@ -1,4 +1,4 @@
-from typing import Tuple
+from typing import Tuple, List
 import pytest
 
 # A data smell registry with no smells registered.
@@ -76,3 +76,15 @@ def data_smell_registry_with_data_smell2(
         expectation_type=data_smell_information2.expectation_type
     )
     return registry
+
+
+# The data smells present in the data smell registry
+# `data_smell_registry_with_data_smell2`.
+@pytest.fixture
+def data_smell_registry_with_data_smell2_information(
+        data_smell_information1,
+        data_smell_information2) -> List[DataSmellInformation]:
+    return [
+        data_smell_information1,
+        data_smell_information2
+    ]
