@@ -8,8 +8,8 @@ from .fixtures import (
     data_smell_registry_empty,
     data_smell_registry_with_data_smell1,
     data_smell_registry_with_data_smell2,
-    data_smell_metadata1,
-    data_smell_metadata2
+    data_smell_information1,
+    data_smell_information2
 )
 
 
@@ -27,18 +27,21 @@ class TestDataSmellRegistry:
             result = data_smell_registry_empty.get_smell_dict_for_profiler_data_type(profiler_data_type)
             assert len(result) == 0
 
-    def test_one_data_smell(self, data_smell_registry_with_data_smell1, data_smell_metadata1):
+    def test_one_data_smell(self, data_smell_registry_with_data_smell1, data_smell_information1):
         # Perform registration of one data smell and ensure that
         # get_smell_dict_for_profiler_data_type() calls return expected
         # results. The registration of the corresponding smell is performed
         # by the fixture.
 
-        metadata1, expectation_type1 = data_smell_metadata1
         registry = data_smell_registry_with_data_smell1
 
         # Ensure the registration of the first data smell (extreme value smell)
         # was successful
-        check_data_smell_stored_in_registry(registry, metadata1, expectation_type1)
+        check_data_smell_stored_in_registry(
+            registry=registry,
+            metadata=data_smell_information1.metadata,
+            expectation_type=data_smell_information1.expectation_type
+        )
         # Ensure that only one data smell has been registered for int and float.
         for data_type in [ProfilerDataType.INT, ProfilerDataType.FLOAT]:
             result = registry.get_smell_dict_for_profiler_data_type(data_type)
@@ -48,14 +51,14 @@ class TestDataSmellRegistry:
         # ProfilerDataTypes (not int and not float).
         check_remaining_data_types_have_no_registered_smells(
             registry,
-            metadata1.profiler_data_types
+            data_smell_information1.metadata.profiler_data_types
         )
 
     def test_two_data_smells(
             self,
             data_smell_registry_with_data_smell2,
-            data_smell_metadata1,
-            data_smell_metadata2):
+            data_smell_information1,
+            data_smell_information2):
         # Perform registration of two data smells and ensure that
         # get_smell_dict_for_profiler_data_type() calls return expected
         # results. The registration of the corresponding smells is performed
@@ -64,22 +67,20 @@ class TestDataSmellRegistry:
         # NOTE: data_smell_registry_with_data_smell2 already has two
         # smells registered.
         registry = data_smell_registry_with_data_smell2
-        metadata2, expectation_type2 = data_smell_metadata2
 
         # Check if registration of second data smell was successful
         check_data_smell_stored_in_registry(
             registry,
-            metadata2,
-            expectation_type2
+            data_smell_information2.metadata,
+            data_smell_information2.expectation_type
         )
 
         # Ensure that the extreme value smell registered before (data smell 1)
         # is still present.
-        metadata1, expectation_type1 = data_smell_metadata1
         check_data_smell_stored_in_registry(
             registry,
-            metadata1,
-            expectation_type1
+            data_smell_information1.metadata,
+            data_smell_information1.expectation_type
         )
 
         # Ensure that only int and float smells have been registered.
