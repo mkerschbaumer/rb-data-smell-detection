@@ -8,7 +8,7 @@ from datasmelldetection.core.datasmells import DataSmellType
 # Import great_expectations module to load expectations for
 # data smell detection.
 import datasmelldetection.detectors.great_expectations
-from .helpers import check_data_smell_stored_in_registry
+from .helper_functions import check_data_smell_stored_in_registry
 
 
 class TestExpectationRegistration:

@@ -1,6 +1,6 @@
 from great_expectations.profile.base import ProfilerDataType
 
-from .helpers import (
+from .helper_functions import (
     check_data_smell_stored_in_registry,
     check_remaining_data_types_have_no_registered_smells
 )
