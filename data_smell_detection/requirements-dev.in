@@ -1,8 +1,9 @@
 # requirements-dev.in
-great_expectations>=0.13.15
+great_expectations>=0.13.15, <0.13.17
 versioneer>=0.19
 sphinx
 sphinx-autoapi
 pip-tools
 pytest
 coverage
+dataclasses
