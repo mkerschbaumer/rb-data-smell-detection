@@ -1,0 +1,417 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %} Dashboard {% endblock title %}
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+    <!-- Header -->
+    <div class="header bg-gradient-primary pb-8 pt-5 pt-md-8">
+      <div class="container-fluid">
+        <div class="header-body">
+          <!-- Card stats -->
+          <div class="row">
+            <div class="col-xl-3 col-lg-6">
+              <div class="card-grey card-stats mb-4 mb-xl-0">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col">
+
+                      <span class="h2 font-weight-bold mb-0">Upload file</span>
+                    </div>
+                    <div class="col-auto">
+                      <div class="icon icon-shape bg-upload text-white rounded-circle shadow">
+                        <i class="ni ni-cloud-upload-96"></i>
+                      </div>
+                    </div>
+                  </div>
+                  
+                </div>
+              </div>
+            </div>
+
+            <div class="col-xl-1 col-lg-6">
+              <div class="card-transparent card-stats mb-4 mb-xl-0">
+                <div class="card-body-transparent">
+                  <div class="row">
+                    
+                    <div class="col-auto">
+                      <div class="icon icon-shape bg-dark text-white rounded-circle shadow">
+                        <i class="ni ni-bold-right"></i>
+                      </div>
+                    </div>
+                  </div>
+                  
+                </div>
+              </div>
+            </div>
+            
+            <div class="col-xl-4 col-lg-6">
+              <div class="card card-stats mb-4 mb-xl-0">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col">
+                      <span class="h2 font-weight-bold mb-0">Customize</span>
+                    </div>
+                    <div class="col-auto">
+                      <div class="icon icon-shape bg-customize text-white rounded-circle shadow">
+                        <i class="ni ni-ui-04"></i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-xl-1 col-lg-6">
+              <div class="card-transparent card-stats mb-4 mb-xl-0">
+                <div class="card-body-transparent">
+                  <div class="row">
+                    
+                    <div class="col-auto">
+                      <div class="icon icon-shape bg-dark text-white rounded-circle shadow">
+                        <i class="ni ni-bold-right"></i>
+                      </div>
+                    </div>
+                  </div>
+                  
+                </div>
+              </div>
+            </div>
+
+            <div class="col-xl-3 col-lg-6">
+              <div class="card-grey card-stats mb-4 mb-xl-0">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col">
+                      <span class="h2 font-weight-bold mb-0">Results</span>
+                    </div>
+                    <div class="col-auto">
+                      <div class="icon icon-shape bg-results text-white rounded-circle shadow">
+                        <i class="ni ni-chart-bar-32"></i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container-fluid mt--7">
+
+      <div class="row">
+        <div class="col">
+          <div class="card shadow">
+            <div class="card-header bg-transparent">
+              <h3 class="mb-0">Choose the type(s) of data smell that sould be detected</h3>
+            </div>
+            <div class="card-body">
+              <div class="table-responsive">
+                <div>
+                <table class="table align-items-center">
+                    <thead class="thead-light">
+                        <tr>
+                            <th scope="col">
+                                Believability Smells
+                            </th>
+                            <th scope="col">
+                                Syntactic Understandability Smells
+                            </th>
+                            <th scope="col">
+                                Encoding Understandability Smells
+                            </th>
+                            <th scope="col">
+                                Consistency Smells
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="list">
+                        
+                        <tr>
+                            <th scope="row" class="name">
+                                <div class="media align-items-center">
+                                    <div class="media-body">
+                                        <span class="mb-0 text-sm">
+                                          <div class="custom-control custom-checkbox mb-3">
+                                            <input class="custom-control-input" id="customCheck1" type="checkbox">
+                                            <label class="custom-control-label" for="customCheck1">Dummy Value</label>
+                                          </div>
+                                        </span>
+                                    </div>
+                                </div>
+                            </th>
+                            <td class="budget">
+                              <div class="media align-items-center">
+                                <div class="media-body">
+                                    <span class="mb-0 text-sm">
+                                      <div class="custom-control custom-checkbox mb-3">
+                                        <input class="custom-control-input" id="customCheck1" type="checkbox">
+                                        <label class="custom-control-label" for="customCheck1">Unchecked</label>
+                                      </div>
+                                    </span>
+                                </div>
+                            </div>
+                            </td>
+                            <td class="status">
+                              <div class="media align-items-center">
+                                <div class="media-body">
+                                    <span class="mb-0 text-sm">
+                                      <div class="custom-control custom-checkbox mb-3">
+                                        <input class="custom-control-input" id="customCheck1" type="checkbox">
+                                        <label class="custom-control-label" for="customCheck1">Unchecked</label>
+                                      </div>
+                                    </span>
+                                </div>
+                            </div>
+                            </td>
+                          
+                            <td class="completion">
+                              <div class="media align-items-center">
+                                <div class="media-body">
+                                    <span class="mb-0 text-sm">
+                                      <div class="custom-control custom-checkbox mb-3">
+                                        <input class="custom-control-input" id="customCheck1" type="checkbox">
+                                        <label class="custom-control-label" for="customCheck1">Unchecked</label>
+                                      </div>
+                                    </span>
+                                </div>
+                            </div>
+                            </td>
+                            
+                        </tr>
+                        
+                        <tr>
+                            <th scope="row" class="name">
+                              <div class="media align-items-center">
+                                <div class="media-body">
+                                    <span class="mb-0 text-sm">
+                                      <div class="custom-control custom-checkbox mb-3">
+                                        <input class="custom-control-input" id="customCheck1" type="checkbox">
+                                        <label class="custom-control-label" for="customCheck1">Unchecked</label>
+                                      </div>
+                                    </span>
+                                </div>
+                            </div>
+                            </th>
+                            <td class="budget">
+                              <div class="media align-items-center">
+                                <div class="media-body">
+                                    <span class="mb-0 text-sm">
+                                      <div class="custom-control custom-checkbox mb-3">
+                                        <input class="custom-control-input" id="customCheck1" type="checkbox">
+                                        <label class="custom-control-label" for="customCheck1">Unchecked</label>
+                                      </div>
+                                    </span>
+                                </div>
+                            </div>
+                            </td>
+                            <td class="status">
+                              <div class="media align-items-center">
+                                <div class="media-body">
+                                    <span class="mb-0 text-sm">
+                                      <div class="custom-control custom-checkbox mb-3">
+                                        <input class="custom-control-input" id="customCheck1" type="checkbox">
+                                        <label class="custom-control-label" for="customCheck1">Unchecked</label>
+                                      </div>
+                                    </span>
+                                </div>
+                            </div>
+                            </td>
+                            
+                            <td class="completion">
+                              <div class="media align-items-center">
+                                <div class="media-body">
+                                    <span class="mb-0 text-sm">
+                                      <div class="custom-control custom-checkbox mb-3">
+                                        <input class="custom-control-input" id="customCheck1" type="checkbox">
+                                        <label class="custom-control-label" for="customCheck1">Unchecked</label>
+                                      </div>
+                                    </span>
+                                </div>
+                            </div>
+                            </td>
+                            
+                        </tr>
+                        
+                        <tr>
+                            <th scope="row" class="name">
+                              <div class="media align-items-center">
+                                <div class="media-body">
+                                    <span class="mb-0 text-sm">
+                                      <div class="custom-control custom-checkbox mb-3">
+                                        <input class="custom-control-input" id="customCheck1" type="checkbox">
+                                        <label class="custom-control-label" for="customCheck1">Unchecked</label>
+                                      </div>
+                                    </span>
+                                </div>
+                            </div>
+                            </th>
+                            <td class="budget">
+                              <div class="media align-items-center">
+                                <div class="media-body">
+                                    <span class="mb-0 text-sm">
+                                      <div class="custom-control custom-checkbox mb-3">
+                                        <input class="custom-control-input" id="customCheck1" type="checkbox">
+                                        <label class="custom-control-label" for="customCheck1">Unchecked</label>
+                                      </div>
+                                    </span>
+                                </div>
+                            </div>
+                            </td>
+                            <td class="status">
+                              <div class="media align-items-center">
+                                <div class="media-body">
+                                    <span class="mb-0 text-sm">
+                                      <div class="custom-control custom-checkbox mb-3">
+                                        <input class="custom-control-input" id="customCheck1" type="checkbox">
+                                        <label class="custom-control-label" for="customCheck1">Unchecked</label>
+                                      </div>
+                                    </span>
+                                </div>
+                            </div>
+                            </td>
+                            <td class="completion">
+                              <div class="media align-items-center">
+                                <div class="media-body">
+                                    <span class="mb-0 text-sm">
+                                      <div class="custom-control custom-checkbox mb-3">
+                                        <input class="custom-control-input" id="customCheck1" type="checkbox">
+                                        <label class="custom-control-label" for="customCheck1">Unchecked</label>
+                                      </div>
+                                    </span>
+                                </div>
+                            </div>
+                            </td>
+                            
+                        </tr>
+                        
+                        <tr>
+                            <th scope="row" class="name">
+                              <div class="media align-items-center">
+                                <div class="media-body">
+                                    <span class="mb-0 text-sm">
+                                      <div class="custom-control custom-checkbox mb-3">
+                                        <input class="custom-control-input" id="customCheck1" type="checkbox">
+                                        <label class="custom-control-label" for="customCheck1">Unchecked</label>
+                                      </div>
+                                    </span>
+                                </div>
+                            </div>
+                            </th>
+                            <td class="budget">
+                              <div class="media align-items-center">
+                                <div class="media-body">
+                                    <span class="mb-0 text-sm">
+                                      <div class="custom-control custom-checkbox mb-3">
+                                        <input class="custom-control-input" id="customCheck1" type="checkbox">
+                                        <label class="custom-control-label" for="customCheck1">Unchecked</label>
+                                      </div>
+                                    </span>
+                                </div>
+                            </div>
+                            </td>
+                            <td class="status">
+                              <div class="media align-items-center">
+                                <div class="media-body">
+                                    <span class="mb-0 text-sm">
+                                      <div class="custom-control custom-checkbox mb-3">
+                                        <input class="custom-control-input" id="customCheck1" type="checkbox">
+                                        <label class="custom-control-label" for="customCheck1">Unchecked</label>
+                                      </div>
+                                    </span>
+                                </div>
+                            </div>
+                            </td>
+                            <td class="completion">
+                              <div class="media align-items-center">
+                                <div class="media-body">
+                                    <span class="mb-0 text-sm">
+                                      <div class="custom-control custom-checkbox mb-3">
+                                        <input class="custom-control-input" id="customCheck1" type="checkbox">
+                                        <label class="custom-control-label" for="customCheck1">Unchecked</label>
+                                      </div>
+                                    </span>
+                                </div>
+                            </div>
+                            </td>
+                            
+                        </tr>
+                        
+                        <tr>
+                            <th scope="row" class="name">
+                              <div class="media align-items-center">
+                                <div class="media-body">
+                                    <span class="mb-0 text-sm">
+                                      <div class="custom-control custom-checkbox mb-3">
+                                        <input class="custom-control-input" id="customCheck1" type="checkbox">
+                                        <label class="custom-control-label" for="customCheck1">Unchecked</label>
+                                      </div>
+                                    </span>
+                                </div>
+                            </div>
+                            </th>
+                            <td class="budget">
+                              <div class="media align-items-center">
+                                <div class="media-body">
+                                    <span class="mb-0 text-sm">
+                                      <div class="custom-control custom-checkbox mb-3">
+                                        <input class="custom-control-input" id="customCheck1" type="checkbox">
+                                        <label class="custom-control-label" for="customCheck1">Unchecked</label>
+                                      </div>
+                                    </span>
+                                </div>
+                            </div>
+                            </td>
+                            <td class="status">
+                              <div class="media align-items-center">
+                                <div class="media-body">
+                                    <span class="mb-0 text-sm">
+                                      <div class="custom-control custom-checkbox mb-3">
+                                        <input class="custom-control-input" id="customCheck1" type="checkbox">
+                                        <label class="custom-control-label" for="customCheck1">Unchecked</label>
+                                      </div>
+                                    </span>
+                                </div>
+                            </div>
+                            </td>
+
+                            <td class="completion">
+                              <div class="media align-items-center">
+                                <div class="media-body">
+                                    <span class="mb-0 text-sm">
+                                      <div class="custom-control custom-checkbox mb-3">
+                                        <input class="custom-control-input" id="customCheck1" type="checkbox">
+                                        <label class="custom-control-label" for="customCheck1">Unchecked</label>
+                                      </div>
+                                    </span>
+                                </div>
+                            </div>
+                            </td>
+                          
+                        </tr>
+                        
+                    </tbody>
+                </table>
+            </div>
+            <br>
+            <button class="button buttonsubmit" type="submit">Customize</button>
+            </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+
+      {% include "includes/footer.html" %}
+
+    </div>
+
+{% endblock content %}
+
+<!-- Specific JS goes HERE --> 
+{% block javascripts %}{% endblock javascripts %}

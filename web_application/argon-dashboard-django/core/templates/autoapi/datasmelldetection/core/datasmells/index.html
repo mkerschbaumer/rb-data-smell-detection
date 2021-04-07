@@ -1,0 +1,396 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>datasmelldetection.core.datasmells &#8212; datasmelldetection  documentation</title>
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
+    <script id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+    <script src="../../../../_static/jquery.js"></script>
+    <script src="../../../../_static/underscore.js"></script>
+    <script src="../../../../_static/doctools.js"></script>
+    <script src="../../../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="module-datasmelldetection.core.datasmells">
+<span id="datasmelldetection-core-datasmells"></span><h1><a class="reference internal" href="#module-datasmelldetection.core.datasmells" title="datasmelldetection.core.datasmells"><code class="xref py py-mod docutils literal notranslate"><span class="pre">datasmelldetection.core.datasmells</span></code></a><a class="headerlink" href="#module-datasmelldetection.core.datasmells" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="classes">
+<h3>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">¶</a></h3>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#datasmelldetection.core.datasmells.DataSmellType" title="datasmelldetection.core.datasmells.DataSmellType"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DataSmellType</span></code></a></p></td>
+<td><p>An enum which contains the data smells which detectors can find in datasets.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py class">
+<dt id="datasmelldetection.core.datasmells.DataSmellType">
+<em class="property">class </em><code class="sig-prename descclassname">datasmelldetection.core.datasmells.</code><code class="sig-name descname">DataSmellType</code><a class="headerlink" href="#datasmelldetection.core.datasmells.DataSmellType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
+<p>An enum which contains the data smells which detectors can find in datasets.</p>
+<dl class="py attribute">
+<dt id="datasmelldetection.core.datasmells.DataSmellType.DUMMY_VALUE_SMELL">
+<code class="sig-name descname">DUMMY_VALUE_SMELL</code><em class="property"> = DummyValueSmell</em><a class="headerlink" href="#datasmelldetection.core.datasmells.DataSmellType.DUMMY_VALUE_SMELL" title="Permalink to this definition">¶</a></dt>
+<dd><p>This smell characterizes a situation in which a kind of substitute value (sentinel value) is
+used due to several reasons (e.g. missing values, unknown values, computation errors, surpass
+‘not NULL’ constraints etc.).</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="datasmelldetection.core.datasmells.DataSmellType.DUPLICATED_VALUE_SMELL">
+<code class="sig-name descname">DUPLICATED_VALUE_SMELL</code><em class="property"> = DuplicatedValueSmell</em><a class="headerlink" href="#datasmelldetection.core.datasmells.DataSmellType.DUPLICATED_VALUE_SMELL" title="Permalink to this definition">¶</a></dt>
+<dd><p>This smell occurs when data values are syntactically equal across several data instances.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="datasmelldetection.core.datasmells.DataSmellType.EXTREME_VALUE_SMELL">
+<code class="sig-name descname">EXTREME_VALUE_SMELL</code><em class="property"> = ExtremeValueSmell</em><a class="headerlink" href="#datasmelldetection.core.datasmells.DataSmellType.EXTREME_VALUE_SMELL" title="Permalink to this definition">¶</a></dt>
+<dd><p>This smell occurs when data instances have extreme data values relating to other data instances.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="datasmelldetection.core.datasmells.DataSmellType.MEANINGLESS_VALUE_SMELL">
+<code class="sig-name descname">MEANINGLESS_VALUE_SMELL</code><em class="property"> = MeaninglessValueSmell</em><a class="headerlink" href="#datasmelldetection.core.datasmells.DataSmellType.MEANINGLESS_VALUE_SMELL" title="Permalink to this definition">¶</a></dt>
+<dd><p>This smell arises when a data value has no common meaning or contains suspect repeating
+sequences of characters.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="datasmelldetection.core.datasmells.DataSmellType.MISSPELLING_SMELL">
+<code class="sig-name descname">MISSPELLING_SMELL</code><em class="property"> = MisspellingSmell</em><a class="headerlink" href="#datasmelldetection.core.datasmells.DataSmellType.MISSPELLING_SMELL" title="Permalink to this definition">¶</a></dt>
+<dd><p>This smell arises when a data value probably has a spelling error.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="datasmelldetection.core.datasmells.DataSmellType.SUSPECT_CLASS_VALUE_SMELL">
+<code class="sig-name descname">SUSPECT_CLASS_VALUE_SMELL</code><em class="property"> = SuspectClassValueSmell</em><a class="headerlink" href="#datasmelldetection.core.datasmells.DataSmellType.SUSPECT_CLASS_VALUE_SMELL" title="Permalink to this definition">¶</a></dt>
+<dd><p>This smell characterizes a situation in which categorical data instances have uncommon class
+values.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="datasmelldetection.core.datasmells.DataSmellType.SUSPECT_DATE_VALUE_SMELL">
+<code class="sig-name descname">SUSPECT_DATE_VALUE_SMELL</code><em class="property"> = SuspectDateValueSmell</em><a class="headerlink" href="#datasmelldetection.core.datasmells.DataSmellType.SUSPECT_DATE_VALUE_SMELL" title="Permalink to this definition">¶</a></dt>
+<dd><p>This smell occurs when a data value represents a date far in the past or future.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="datasmelldetection.core.datasmells.DataSmellType.SUSPECT_DATE_TIME_INTERVAL_SMELL">
+<code class="sig-name descname">SUSPECT_DATE_TIME_INTERVAL_SMELL</code><em class="property"> = SuspectDate/TimeIntervalSmell</em><a class="headerlink" href="#datasmelldetection.core.datasmells.DataSmellType.SUSPECT_DATE_TIME_INTERVAL_SMELL" title="Permalink to this definition">¶</a></dt>
+<dd><p>This smell occurs when there is a very long/short date/time interval between data instances.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="datasmelldetection.core.datasmells.DataSmellType.SUSPECT_SIGN_SMELL">
+<code class="sig-name descname">SUSPECT_SIGN_SMELL</code><em class="property"> = SuspectSignSmell</em><a class="headerlink" href="#datasmelldetection.core.datasmells.DataSmellType.SUSPECT_SIGN_SMELL" title="Permalink to this definition">¶</a></dt>
+<dd><p>This smell occurs when data instances have a different sign (+/-) than the rest of the
+instances.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="datasmelldetection.core.datasmells.DataSmellType.SUSPECT_DISTRIBUTION_SMELL">
+<code class="sig-name descname">SUSPECT_DISTRIBUTION_SMELL</code><em class="property"> = SuspectDistributionSmell</em><a class="headerlink" href="#datasmelldetection.core.datasmells.DataSmellType.SUSPECT_DISTRIBUTION_SMELL" title="Permalink to this definition">¶</a></dt>
+<dd><p>This smell characterizes a situation in which the data values have a suspect distribution.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="datasmelldetection.core.datasmells.DataSmellType.AMBIGUOUS_DATE_TIME_FORMAT_SMELL">
+<code class="sig-name descname">AMBIGUOUS_DATE_TIME_FORMAT_SMELL</code><em class="property"> = AmbiguousDate/TimeFormatSmell</em><a class="headerlink" href="#datasmelldetection.core.datasmells.DataSmellType.AMBIGUOUS_DATE_TIME_FORMAT_SMELL" title="Permalink to this definition">¶</a></dt>
+<dd><p>This smell occurs when a date is represented in short format or a timestamp is represented in 12
+hour format.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="datasmelldetection.core.datasmells.DataSmellType.AMBIGUOUS_VALUE_SMELL">
+<code class="sig-name descname">AMBIGUOUS_VALUE_SMELL</code><em class="property"> = AmbiguousValueSmell</em><a class="headerlink" href="#datasmelldetection.core.datasmells.DataSmellType.AMBIGUOUS_VALUE_SMELL" title="Permalink to this definition">¶</a></dt>
+<dd><p>This smell arises when data values represent abbreviations, homonyms, acronyms or an ambiguous
+context.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="datasmelldetection.core.datasmells.DataSmellType.CASING_SMELL">
+<code class="sig-name descname">CASING_SMELL</code><em class="property"> = CasingSmell</em><a class="headerlink" href="#datasmelldetection.core.datasmells.DataSmellType.CASING_SMELL" title="Permalink to this definition">¶</a></dt>
+<dd><p>This smell occurs when data values represent an unusual use of upper and lower case (Mixed Case,
+Upper Only, Lower Only).</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="datasmelldetection.core.datasmells.DataSmellType.CONTRACTING_SMELL">
+<code class="sig-name descname">CONTRACTING_SMELL</code><em class="property"> = ContractingSmell</em><a class="headerlink" href="#datasmelldetection.core.datasmells.DataSmellType.CONTRACTING_SMELL" title="Permalink to this definition">¶</a></dt>
+<dd><p>This smell occurs when data values represent shortened version of words or phrases.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="datasmelldetection.core.datasmells.DataSmellType.EXTRANEOUS_VALUE_SMELL">
+<code class="sig-name descname">EXTRANEOUS_VALUE_SMELL</code><em class="property"> = ExtraneousValueSmell</em><a class="headerlink" href="#datasmelldetection.core.datasmells.DataSmellType.EXTRANEOUS_VALUE_SMELL" title="Permalink to this definition">¶</a></dt>
+<dd><p>This smell occurs when data values provide additional, likely unnecessary information.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="datasmelldetection.core.datasmells.DataSmellType.INTERMINGLED_DATA_TYPE_SMELL">
+<code class="sig-name descname">INTERMINGLED_DATA_TYPE_SMELL</code><em class="property"> = IntermingledDataTypeSmell</em><a class="headerlink" href="#datasmelldetection.core.datasmells.DataSmellType.INTERMINGLED_DATA_TYPE_SMELL" title="Permalink to this definition">¶</a></dt>
+<dd><p>This smell characterizes a situation in which data values contain numeric and alphabetic
+characters.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="datasmelldetection.core.datasmells.DataSmellType.LONG_DATA_VALUE_SMELL">
+<code class="sig-name descname">LONG_DATA_VALUE_SMELL</code><em class="property"> = LongDataValueSmell</em><a class="headerlink" href="#datasmelldetection.core.datasmells.DataSmellType.LONG_DATA_VALUE_SMELL" title="Permalink to this definition">¶</a></dt>
+<dd><p>This smell arises when data values are too long to understand.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="datasmelldetection.core.datasmells.DataSmellType.MISSING_VALUE_SMELL">
+<code class="sig-name descname">MISSING_VALUE_SMELL</code><em class="property"> = MissingValueSmell</em><a class="headerlink" href="#datasmelldetection.core.datasmells.DataSmellType.MISSING_VALUE_SMELL" title="Permalink to this definition">¶</a></dt>
+<dd><p>This smell arises when data instances have no data values.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="datasmelldetection.core.datasmells.DataSmellType.SEPARATING_SMELL">
+<code class="sig-name descname">SEPARATING_SMELL</code><em class="property"> = SeparatingSmell</em><a class="headerlink" href="#datasmelldetection.core.datasmells.DataSmellType.SEPARATING_SMELL" title="Permalink to this definition">¶</a></dt>
+<dd><p>This smell arises when data values contain thousands separators (space, underbar, dot etc.) for
+grouping digits. The usage of delimiters can result in ambiguity when also a decimal separator
+is used and lead to problems decoding the values.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="datasmelldetection.core.datasmells.DataSmellType.SPACING_SMELL">
+<code class="sig-name descname">SPACING_SMELL</code><em class="property"> = SpacingSmell</em><a class="headerlink" href="#datasmelldetection.core.datasmells.DataSmellType.SPACING_SMELL" title="Permalink to this definition">¶</a></dt>
+<dd><p>This smell arises when data values contain an uncommon pattern of spaces (Trailing Space,
+Leading Spaces, Multiple Spaces, Missing Spaces).</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="datasmelldetection.core.datasmells.DataSmellType.SPECIAL_CHARACTER_SMELL">
+<code class="sig-name descname">SPECIAL_CHARACTER_SMELL</code><em class="property"> = SpecialCharacterSmell</em><a class="headerlink" href="#datasmelldetection.core.datasmells.DataSmellType.SPECIAL_CHARACTER_SMELL" title="Permalink to this definition">¶</a></dt>
+<dd><p>This smell occurs when data values contain special characters (non-alphanumeric) like Commas,
+Dots, Hyphens, Apostrophes, Tab Char, Punctuation, Parentheses, Dashes, accented Letters, etc.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="datasmelldetection.core.datasmells.DataSmellType.SYNONYM_SMELL">
+<code class="sig-name descname">SYNONYM_SMELL</code><em class="property"> = SynonymSmell</em><a class="headerlink" href="#datasmelldetection.core.datasmells.DataSmellType.SYNONYM_SMELL" title="Permalink to this definition">¶</a></dt>
+<dd><p>This smell occurs when data values have the same semantic meaning but are syntactically
+different (e.g. Aliases, Nick names, Pseudonyms).</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="datasmelldetection.core.datasmells.DataSmellType.TAGGING_SMELL">
+<code class="sig-name descname">TAGGING_SMELL</code><em class="property"> = TaggingSmell</em><a class="headerlink" href="#datasmelldetection.core.datasmells.DataSmellType.TAGGING_SMELL" title="Permalink to this definition">¶</a></dt>
+<dd><p>This smell occurs when data values represent tags.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="datasmelldetection.core.datasmells.DataSmellType.DATE_AS_DATE_TIME_SMELL">
+<code class="sig-name descname">DATE_AS_DATE_TIME_SMELL</code><em class="property"> = DateAsDateTimeSmell</em><a class="headerlink" href="#datasmelldetection.core.datasmells.DataSmellType.DATE_AS_DATE_TIME_SMELL" title="Permalink to this definition">¶</a></dt>
+<dd><p>This smell occurs when a date is encoded as a datetime data type.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="datasmelldetection.core.datasmells.DataSmellType.DATE_AS_STRING_SMELL">
+<code class="sig-name descname">DATE_AS_STRING_SMELL</code><em class="property"> = DateAsStringSmell</em><a class="headerlink" href="#datasmelldetection.core.datasmells.DataSmellType.DATE_AS_STRING_SMELL" title="Permalink to this definition">¶</a></dt>
+<dd><p>This smell occurs when a date is encoded as a string.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="datasmelldetection.core.datasmells.DataSmellType.DATE_TIME_AS_STRING_SMELL">
+<code class="sig-name descname">DATE_TIME_AS_STRING_SMELL</code><em class="property"> = DateTimeAsStringSmell</em><a class="headerlink" href="#datasmelldetection.core.datasmells.DataSmellType.DATE_TIME_AS_STRING_SMELL" title="Permalink to this definition">¶</a></dt>
+<dd><p>This smell occurs when a date and a timestamp are encoded as a string.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="datasmelldetection.core.datasmells.DataSmellType.FLOATING_POINT_NUMBER_AS_STRING_SMELL">
+<code class="sig-name descname">FLOATING_POINT_NUMBER_AS_STRING_SMELL</code><em class="property"> = FloatingPointNumberAsStringSmell</em><a class="headerlink" href="#datasmelldetection.core.datasmells.DataSmellType.FLOATING_POINT_NUMBER_AS_STRING_SMELL" title="Permalink to this definition">¶</a></dt>
+<dd><p>This smell occurs when a floating-point number is encoded as a string.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="datasmelldetection.core.datasmells.DataSmellType.INTEGER_AS_FLOATING_POINT_NUMBER_SMELL">
+<code class="sig-name descname">INTEGER_AS_FLOATING_POINT_NUMBER_SMELL</code><em class="property"> = IntegerAsFloatingPointNumberSmell</em><a class="headerlink" href="#datasmelldetection.core.datasmells.DataSmellType.INTEGER_AS_FLOATING_POINT_NUMBER_SMELL" title="Permalink to this definition">¶</a></dt>
+<dd><p>This smell occurs when an integer is encoded as a floating-point number.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="datasmelldetection.core.datasmells.DataSmellType.INTEGER_AS_STRING_SMELL">
+<code class="sig-name descname">INTEGER_AS_STRING_SMELL</code><em class="property"> = IntegerAsStringSmell</em><a class="headerlink" href="#datasmelldetection.core.datasmells.DataSmellType.INTEGER_AS_STRING_SMELL" title="Permalink to this definition">¶</a></dt>
+<dd><p>This smell occurs when an integer is encoded as a string.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="datasmelldetection.core.datasmells.DataSmellType.TIME_AS_STRING_SMELL">
+<code class="sig-name descname">TIME_AS_STRING_SMELL</code><em class="property"> = TimeAsStringSmell</em><a class="headerlink" href="#datasmelldetection.core.datasmells.DataSmellType.TIME_AS_STRING_SMELL" title="Permalink to this definition">¶</a></dt>
+<dd><p>This smell occurs when a timestamp is encoded as a string.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="datasmelldetection.core.datasmells.DataSmellType.SUSPECT_CHARACTER_ENCODING_SMELL">
+<code class="sig-name descname">SUSPECT_CHARACTER_ENCODING_SMELL</code><em class="property"> = SuspectCharacterEncodingSmell</em><a class="headerlink" href="#datasmelldetection.core.datasmells.DataSmellType.SUSPECT_CHARACTER_ENCODING_SMELL" title="Permalink to this definition">¶</a></dt>
+<dd><p>This smells occurs when special characters or umlauts are incorrectly encoded.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="datasmelldetection.core.datasmells.DataSmellType.ABBREVIATION_INCONSISTENCY_SMELL">
+<code class="sig-name descname">ABBREVIATION_INCONSISTENCY_SMELL</code><em class="property"> = AbbreviationInconsistencySmell</em><a class="headerlink" href="#datasmelldetection.core.datasmells.DataSmellType.ABBREVIATION_INCONSISTENCY_SMELL" title="Permalink to this definition">¶</a></dt>
+<dd><p>This smell occurs when abbreviations or contractions are not used consistently.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="datasmelldetection.core.datasmells.DataSmellType.CASING_INCONSISTENCY_SMELL">
+<code class="sig-name descname">CASING_INCONSISTENCY_SMELL</code><em class="property"> = CasingInconsistencySmell</em><a class="headerlink" href="#datasmelldetection.core.datasmells.DataSmellType.CASING_INCONSISTENCY_SMELL" title="Permalink to this definition">¶</a></dt>
+<dd><p>This smell characterizes a situation in which upper and lower case is not used consistently.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="datasmelldetection.core.datasmells.DataSmellType.CLASS_INCONSISTENCY_SMELL">
+<code class="sig-name descname">CLASS_INCONSISTENCY_SMELL</code><em class="property"> = ClassInconsistencySmell</em><a class="headerlink" href="#datasmelldetection.core.datasmells.DataSmellType.CLASS_INCONSISTENCY_SMELL" title="Permalink to this definition">¶</a></dt>
+<dd><p>This smell arises when class values for categorical data instances are not used consistently
+(e.g. different representations or abstractions).</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="datasmelldetection.core.datasmells.DataSmellType.DATE_TIME_FORMAT_INCONSISTENCY_SMELL">
+<code class="sig-name descname">DATE_TIME_FORMAT_INCONSISTENCY_SMELL</code><em class="property"> = DateTimeFormatInconsistencySmell</em><a class="headerlink" href="#datasmelldetection.core.datasmells.DataSmellType.DATE_TIME_FORMAT_INCONSISTENCY_SMELL" title="Permalink to this definition">¶</a></dt>
+<dd><p>This smell occurs when date or time formats are not used consistently.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="datasmelldetection.core.datasmells.DataSmellType.MISSING_VALUE_INCONSISTENCY_SMELL">
+<code class="sig-name descname">MISSING_VALUE_INCONSISTENCY_SMELL</code><em class="property"> = MissingValueInconsistencySmell</em><a class="headerlink" href="#datasmelldetection.core.datasmells.DataSmellType.MISSING_VALUE_INCONSISTENCY_SMELL" title="Permalink to this definition">¶</a></dt>
+<dd><p>This smell characterizes a situation in which constants are not used consistently to represent
+missing data values.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="datasmelldetection.core.datasmells.DataSmellType.SEPARATING_INCONSISTENCY_SMELL">
+<code class="sig-name descname">SEPARATING_INCONSISTENCY_SMELL</code><em class="property"> = SeparatingInconsistencySmell</em><a class="headerlink" href="#datasmelldetection.core.datasmells.DataSmellType.SEPARATING_INCONSISTENCY_SMELL" title="Permalink to this definition">¶</a></dt>
+<dd><p>This smell occurs when thousands separator are not used consistently.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="datasmelldetection.core.datasmells.DataSmellType.SPACING_INCONSISTENCY_SMELL">
+<code class="sig-name descname">SPACING_INCONSISTENCY_SMELL</code><em class="property"> = SpacingInconsistencySmell</em><a class="headerlink" href="#datasmelldetection.core.datasmells.DataSmellType.SPACING_INCONSISTENCY_SMELL" title="Permalink to this definition">¶</a></dt>
+<dd><p>This smell occurs when spacing is not used consistenly.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="datasmelldetection.core.datasmells.DataSmellType.SPECIAL_CHARACTER_INCONSISTENCY_SMELL">
+<code class="sig-name descname">SPECIAL_CHARACTER_INCONSISTENCY_SMELL</code><em class="property"> = SpecialCharacterInconsistencySmell</em><a class="headerlink" href="#datasmelldetection.core.datasmells.DataSmellType.SPECIAL_CHARACTER_INCONSISTENCY_SMELL" title="Permalink to this definition">¶</a></dt>
+<dd><p>This smell occurs when special characters are not used consistently.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="datasmelldetection.core.datasmells.DataSmellType.SYNTAX_INCONSISTENCY_SMELL">
+<code class="sig-name descname">SYNTAX_INCONSISTENCY_SMELL</code><em class="property"> = SyntaxInconsistencySmell</em><a class="headerlink" href="#datasmelldetection.core.datasmells.DataSmellType.SYNTAX_INCONSISTENCY_SMELL" title="Permalink to this definition">¶</a></dt>
+<dd><p>This smell characterizes a situation in which the general syntax (decimal places, telephone area
+codes, extraneous information etc.) of data values is not used consistently. Mainly, all other
+consistency issues which do not fall in one of the other categories related to this category.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="datasmelldetection.core.datasmells.DataSmellType.UNIT_INCONSISTENCY_SMELL">
+<code class="sig-name descname">UNIT_INCONSISTENCY_SMELL</code><em class="property"> = UnitInconsistencySmell</em><a class="headerlink" href="#datasmelldetection.core.datasmells.DataSmellType.UNIT_INCONSISTENCY_SMELL" title="Permalink to this definition">¶</a></dt>
+<dd><p>This smell arises when units of measurement are not (implicitly) used consistently.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="datasmelldetection.core.datasmells.DataSmellType.TRANSPOSITION_INCONSISTENCY_SMELL">
+<code class="sig-name descname">TRANSPOSITION_INCONSISTENCY_SMELL</code><em class="property"> = TranspositionInconsistencySmell</em><a class="headerlink" href="#datasmelldetection.core.datasmells.DataSmellType.TRANSPOSITION_INCONSISTENCY_SMELL" title="Permalink to this definition">¶</a></dt>
+<dd><p>This smell arises when ordering of words or special characters is not used consistently.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../index.html">datasmelldetection</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2021, Martin Kerschbaumer.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../../../../_sources/autoapi/datasmelldetection/core/datasmells/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
