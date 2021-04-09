@@ -1,4 +1,5 @@
 from abc import ABC
+import copy
 from dataclasses import dataclass
 from inspect import isabstract
 from typing import Set, Optional, Dict
@@ -50,13 +51,17 @@ class DataSmellRegistry:
 
     def __init__(self):
         # Store the data smells for each profiler type.
-        # Type: Dict[ProfilerDataType, # Dict[DataSmellType, str] where the
+        # Type: Dict[ProfilerDataType, Dict[DataSmellType, str] where the
         # expectation type is stored as a string.
         # Initialize expectations for each ProfilerDataType
         # e.g. integer-specific expectations
         self._profiler_data_type_specific_data_smells = dict()
         for data_type in ProfilerDataType:
             self._profiler_data_type_specific_data_smells[data_type] = dict()
+
+        # Store mapping from expectation type (string) to data smell type
+        # Type: Dict[str, DataSmellType]
+        self._expectation_type_to_data_smell_type = dict()
 
     def register(self, metadata: DataSmellMetadata, expectation_type: str):
         """
@@ -69,6 +74,9 @@ class DataSmellRegistry:
         for data_type in metadata.profiler_data_types:
             self._profiler_data_type_specific_data_smells[data_type][metadata.data_smell_type] = expectation_type
 
+        self._expectation_type_to_data_smell_type[expectation_type] = \
+            metadata.data_smell_type
+
     def get_smell_dict_for_profiler_data_type(self, profiler_data_type: ProfilerDataType) -> \
             Dict[DataSmellType, str]:
         """
@@ -80,6 +88,27 @@ class DataSmellRegistry:
             of the Great Expectations expectation.
         """
         return self._profiler_data_type_specific_data_smells[profiler_data_type]
+
+    def get_expectation_type_to_data_smell_type_dict(self) -> Dict[str, DataSmellType]:
+        """
+        Get the mapping from expectation types to
+        :class:`~datasmelldetection.core.datasmells.DataSmellType`.
+
+        :return: The described dictionary which associates expectation types to
+            data smell types.
+        """
+        return copy.deepcopy(self._expectation_type_to_data_smell_type)
+
+    def get_registered_data_smells(self) -> Set[DataSmellType]:
+        """
+        Get a set of data smell types which have been registered. Registered
+        smells have corresponding Expectation classes which allows data smell
+        detection.
+
+        :return: The set of data smell types for which data smells have been
+            registered.
+        """
+        return set(self._expectation_type_to_data_smell_type.values())
 
 
 default_registry: DataSmellRegistry = DataSmellRegistry()
