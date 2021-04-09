@@ -9,12 +9,12 @@ from .detector import (
 )
 
 __all__ = [
-    DataSmellType,
-    Dataset,
-    DatasetManager,
-    Detector,
-    ConfigurableDetector,
-    Configuration,
-    DetectionResult,
-    DetectionStatistics
+    "DataSmellType",
+    "Dataset",
+    "DatasetManager",
+    "Detector",
+    "ConfigurableDetector",
+    "Configuration",
+    "DetectionResult",
+    "DetectionStatistics"
 ]
