@@ -46,7 +46,7 @@ class DataSmellAwareProfiler(BasicDatasetProfilerBase):
             registry: DataSmellRegistry = default_registry
         else:
             # Custom valid data smell registry provided
-            registry: DataSmellRegistry = configuration["registry"]
+            registry = configuration["registry"]
 
         df.set_default_expectation_argument("catch_exceptions", True)
         df.set_config_value("interactive_evaluation", False)
