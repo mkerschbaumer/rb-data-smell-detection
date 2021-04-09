@@ -1,0 +1,6 @@
+# requirements-dev.in
+great_expectations>=0.13.15, <0.13.17
+versioneer>=0.19
+pytest
+mypy
+dataclasses
