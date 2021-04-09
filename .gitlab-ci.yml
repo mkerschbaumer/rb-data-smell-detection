@@ -1,0 +1,35 @@
+# Docker image which already has the needed requirements installed
+# (current requirements-dev.txt for data smell detection package)
+image: mkerschbaumer/bachelor-thesis-dev-environment
+
+variables:
+  DOCKER_DRIVER: overlay2
+
+stages:
+  - test
+
+before_script:
+  - python -V  # Print out python version for debugging
+
+pytest:
+  stage: test
+  only:
+    changes:
+      - data_smell_detection/**
+      - great_expectations/**/*.yml
+  script:
+    - cd data_smell_detection
+    - pip install .
+    - pytest . -v
+
+mypy:
+  stage: test
+  only:
+    changes:
+      - data_smell_detection/**
+      - great_expectations/**/*.yml
+  script:
+    - cd data_smell_detection
+    - pip install .
+    - mypy --ignore-missing-imports --exclude '.+/_version\.py$' datasmelldetection
+
