@@ -6,4 +6,5 @@ sphinx-autoapi
 pip-tools
 pytest
 coverage
+mypy
 dataclasses
