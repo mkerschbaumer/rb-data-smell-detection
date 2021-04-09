@@ -142,4 +142,5 @@ class DataSmell(ABC):
         expectation_type = expectation.expectation_type
 
         # TODO: Ensure metadata is not None (raise exception otherwise)
-        registry.register(cls.data_smell_metadata, expectation_type=expectation_type)
+        # TODO: Remove ignore
+        registry.register(cls.data_smell_metadata, expectation_type=expectation_type) # type: ignore
