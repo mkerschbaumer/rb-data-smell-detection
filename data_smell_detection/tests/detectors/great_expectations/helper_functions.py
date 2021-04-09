@@ -3,6 +3,7 @@ from typing import Any, Dict, Set, List, Tuple
 from great_expectations.core import ExpectationSuite
 from great_expectations.profile.base import ProfilerDataType
 
+from datasmelldetection.core.datasmells import DataSmellType
 from datasmelldetection.detectors.great_expectations.datasmell import (
     DataSmellRegistry,
     DataSmellMetadata,
@@ -104,3 +105,43 @@ def check_all_expectation_combinations_in_expectations_suite(
                     columns=expected_column_types[data_type],
                     kwargs=information.kwargs
                 )
+
+# Ensure that the dictionary returned by the
+# get_expectation_type_to_data_smell_type_dict method of DataSmellRegistry
+# contains the expected mapping. That dictionary stores mappings from the
+# expectation type to the corresponding data smell type. This mapping is
+# required to reconstruct the data smell type from an expectation type
+# as present in ExpectationValidationResult objects which only contain
+# the expectation types.
+def check_get_expectation_type_to_data_smell_type_dict(
+        returned_dict: Dict[str, DataSmellType],
+        data_smell_information: List[DataSmellInformation]):
+    # expectation_type_to_data_smell_type dictionary which is expected.
+    expected_dict = {}
+
+    for information in data_smell_information:
+        expectation_type = information.expectation_type
+        assert isinstance(expectation_type, str)
+
+        data_smell_type = information.metadata.data_smell_type
+        assert isinstance(data_smell_type, DataSmellType)
+
+        expected_dict[expectation_type] = data_smell_type
+
+    assert isinstance(returned_dict, dict)
+    assert returned_dict == expected_dict
+
+# Ensure that the get_registered_data_smells method of DataSmellRegistry
+# matches the expected set of registered data smells.
+def check_get_registered_data_smells(
+        returned_set: Set[DataSmellType],
+        data_smell_information: List[DataSmellInformation]):
+    expected_set: Set[DataSmellType] = set()
+
+    for information in data_smell_information:
+        data_smell_type = information.metadata.data_smell_type
+        assert isinstance(data_smell_type, DataSmellType)
+        expected_set.add(data_smell_type)
+
+    assert isinstance(returned_set, set)
+    assert returned_set == expected_set
