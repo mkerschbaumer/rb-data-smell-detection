@@ -14,13 +14,20 @@ class GreatExpectationsDataset(datasmelldetection.core.Dataset):
     This class is required in order to allow consistent retrieval of column names.
     """
 
-    def __init__(self, dataset: great_expectations.dataset.Dataset):
+    def __init__(
+            self,
+            dataset: great_expectations.dataset.Dataset,
+            batch_request: BatchRequest):
         """
         :param dataset: The :class:`great_expectations.dataset.Dataset` which should be
             wrapped.
+        :param batch_request: The :class:`~great_expectations.core.batch.BatchRequest`
+            which was used to import the wrapped
+            :class:`great_expectations.dataset.Dataset`.
         """
 
         self._dataset = dataset
+        self._batch_request = batch_request
 
     def get_column_names(self) -> Set[str]:
         """
@@ -33,6 +40,14 @@ class GreatExpectationsDataset(datasmelldetection.core.Dataset):
         :return: The wrapped :class:`great_expectations.dataset.Dataset`.
         """
         return self._dataset
+
+    def get_batch_request(self) -> BatchRequest:
+        """
+        :return: The :class:`~great_expectations.core.batch.BatchRequest` which
+            was used to construct the object. This method is mainly intended
+            for internal use.
+        """
+        return self._batch_request
 
 
 # Internal convenience function for constructing batch request (for default Great
@@ -98,4 +113,4 @@ class GreatExpectationsDatasetManager(datasmelldetection.core.DatasetManager):
         dataset: great_expectations.dataset.Dataset = PandasDataset(batch.data.dataframe)
         # Construct internal dataset wrapper to enable consistent column name
         # access.
-        return GreatExpectationsDataset(dataset)
+        return GreatExpectationsDataset(dataset, batch_request=batch_request)
