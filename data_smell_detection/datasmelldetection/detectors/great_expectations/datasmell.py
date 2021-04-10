@@ -49,12 +49,14 @@ class DataSmellRegistry:
     """Store expectations for specific column types."""
 
     def __init__(self):
-        # Store the expectations for each profiler type
+        # Store the data smells for each profiler type.
+        # Type: Dict[ProfilerDataType, # Dict[DataSmellType, str] where the
+        # expectation type is stored as a string.
         # Initialize expectations for each ProfilerDataType
         # e.g. integer-specific expectations
-        self._registered_data_smells = dict()
+        self._profiler_data_type_specific_data_smells = dict()
         for data_type in ProfilerDataType:
-            self._registered_data_smells[data_type] = dict()
+            self._profiler_data_type_specific_data_smells[data_type] = dict()
 
     def register(self, metadata: DataSmellMetadata, expectation_type: str):
         """
@@ -65,7 +67,7 @@ class DataSmellRegistry:
         :param expectation_type: The type of the Great Expectations expectation.
         """
         for data_type in metadata.profiler_data_types:
-            self._registered_data_smells[data_type][metadata.data_smell_type] = expectation_type
+            self._profiler_data_type_specific_data_smells[data_type][metadata.data_smell_type] = expectation_type
 
     def get_smell_dict_for_profiler_data_type(self, profiler_data_type: ProfilerDataType) -> \
             Dict[DataSmellType, str]:
@@ -77,7 +79,7 @@ class DataSmellRegistry:
             :class:`~datasmelldetection.core.datasmells.DataSmellType` and the corresponding type
             of the Great Expectations expectation.
         """
-        return self._registered_data_smells[profiler_data_type]
+        return self._profiler_data_type_specific_data_smells[profiler_data_type]
 
 
 default_registry: DataSmellRegistry = DataSmellRegistry()
