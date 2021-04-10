@@ -1,8 +1,12 @@
 from great_expectations.profile.base import ProfilerDataType
 
+from datasmelldetection.detectors.great_expectations.datasmell import DataSmellRegistry
+
 from .helper_functions import (
     check_data_smell_stored_in_registry,
-    check_remaining_data_types_have_no_registered_smells
+    check_remaining_data_types_have_no_registered_smells,
+    check_get_expectation_type_to_data_smell_type_dict,
+    check_get_registered_data_smells
 )
 from .fixtures import (
     data_smell_registry_empty,
@@ -27,13 +31,30 @@ class TestDataSmellRegistry:
             result = data_smell_registry_empty.get_smell_dict_for_profiler_data_type(profiler_data_type)
             assert len(result) == 0
 
+    def test_empty_registry(self, data_smell_registry_empty):
+        registry: DataSmellRegistry = data_smell_registry_empty
+
+        # Ensure an empty dictionary is returned for the mapping from
+        # expectation types to data smell types.
+        check_get_expectation_type_to_data_smell_type_dict(
+            returned_dict=registry.get_expectation_type_to_data_smell_type_dict(),
+            data_smell_information=[]
+        )
+
+        # Ensure that an empty set is returned by get_registered_data_smells()
+        check_get_registered_data_smells(
+            returned_set=registry.get_registered_data_smells(),
+            data_smell_information=[]
+        )
+
+
     def test_one_data_smell(self, data_smell_registry_with_data_smell1, data_smell_information1):
         # Perform registration of one data smell and ensure that
         # get_smell_dict_for_profiler_data_type() calls return expected
         # results. The registration of the corresponding smell is performed
         # by the fixture.
 
-        registry = data_smell_registry_with_data_smell1
+        registry: DataSmellRegistry = data_smell_registry_with_data_smell1
 
         # Ensure the registration of the first data smell (extreme value smell)
         # was successful
@@ -54,6 +75,22 @@ class TestDataSmellRegistry:
             data_smell_information1.metadata.profiler_data_types
         )
 
+        # Ensure get_expectation_type_to_data_smell_type_dict method
+        # returns expected dictionary.
+        expectation_type_to_data_smell_dict = \
+            registry.get_expectation_type_to_data_smell_type_dict()
+        check_get_expectation_type_to_data_smell_type_dict(
+            returned_dict=expectation_type_to_data_smell_dict,
+            data_smell_information=[data_smell_information1]
+        )
+
+        # A set of one element should be returned by
+        # get_registered_data_smells()
+        check_get_registered_data_smells(
+            returned_set=registry.get_registered_data_smells(),
+            data_smell_information=[data_smell_information1]
+        )
+
     def test_two_data_smells(
             self,
             data_smell_registry_with_data_smell2,
@@ -66,7 +103,7 @@ class TestDataSmellRegistry:
 
         # NOTE: data_smell_registry_with_data_smell2 already has two
         # smells registered.
-        registry = data_smell_registry_with_data_smell2
+        registry: DataSmellRegistry = data_smell_registry_with_data_smell2
 
         # Check if registration of second data smell was successful
         check_data_smell_stored_in_registry(
@@ -87,6 +124,29 @@ class TestDataSmellRegistry:
         check_remaining_data_types_have_no_registered_smells(
             registry,
             {ProfilerDataType.INT, ProfilerDataType.FLOAT}
+        )
+
+        # Information about data smells which were registered at a data smell
+        # registry (required for testing)
+        data_smell_informatoion_list = [
+            data_smell_information1,
+            data_smell_information2
+        ]
+
+        # Ensure get_expectation_type_to_data_smell_type_dict method
+        # returns expected dictionary if two data smells are registered.
+        expectation_type_to_data_smell_dict = \
+            registry.get_expectation_type_to_data_smell_type_dict()
+        check_get_expectation_type_to_data_smell_type_dict(
+            returned_dict=expectation_type_to_data_smell_dict,
+            data_smell_information=data_smell_informatoion_list
+        )
+
+        # A set of two elements should be returned by
+        # get_registered_data_smells()
+        check_get_registered_data_smells(
+            returned_set=registry.get_registered_data_smells(),
+            data_smell_information=data_smell_informatoion_list
         )
 
 
