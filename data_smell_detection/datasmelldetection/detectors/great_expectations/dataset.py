@@ -60,21 +60,12 @@ class GreatExpectationsDatasetManager(datasmelldetection.core.DatasetManager):
     directory is required.
     """
 
-    def __init__(self, context_root_dir: str, data_directory: str):
+    def __init__(self, context: DataContext):
         """
-        :param context_root_dir: A directory containing the great_expectations.yml configuration
-            file. This directory is used as the context root directory for creating a
-            :class:`great_expectations.DataContext` instance.
-        :param data_directory: A directory which contains CSV files that should be imported.
+        :param context: The Great Expectations DataContext to use (should be
+            created using the
+            :class:`~.context.GreatExpectationsContextBuilder` utility class.
         """
-        runtime_environment = {
-            "data_directory": data_directory
-        }
-        context: DataContext = DataContext(
-            context_root_dir=context_root_dir,
-            runtime_environment=runtime_environment
-        )
-
         self._datasource = context.get_datasource("csv_data_source")
 
     def get_available_dataset_identifiers(self) -> Set[str]:

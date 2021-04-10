@@ -2,6 +2,7 @@ import os
 import great_expectations
 
 from datasmelldetection.detectors.great_expectations.dataset import GreatExpectationsDatasetManager
+from datasmelldetection.detectors.great_expectations.context import GreatExpectationsContextBuilder
 from datasmelldetection.core import Dataset
 
 cwd = os.getcwd()
@@ -9,19 +10,18 @@ cwd = os.getcwd()
 # NOTE: From view of root directory of package
 _test_data_directory = os.path.join(cwd, "tests/test_sets")
 _test_great_expectations_directory = os.path.join(cwd, "../great_expectations")
-
-manager = GreatExpectationsDatasetManager(
-    context_root_dir=_test_great_expectations_directory,
-    data_directory=_test_data_directory
+context_builder = GreatExpectationsContextBuilder(
+    _test_great_expectations_directory,
+    _test_data_directory
 )
+context = context_builder.build()
+
+manager = GreatExpectationsDatasetManager(context=context)
 
 
 class TestGreatExpectationsDatasetManager:
     def test_creation(self):
-        GreatExpectationsDatasetManager(
-            context_root_dir=_test_great_expectations_directory,
-            data_directory=_test_data_directory
-        )
+        GreatExpectationsDatasetManager(context=context)
 
     def test_get_available_dataset_identifiers(self):
         identifiers = manager.get_available_dataset_identifiers()
