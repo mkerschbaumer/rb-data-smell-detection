@@ -15,7 +15,7 @@ pytest:
   stage: test
   only:
     changes:
-      - data_smell_detection/**
+      - data_smell_detection/**/*
       - great_expectations/**/*.yml
   script:
     - cd data_smell_detection
@@ -26,7 +26,7 @@ mypy:
   stage: test
   only:
     changes:
-      - data_smell_detection/**
+      - data_smell_detection/**/*
       - great_expectations/**/*.yml
   script:
     - cd data_smell_detection
