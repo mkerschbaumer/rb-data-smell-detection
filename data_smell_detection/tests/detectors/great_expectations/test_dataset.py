@@ -1,5 +1,6 @@
 import os
 import great_expectations
+from great_expectations.core.batch import BatchRequest
 
 from datasmelldetection.detectors.great_expectations.dataset import GreatExpectationsDatasetManager
 from datasmelldetection.detectors.great_expectations.context import GreatExpectationsContextBuilder
@@ -49,3 +50,16 @@ class TestGreatExpectationsDataset:
         # Extract Great Expectations dataset
         ge_dataset = dataset.get_great_expectations_dataset()
         assert isinstance(ge_dataset, great_expectations.dataset.Dataset)
+
+    def test_get_batch_request(self):
+        dataset = manager.get_dataset("Titanic.csv")
+
+        batch_request = dataset.get_batch_request()
+        assert isinstance(batch_request, BatchRequest)
+
+        # Check integrity of batch request
+        assert batch_request.partition_request is not None
+        assert "batch_identifiers" in batch_request.partition_request
+        batch_identifiers = batch_request.partition_request["batch_identifiers"]
+        assert "filename" in batch_identifiers
+        assert batch_identifiers["filename"] == "Titanic.csv"
