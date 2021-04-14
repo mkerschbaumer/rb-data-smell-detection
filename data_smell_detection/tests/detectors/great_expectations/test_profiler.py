@@ -124,3 +124,6 @@ class TestDataSmellAwareProfiler:
             expected_column_types=expected_column_types_dataset1
         )
 
+        # TODO: Check the columns key of the meta dictionary which is present
+        # in a generated expectation suite.
+
