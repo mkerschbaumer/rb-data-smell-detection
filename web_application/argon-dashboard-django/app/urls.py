@@ -10,12 +10,12 @@ from django.conf.urls.static import static
 
 urlpatterns = [
 
-    # The home page
-    #path('', views.index, name='home'),
-
     path('', views.upload, name='upload'),
 
-    # Matches any html file
+    re_path('customize.html', views.smells, name='smells'),
+
+    re_path('results.html', views.result, name='result'),
+    
     re_path(r'^.*\.*', views.pages, name='pages'),
 
 ]

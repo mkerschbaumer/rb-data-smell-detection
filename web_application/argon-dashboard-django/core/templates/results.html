@@ -14,7 +14,7 @@
           <!-- Card stats -->
           <div class="row">
             <div class="col-xl-3 col-lg-6">
-              <div class="card card-stats mb-4 mb-xl-0">
+              <div class="card-grey card-stats mb-4 mb-xl-0">
                 <div class="card-body">
                   <div class="row">
                     <div class="col">
@@ -47,27 +47,7 @@
                 </div>
               </div>
             </div>
-
-            {% if url %}
-            <div class="col-xl-4 col-lg-6">
-              <a href="/customize.html">
-              <div class="card-next card-stats mb-4 mb-xl-0">
-                <div class="card-body">
-                  <div class="row">
-                    <div class="col">
-                      <span class="h2 font-weight-bold mb-0">Customize</span>
-                    </div>
-                    <div class="col-auto">
-                      <div class="icon icon-shape bg-customize text-white rounded-circle shadow">
-                        <i class="ni ni-ui-04"></i>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              </a>  
-            </div>
-            {% else %}
+            
             <div class="col-xl-4 col-lg-6">
               <div class="card-grey card-stats mb-4 mb-xl-0">
                 <div class="card-body">
@@ -84,7 +64,7 @@
                 </div>
               </div>
             </div>
-            {% endif %}
+
             <div class="col-xl-1 col-lg-6">
               <div class="card-transparent card-stats mb-4 mb-xl-0">
                 <div class="card-body-transparent">
@@ -102,7 +82,7 @@
             </div>
 
             <div class="col-xl-3 col-lg-6">
-              <div class="card-grey card-stats mb-4 mb-xl-0">
+              <div class="card card-stats mb-4 mb-xl-0">
                 <div class="card-body">
                   <div class="row">
                     <div class="col">
@@ -128,42 +108,80 @@
         <div class="col">
           <div class="card shadow">
             <div class="card-header bg-transparent">
-              <h3 class="mb-0">Upload a .csv file to detect data smells</h3>
+              <h3 class="mb-0">Smell Results By Column Names</h3>
             </div>
             <div class="card-body">
-              <div class="grid-container"></div>
-              <form method="post" enctype="multipart/form-data">
-                {% csrf_token %}
-                <div class="file-droppable">
-                  <img src="/static/assets/img/theme/csv.png" width="100vh" alt="..."><br>
-                  <button class="button buttongrey" type="submit"><i class="ni ni-cloud-upload-96"></i> Select file</button>
-                  <input type="file" name="upload" />
-                </div>
-                <br>
-                {% if url %}
-                  <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    <span class="alert-inner--icon"><i class="ni ni-like-2"></i></span>
-                    <span class="alert-inner--text"><strong>Success!</strong><br>Uploaded file: {{ url }}
-                    <br>Uploaded file size: {{ size }} Mb</span>
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+              <div class="nav-wrapper">
+                <ul class="nav nav-pills nav-fill flex-column flex-md-row" id="tabs-icons-text" role="tablist">
+                  {% for item in column_names%}  
+                  <li class="nav-item">
+                      <a class="nav-link mb-sm-3 mb-md-0" id="tabs-icons-text-3-tab" data-toggle="tab" href='#{{ item }}' role="tab" aria-controls="tabs-icons-text-3" aria-selected="false">{{ item }}</a>
+                  </li>
+                  {% endfor %}
+
+                </ul>
+              </div>
+              <div class="card shadow">
+                  <div class="card-body">
+                      <div class="tab-content" id="myTabContent">
+                          {% for column, value in results.items %}
+                          <div class="tab-pane fade" id={{column}} role="tabpanel" aria-labelledby="tabs-icons-text-2-tab">
+                              <p class="description"></p>
+                              
+                              <div class="table-responsive">
+                                <div>
+                                  <table class="table align-items-center">
+                                    {% if value %}
+                                    <thead class="thead-light">
+                                      <tr>
+                                          <th scope="col">
+                                              Data Smell Type
+                                          </th>
+                                          <th scope="col">
+                                              Total Element Count
+                                          </th>
+                                          <th scope="col">
+                                              Faulty Element Count
+                                          </th>
+                                          <th scope="col">
+                                              Faulty Element List
+                                          </th>
+                                      </tr>
+                                    </thead>
+                                    {% for smell in value%}
+                                    <tbody class="list">
+                                      <tr>
+                                        <td class="type">
+                                          {{ smell.data_smell_type }}
+                                        </td>
+                                        <td class="total">
+                                          {{ smell.statistics.total_element_count }}
+                                        </td>
+                                        <td class="faulty">
+                                          {{ smell.statistics.faulty_element_count }}
+                                        </td>
+                                        <td class="faultylist">
+                                          {{ smell.faulty_elements }}
+                                        </td>
+                                      </tr>
+                                    </tbody> 
+                                    {% endfor %}
+                                    {% else %}
+                                    <p class="description">There are no smells for this column.</p>
+                                    {% endif %}
+                                  </table>
+                                </div>
+                              </div>
+                          </div>
+                          {% endfor %}
+                      </div>
                   </div>
-                <a href="/customize.html">
-                  <div style="text-align: right;">
-                    <div class="btn btn-primary">
-                        Next Step
-                    </div>
-                  </div>
-                </a>
-                {% else %}
-                <button class="btn btn-primary" type="submit">Upload file</button>
-                {% endif %}
-              </form>
+              </div>
             </div>
           </div>
         </div>
       </div>
+      
 
       {% include "includes/footer.html" %}
 
