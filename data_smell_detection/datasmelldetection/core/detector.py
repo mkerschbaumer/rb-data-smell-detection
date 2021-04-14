@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from abc import ABC, abstractmethod
-from typing import List, Optional, Set
+from typing import Optional, Set, Iterable
 
 from datasmelldetection.core import DataSmellType
 
@@ -39,7 +39,7 @@ class Detector(ABC):
     """An abstract base class for detectors."""
 
     @abstractmethod
-    def detect(self) -> List[DetectionResult]:
+    def detect(self) -> Iterable[DetectionResult]:
         """Perform detection and return the found data smells in the form of detection results."""
 
     @abstractmethod
