@@ -22,7 +22,7 @@ def data_smell_registry_empty() -> DataSmellRegistry:
 def data_smell_information1() -> DataSmellInformation:
     metadata = DataSmellMetadata(
         data_smell_type=DataSmellType.EXTREME_VALUE_SMELL,
-        profiler_data_types=(ProfilerDataType.INT, ProfilerDataType.FLOAT)
+        profiler_data_types={ProfilerDataType.INT, ProfilerDataType.FLOAT}
     )
     expectation_type = "expect_column_values_to_not_contain_extreme_value_smell"
     return DataSmellInformation(
