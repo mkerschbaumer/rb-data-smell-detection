@@ -124,6 +124,15 @@ class TestDataSmellAwareProfiler:
             expected_column_types=expected_column_types_dataset1
         )
 
+        # Ensure that exactly 6 expectations are generated.
+        # DataSmellType.EXTREME_VALUE_SMELL for int and float columns (2 int
+        #   and 2 float columns are present) => 4 expectations.
+        # DataSmellType.INTEGER_AS_FLOATING_POINT_NUMBER_SMELL for float columns
+        #   => 2 expectations
+        # => 6 expectations in total if all expected combination and no
+        #   additional expectation is generated.
+        assert len(expectation_suite.expectations) == 6
+
         # TODO: Check the columns key of the meta dictionary which is present
         # in a generated expectation suite.
 
