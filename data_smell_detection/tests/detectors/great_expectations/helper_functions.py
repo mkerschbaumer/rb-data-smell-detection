@@ -145,3 +145,28 @@ def check_get_registered_data_smells(
 
     assert isinstance(returned_set, set)
     assert returned_set == expected_set
+
+# To reconstruct the column type information of a profiled dataset later on, it
+# is passed in the meta dictionary by the DataSmellAwareProfiler.
+def check_column_types_in_expectation_suite_meta_information(
+        suite: ExpectationSuite,
+        expected_column_types: Dict[ProfilerDataType, Set[str]]):
+
+    # Reconstruct the column type information from the expected_column_types
+    # parameter. This variable stores the mapping of column names (string)
+    # to a dictionary with information about the corresponding column.
+    # The `type` key of the column-specific dictionary stores the corresponding
+    # profiler data type in string form. The string representation is used
+    # to make the corresponding type JSON-serializable without changing the
+    # implementation of the ProfilerDataType enum (in Great Expectations).
+    expected_dict: Dict[str, Dict[str, str]] = {}
+    for data_type, column_names in expected_column_types.items():
+        for column_name in column_names:
+            expected_dict[column_name] = {"type": str(data_type)}
+
+    # Ensure that a columns dictionary was generated in the meta information.
+    assert "columns" in suite.meta
+    result_dict: Dict[str, ProfilerDataType] = suite.meta["columns"]
+    assert isinstance(result_dict, dict)
+    # Ensure that the generated dictionary matches the expected dictionary.
+    assert expected_dict == result_dict
