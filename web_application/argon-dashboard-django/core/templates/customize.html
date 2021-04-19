@@ -141,83 +141,94 @@
                 <table class="table align-items-center">
                     <thead class="thead-light">
                         <tr>
+                          {% for s in smells%}
                             <th scope="col">
-                                Believability Smells
+                                {{ s }}
                             </th>
-                            <th scope="col">
-                                Syntactic Understandability Smells
-                            </th>
-                            <th scope="col">
-                                Encoding Understandability Smells
-                            </th>
-                            <th scope="col">
-                                Consistency Smells
-                            </th>
+                          {% endfor %}
                         </tr>
                     </thead>
                     <tbody class="list">
-                        
+                        {% for key, value in smells.items %}
                         <tr>
+                          {% for v in value %}
                             <td scope="row" class="name">
                                 <div class="media align-items-center">
                                     <div class="media-body">
                                         <span class="mb-0 text-sm">
                                           <div class="custom-control custom-checkbox mb-3">
-                                            <input class="custom-control-input" id="1" type="checkbox" value="DummyValue" name="smells"/>
-                                            <label class="custom-control-label" for="1">Dummy Value</label>
+                                            <input class="custom-control-input" id="1" type="checkbox" value="Dummy Value Smell" name="smells"/>
+                                            <label class="custom-control-label" for="1">{{ v.value }}</label>
                                           </div>
                                         </span>
                                     </div>
                                 </div>
                             </td>
-                            <td class="budget">
-                              <div class="media align-items-center">
-                                <div class="media-body">
-                                    <span class="mb-0 text-sm">
-                                      <div class="custom-control custom-checkbox mb-3">
-                                        <input class="custom-control-input" id="11" type="checkbox" value="AmbiguousDate/TimeFormatSmell" name="smells"/>
-                                        <label class="custom-control-label" for="11">Ambiguous Date/Time Format Smell</label>
-                                      </div>
-                                    </span>
-                                </div>
-                            </div>
-                            </td>
-                            <td class="status">
-                              <div class="media align-items-center">
-                                <div class="media-body">
-                                    <span class="mb-0 text-sm">
-                                      <div class="custom-control custom-checkbox mb-3">
-                                        <input class="custom-control-input" id="24" type="checkbox" value="DateAsDateTimeSmell" name="smells"/>
-                                        <label class="custom-control-label" for="24">Date As DateTime Smell</label>
-                                      </div>
-                                    </span>
-                                </div>
-                            </div>
-                            </td>
-                          
-                            <td class="completion">
-                              <div class="media align-items-center">
-                                <div class="media-body">
-                                    <span class="mb-0 text-sm">
-                                      <div class="custom-control custom-checkbox mb-3">
-                                        <input class="custom-control-input" id="32" type="checkbox" value="AbbreviationInconsistencySmell" name="smells"/>
-                                        <label class="custom-control-label" for="32">Abbreviation Inconsistency Smell</label>
-                                      </div>
-                                    </span>
-                                </div>
-                            </div>
-                            </td>
+                          {% endfor %}  
                             
                         </tr>
+                        {% endfor %}
+                        <!--
+                        <tr>
+                          <td scope="row" class="name">
+                              <div class="media align-items-center">
+                                  <div class="media-body">
+                                      <span class="mb-0 text-sm">
+                                        <div class="custom-control custom-checkbox mb-3">
+                                          <input class="custom-control-input" id="1" type="checkbox" value="Dummy Value Smell" name="smells"/>
+                                          <label class="custom-control-label" for="1">Dummy Value</label>
+                                        </div>
+                                      </span>
+                                  </div>
+                              </div>
+                          </td>
+                          <td class="budget">
+                            <div class="media align-items-center">
+                              <div class="media-body">
+                                  <span class="mb-0 text-sm">
+                                    <div class="custom-control custom-checkbox mb-3">
+                                      <input class="custom-control-input" id="11" type="checkbox" value="Ambiguous Date/Time Format Smell" name="smells"/>
+                                      <label class="custom-control-label" for="11">Ambiguous Date/Time Format Smell</label>
+                                    </div>
+                                  </span>
+                              </div>
+                          </div>
+                          </td>
+                          <td class="status">
+                            <div class="media align-items-center">
+                              <div class="media-body">
+                                  <span class="mb-0 text-sm">
+                                    <div class="custom-control custom-checkbox mb-3">
+                                      <input class="custom-control-input" id="24" type="checkbox" value="Date As DateTime Smell" name="smells"/>
+                                      <label class="custom-control-label" for="24">Date As DateTime Smell</label>
+                                    </div>
+                                  </span>
+                              </div>
+                          </div>
+                          </td>
                         
+                          <td class="completion">
+                            <div class="media align-items-center">
+                              <div class="media-body">
+                                  <span class="mb-0 text-sm">
+                                    <div class="custom-control custom-checkbox mb-3">
+                                      <input class="custom-control-input" id="32" type="checkbox" value="Abbreviation Inconsistency Smell" name="smells"/>
+                                      <label class="custom-control-label" for="32">Abbreviation Inconsistency Smell</label>
+                                    </div>
+                                  </span>
+                              </div>
+                          </div>
+                          </td>
+                          
+                      </tr>
                         <tr>
                             <td scope="row" class="name">
                               <div class="media align-items-center">
                                 <div class="media-body">
                                     <span class="mb-0 text-sm">
                                       <div class="custom-control custom-checkbox mb-3">
-                                        <input class="custom-control-input" id="2" type="checkbox" value="DuplicatedValueSmell" name="smells"/>
-                                        <label class="custom-control-label" for="2">DuplicatedValueSmell</label>
+                                        <input class="custom-control-input" id="2" type="checkbox" value="Duplicated Value Smell" name="smells"/>
+                                        <label class="custom-control-label" for="2">Duplicated Value Smell</label>
                                       </div>
                                     </span>
                                 </div>
@@ -228,7 +239,7 @@
                                 <div class="media-body">
                                     <span class="mb-0 text-sm">
                                       <div class="custom-control custom-checkbox mb-3">
-                                        <input class="custom-control-input" id="12" type="checkbox" value="AmbiguousValueSmell" name="smells"/>
+                                        <input class="custom-control-input" id="12" type="checkbox" value="Ambiguous Value Smell" name="smells"/>
                                         <label class="custom-control-label" for="12">Ambiguous Value Smell</label>
                                       </div>
                                     </span>
@@ -240,7 +251,7 @@
                                 <div class="media-body">
                                     <span class="mb-0 text-sm">
                                       <div class="custom-control custom-checkbox mb-3">
-                                        <input class="custom-control-input" id="25" type="checkbox" value="DateAsStringSmell" name="smells"/>
+                                        <input class="custom-control-input" id="25" type="checkbox" value="Date As String Smell" name="smells"/>
                                         <label class="custom-control-label" for="25">Date As String Smell</label>
                                       </div>
                                     </span>
@@ -253,7 +264,7 @@
                                 <div class="media-body">
                                     <span class="mb-0 text-sm">
                                       <div class="custom-control custom-checkbox mb-3">
-                                        <input class="custom-control-input" id="33" type="checkbox" value="CasingInconsistencySmell" name="smells"/>
+                                        <input class="custom-control-input" id="33" type="checkbox" value="Casing Inconsistency Smell" name="smells"/>
                                         <label class="custom-control-label" for="33">Casing Inconsistency Smell</label>
                                       </div>
                                     </span>
@@ -269,7 +280,7 @@
                                 <div class="media-body">
                                     <span class="mb-0 text-sm">
                                       <div class="custom-control custom-checkbox mb-3">
-                                          <input class="custom-control-input" id="3" type="checkbox" value="ExtremeValueSmell" name="smells"/>
+                                          <input class="custom-control-input" id="3" type="checkbox" value="Extreme Value Smell" name="smells"/>
                                           <label class="custom-control-label" for="3">Extreme Value Smell</label>
                                       </div>
                                     </span>
@@ -281,7 +292,7 @@
                                 <div class="media-body">
                                     <span class="mb-0 text-sm">
                                       <div class="custom-control custom-checkbox mb-3">
-                                        <input class="custom-control-input" id="13" type="checkbox" value="CasingSmell" name="smells"/>
+                                        <input class="custom-control-input" id="13" type="checkbox" value="Casing Smell" name="smells"/>
                                           <label class="custom-control-label" for="13">Casing Smell</label>
                                       </div>
                                     </span>
@@ -293,7 +304,7 @@
                                 <div class="media-body">
                                     <span class="mb-0 text-sm">
                                       <div class="custom-control custom-checkbox mb-3">
-                                        <input class="custom-control-input" id="26" type="checkbox" value="DateTimeAsStringSmell" name="smells"/>
+                                        <input class="custom-control-input" id="26" type="checkbox" value="DateTime As String Smell" name="smells"/>
                                           <label class="custom-control-label" for="26">Date Time As String Smell</label>
                                       </div>
                                     </span>
@@ -305,7 +316,7 @@
                                 <div class="media-body">
                                     <span class="mb-0 text-sm">
                                       <div class="custom-control custom-checkbox mb-3">
-                                        <input class="custom-control-input" id="34" type="checkbox" value="ClassInconsistencySmell" name="smells"/>
+                                        <input class="custom-control-input" id="34" type="checkbox" value="Class Inconsistency Smell" name="smells"/>
                                           <label class="custom-control-label" for="34">Class Inconsistency Smell</label>
                                       </div>
                                     </span>
@@ -321,7 +332,7 @@
                                 <div class="media-body">
                                     <span class="mb-0 text-sm">
                                       <div class="custom-control custom-checkbox mb-3">
-                                          <input class="custom-control-input" id="4" type="checkbox" value="MeaninglessValueSmell" name="smells"/>
+                                          <input class="custom-control-input" id="4" type="checkbox" value="Meaningless Value Smell" name="smells"/>
                                           <label class="custom-control-label" for="4">Meaningless Value Smell</label>
                                       </div>
                                     </span>
@@ -333,7 +344,7 @@
                                 <div class="media-body">
                                     <span class="mb-0 text-sm">
                                       <div class="custom-control custom-checkbox mb-3">
-                                        <input class="custom-control-input" id="14" type="checkbox" value="ContractingSmell" name="smells"/>
+                                        <input class="custom-control-input" id="14" type="checkbox" value="Contracting Smell" name="smells"/>
                                           <label class="custom-control-label" for="14">Contracting Smell</label>
                                       </div>
                                     </span>
@@ -345,7 +356,7 @@
                                 <div class="media-body">
                                     <span class="mb-0 text-sm">
                                       <div class="custom-control custom-checkbox mb-3">
-                                        <input class="custom-control-input" id="27" type="checkbox" value="FloatingPointNumberAsStringSmell" name="smells"/>
+                                        <input class="custom-control-input" id="27" type="checkbox" value="Floating Point Number As String Smell" name="smells"/>
                                           <label class="custom-control-label" for="27">Floating-point Number As String Smell</label>
                                       </div>
                                     </span>
@@ -357,7 +368,7 @@
                                 <div class="media-body">
                                     <span class="mb-0 text-sm">
                                       <div class="custom-control custom-checkbox mb-3">
-                                        <input class="custom-control-input" id="35" type="checkbox" value="DateTimeFormatInconsistencySmell" name="smells"/>
+                                        <input class="custom-control-input" id="35" type="checkbox" value="Date/Time Format Inconsistency Smell" name="smells"/>
                                           <label class="custom-control-label" for="35">Date/Time Format Inconsistency Smell</label>
                                       </div>
                                     </span>
@@ -373,7 +384,7 @@
                                 <div class="media-body">
                                     <span class="mb-0 text-sm">
                                       <div class="custom-control custom-checkbox mb-3">
-                                        <input class="custom-control-input" id="5" type="checkbox" value="MisspellingSmell" name="smells"/>
+                                        <input class="custom-control-input" id="5" type="checkbox" value="Misspelling Smell" name="smells"/>
                                             <label class="custom-control-label" for="5">Misspelling Smell</label>
                                       </div>
                                     </span>
@@ -385,7 +396,7 @@
                                 <div class="media-body">
                                     <span class="mb-0 text-sm">
                                       <div class="custom-control custom-checkbox mb-3">
-                                        <input class="custom-control-input" id="15" type="checkbox" value="ExtraneousValueSmell" name="smells"/>
+                                        <input class="custom-control-input" id="15" type="checkbox" value="Extraneous Value Smell" name="smells"/>
                                             <label class="custom-control-label" for="15">Extraneous Value Smell</label>
                                       </div>
                                     </span>
@@ -397,7 +408,7 @@
                                 <div class="media-body">
                                     <span class="mb-0 text-sm">
                                       <div class="custom-control custom-checkbox mb-3">
-                                        <input class="custom-control-input" id="28" type="checkbox" value="IntegerAsFloatingPointNumberSmell" name="smells"/>
+                                        <input class="custom-control-input" id="28" type="checkbox" value="Integer As Floating Point Number Smell" name="smells"/>
                                             <label class="custom-control-label" for="28">Integer As Floating-point Number Smell</label>
                                       </div>
                                     </span>
@@ -410,7 +421,7 @@
                                 <div class="media-body">
                                     <span class="mb-0 text-sm">
                                       <div class="custom-control custom-checkbox mb-3">
-                                        <input class="custom-control-input" id="36" type="checkbox" value="MissingValueInconsistencySmell" name="smells"/>
+                                        <input class="custom-control-input" id="36" type="checkbox" value="Missing Value Inconsistency Smell" name="smells"/>
                                             <label class="custom-control-label" for="36">Missing Value Inconsistency Smell</label>
                                       </div>
                                     </span>
@@ -426,7 +437,7 @@
                               <div class="media-body">
                                   <span class="mb-0 text-sm">
                                     <div class="custom-control custom-checkbox mb-3">
-                                      <input class="custom-control-input" id="6" type="checkbox" value="SuspectClassValueSmell" name="smells"/>
+                                      <input class="custom-control-input" id="6" type="checkbox" value="Suspect Class Value Smell" name="smells"/>
                                           <label class="custom-control-label" for="6">Suspect Class Value Smell</label>
                                     </div>
                                   </span>
@@ -438,7 +449,7 @@
                               <div class="media-body">
                                   <span class="mb-0 text-sm">
                                     <div class="custom-control custom-checkbox mb-3">
-                                      <input class="custom-control-input" id="16" type="checkbox" value="IntermingledDataTypeSmell" name="smells"/>
+                                      <input class="custom-control-input" id="16" type="checkbox" value="Intermingled Data Type Smell" name="smells"/>
                                           <label class="custom-control-label" for="16">Intermingled Data Type Smell</label>
                                     </div>
                                   </span>
@@ -450,7 +461,7 @@
                               <div class="media-body">
                                   <span class="mb-0 text-sm">
                                     <div class="custom-control custom-checkbox mb-3">
-                                      <input class="custom-control-input" id="29" type="checkbox" value="IntegerAsStringSmell" name="smells"/>
+                                      <input class="custom-control-input" id="29" type="checkbox" value="Integer As String Smell" name="smells"/>
                                           <label class="custom-control-label" for="29">Integer As String Smell</label>
                                     </div>
                                   </span>
@@ -463,7 +474,7 @@
                               <div class="media-body">
                                   <span class="mb-0 text-sm">
                                     <div class="custom-control custom-checkbox mb-3">
-                                      <input class="custom-control-input" id="37" type="checkbox" value="SeparatingInconsistencySmell" name="smells"/>
+                                      <input class="custom-control-input" id="37" type="checkbox" value="Separating Inconsistency Smell" name="smells"/>
                                           <label class="custom-control-label" for="37">Separating Inconsistency Smell</label>
                                     </div>
                                   </span>
@@ -479,7 +490,7 @@
                             <div class="media-body">
                                 <span class="mb-0 text-sm">
                                   <div class="custom-control custom-checkbox mb-3">
-                                    <input class="custom-control-input" id="7" type="checkbox" value="SuspectDateValueSmell" name="smells"/>
+                                    <input class="custom-control-input" id="7" type="checkbox" value="Suspect Date Value Smell" name="smells"/>
                                         <label class="custom-control-label" for="7">Suspect Date Value Smell</label>
                                   </div>
                                 </span>
@@ -491,7 +502,7 @@
                             <div class="media-body">
                                 <span class="mb-0 text-sm">
                                   <div class="custom-control custom-checkbox mb-3">
-                                    <input class="custom-control-input" id="17" type="checkbox" value="LongDataValueSmell" name="smells"/>
+                                    <input class="custom-control-input" id="17" type="checkbox" value="Long Data Value Smell" name="smells"/>
                                         <label class="custom-control-label" for="17">Long Data Value Smell</label>
                                   </div>
                                 </span>
@@ -503,7 +514,7 @@
                             <div class="media-body">
                                 <span class="mb-0 text-sm">
                                   <div class="custom-control custom-checkbox mb-3">
-                                    <input class="custom-control-input" id="30" type="checkbox" value="TimeAsStringSmell" name="smells"/>
+                                    <input class="custom-control-input" id="30" type="checkbox" value="Time As String Smell" name="smells"/>
                                         <label class="custom-control-label" for="30">Time As String Smell</label>
                                   </div>
                                 </span>
@@ -516,7 +527,7 @@
                             <div class="media-body">
                                 <span class="mb-0 text-sm">
                                   <div class="custom-control custom-checkbox mb-3">
-                                    <input class="custom-control-input" id="38" type="checkbox" value="SpacingInconsistencySmell" name="smells"/>
+                                    <input class="custom-control-input" id="38" type="checkbox" value="Spacing Inconsistency Smell" name="smells"/>
                                         <label class="custom-control-label" for="38">Spacing Inconsistency Smell</label>
                                   </div>
                                 </span>
@@ -532,7 +543,7 @@
                           <div class="media-body">
                               <span class="mb-0 text-sm">
                                 <div class="custom-control custom-checkbox mb-3">
-                                  <input class="custom-control-input" id="8" type="checkbox" value="SuspectDate/TimeIntervalSmell" name="smells"/>
+                                  <input class="custom-control-input" id="8" type="checkbox" value="Suspect Date/Time Interval Smell" name="smells"/>
                                       <label class="custom-control-label" for="8">Suspect Date/Time Interval Smell</label>
                                 </div>
                               </span>
@@ -544,7 +555,7 @@
                           <div class="media-body">
                               <span class="mb-0 text-sm">
                                 <div class="custom-control custom-checkbox mb-3">
-                                  <input class="custom-control-input" id="18" type="checkbox" value="MissingValueSmell" name="smells"/>
+                                  <input class="custom-control-input" id="18" type="checkbox" value="Missing Value Smell" name="smells"/>
                                       <label class="custom-control-label" for="18">Missing Value Smell</label>
                                 </div>
                               </span>
@@ -556,7 +567,7 @@
                           <div class="media-body">
                               <span class="mb-0 text-sm">
                                 <div class="custom-control custom-checkbox mb-3">
-                                  <input class="custom-control-input" id="31" type="checkbox" value="SuspectCharacterEncodingSmell" name="smells"/>
+                                  <input class="custom-control-input" id="31" type="checkbox" value="Suspect Character Encoding Smell" name="smells"/>
                                       <label class="custom-control-label" for="31">Suspect Character Encoding Smell</label>
                                 </div>
                               </span>
@@ -569,7 +580,7 @@
                           <div class="media-body">
                               <span class="mb-0 text-sm">
                                 <div class="custom-control custom-checkbox mb-3">
-                                  <input class="custom-control-input" id="39" type="checkbox" value="SpecialCharacterInconsistencySmell" name="smells"/>
+                                  <input class="custom-control-input" id="39" type="checkbox" value="Special Character Inconsistency Smell" name="smells"/>
                                       <label class="custom-control-label" for="39">Special Character Inconsistency Smell</label>
                                 </div>
                               </span>
@@ -585,7 +596,7 @@
                         <div class="media-body">
                             <span class="mb-0 text-sm">
                               <div class="custom-control custom-checkbox mb-3">
-                                <input class="custom-control-input" id="9" type="checkbox" value="SuspectSignSmell" name="smells"/>
+                                <input class="custom-control-input" id="9" type="checkbox" value="Suspect Sign Smell" name="smells"/>
                                     <label class="custom-control-label" for="9">Suspect Sign Smell</label>
                               </div>
                             </span>
@@ -597,7 +608,7 @@
                         <div class="media-body">
                             <span class="mb-0 text-sm">
                               <div class="custom-control custom-checkbox mb-3">
-                                <input class="custom-control-input" id="19" type="checkbox" value="SeparatingSmell" name="smells"/>
+                                <input class="custom-control-input" id="19" type="checkbox" value="Separating Smell" name="smells"/>
                                     <label class="custom-control-label" for="19">Separating Smell</label>
                               </div>
                             </span>
@@ -620,7 +631,7 @@
                         <div class="media-body">
                             <span class="mb-0 text-sm">
                               <div class="custom-control custom-checkbox mb-3">
-                                <input class="custom-control-input" id="40" type="checkbox" value="SyntaxInconsistencySmell" name="smells"/>
+                                <input class="custom-control-input" id="40" type="checkbox" value="Syntax Inconsistency Smell" name="smells"/>
                                     <label class="custom-control-label" for="40">Syntax Inconsistency Smell</label>
                               </div>
                             </span>
@@ -636,7 +647,7 @@
                       <div class="media-body">
                           <span class="mb-0 text-sm">
                             <div class="custom-control custom-checkbox mb-3">
-                              <input class="custom-control-input" id="10" type="checkbox" value="SuspectDistributionSmell" name="smells"/>
+                              <input class="custom-control-input" id="10" type="checkbox" value="Suspect Distribution Smell" name="smells"/>
                                   <label class="custom-control-label" for="10">Suspect Distribution Smell</label>
                             </div>
                           </span>
@@ -648,7 +659,7 @@
                       <div class="media-body">
                           <span class="mb-0 text-sm">
                             <div class="custom-control custom-checkbox mb-3">
-                              <input class="custom-control-input" id="20" type="checkbox" value="SpacingSmell" name="smells"/>
+                              <input class="custom-control-input" id="20" type="checkbox" value="Spacing Smell" name="smells"/>
                                   <label class="custom-control-label" for="20">Spacing Smell</label>
                             </div>
                           </span>
@@ -671,7 +682,7 @@
                       <div class="media-body">
                           <span class="mb-0 text-sm">
                             <div class="custom-control custom-checkbox mb-3">
-                              <input class="custom-control-input" id="41" type="checkbox" value="UnitInconsistencySmell" name="smells"/>
+                              <input class="custom-control-input" id="41" type="checkbox" value="Unit Inconsistency Smell" name="smells"/>
                                   <label class="custom-control-label" for="41">Unit Inconsistency Smell</label>
                             </div>
                           </span>
@@ -698,7 +709,7 @@
                     <div class="media-body">
                         <span class="mb-0 text-sm">
                           <div class="custom-control custom-checkbox mb-3">
-                            <input class="custom-control-input" id="21" type="checkbox" value="SpecialCharacterSmell" name="smells"/>
+                            <input class="custom-control-input" id="21" type="checkbox" value="Special Character Smell" name="smells"/>
                             <label class="custom-control-label" for="21">Special Character Smell</label>
                           </div>
                         </span>
@@ -721,7 +732,7 @@
                     <div class="media-body">
                         <span class="mb-0 text-sm">
                           <div class="custom-control custom-checkbox mb-3">
-                            <input class="custom-control-input" id="42" type="checkbox" value="TranspositionInconsistencySmell" name="smells"/>
+                            <input class="custom-control-input" id="42" type="checkbox" value="Transposition Inconsistency Smell" name="smells"/>
                             <label class="custom-control-label" for="42">Transposition Inconsistency Smell</label>
                           </div>
                         </span>
@@ -747,7 +758,7 @@
                   <div class="media-body">
                       <span class="mb-0 text-sm">
                         <div class="custom-control custom-checkbox mb-3">
-                          <input class="custom-control-input" id="22" type="checkbox" value="SynonymSmell" name="smells"/>
+                          <input class="custom-control-input" id="22" type="checkbox" value="Synonym Smell" name="smells"/>
                                   <label class="custom-control-label" for="22">Synonym Smell</label>
                         </div>
                       </span>
@@ -794,7 +805,7 @@
                 <div class="media-body">
                     <span class="mb-0 text-sm">
                       <div class="custom-control custom-checkbox mb-3">
-                        <input class="custom-control-input" id="23" type="checkbox" value="TaggingSmell" name="smells"/>
+                        <input class="custom-control-input" id="23" type="checkbox" value="Tagging Smell" name="smells"/>
                                   <label class="custom-control-label" for="23">Tagging Smell</label>
                       </div>
                     </span>
@@ -824,7 +835,7 @@
             </td>
           
         </tr>
-                        
+                       --> 
                     </tbody>
                 </table>
             </div>

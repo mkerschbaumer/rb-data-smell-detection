@@ -114,9 +114,9 @@
               <div class="nav-wrapper">
                 <ul class="nav nav-pills nav-fill flex-column flex-md-row" id="tabs-icons-text" role="tablist">
                   {% for item in column_names%}  
-                  <li class="nav-item">
-                      <a class="nav-link mb-sm-3 mb-md-0" id="tabs-icons-text-3-tab" data-toggle="tab" href='#{{ item }}' role="tab" aria-controls="tabs-icons-text-3" aria-selected="false">{{ item }}</a>
-                  </li>
+                      <li class="nav-item">
+                        <a class="nav-link mb-sm-3 mb-md-0" id="tabs-icons-text-3-tab" data-toggle="tab" href='#{{ item }}' role="tab" aria-controls="tabs-icons-text-3" aria-selected="false">{{ item }}</a>
+                      </li>
                   {% endfor %}
 
                 </ul>
@@ -152,7 +152,7 @@
                                     <tbody class="list">
                                       <tr>
                                         <td class="type">
-                                          {{ smell.data_smell_type }}
+                                          {{ smell.data_smell_type.value }}
                                         </td>
                                         <td class="total">
                                           {{ smell.statistics.total_element_count }}
