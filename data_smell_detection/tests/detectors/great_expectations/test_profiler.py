@@ -18,7 +18,10 @@ from .fixtures import (
     data_smell_information2,
     data_smell_registry_with_data_smell2_information
 )
-from .helper_functions import check_all_expectation_combinations_in_expectations_suite
+from .helper_functions import (
+    check_all_expectation_combinations_in_expectations_suite,
+    check_column_types_in_expectation_suite_meta_information
+)
 
 
 @pytest.fixture
@@ -133,6 +136,10 @@ class TestDataSmellAwareProfiler:
         #   additional expectation is generated.
         assert len(expectation_suite.expectations) == 6
 
-        # TODO: Check the columns key of the meta dictionary which is present
-        # in a generated expectation suite.
+        # Ensure that column type information is present in the
+        # generated expectations suite.
+        check_column_types_in_expectation_suite_meta_information(
+            suite=expectation_suite,
+            expected_column_types=expected_column_types_dataset1
+        )
 
