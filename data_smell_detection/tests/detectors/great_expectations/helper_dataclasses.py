@@ -17,4 +17,4 @@ class DataSmellInformation:
     expectation_type: str
 
     # Kwargs which should be used to evaluate the expectation.
-    kwargs: Optional[Dict[str, Any]]
+    kwargs: Dict[str, Any]
