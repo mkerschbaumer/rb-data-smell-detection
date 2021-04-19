@@ -31,5 +31,5 @@ mypy:
   script:
     - cd data_smell_detection
     - pip install .
-    - mypy --ignore-missing-imports --exclude '.+/_version\.py$' datasmelldetection
+    - mypy --ignore-missing-imports --exclude '.+/_version\.py$' datasmelldetection tests
 
