@@ -1897,10 +1897,11 @@ pre code {
   border-color: #1f3a68;
 }
 
-.table .thead-light th {
+.table th {
   color: #8898aa;
   background-color: #f6f9fc;
   border-color: #e9ecef;
+  text-transform: uppercase;
 }
 
 .table-dark {
@@ -18440,7 +18441,7 @@ textarea[resize="horizontal"] {
   color: #4d7bca;
 }
 
-.table .thead-light th {
+.table th {
   background-color: #f6f9fc;
   color: #8898aa;
 }
