@@ -63,4 +63,4 @@ def register_user(request):
 
 def logout_view(request):
     logout(request)
-    return render(request, "index.html", {'some_flag': True})
+    return render(request, "accounts/logout.html", {'some_flag': True})

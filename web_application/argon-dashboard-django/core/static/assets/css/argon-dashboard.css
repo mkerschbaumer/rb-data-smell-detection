@@ -1647,6 +1647,7 @@ pre code {
   padding: 1rem;
   vertical-align: top;
   border-top: 1px solid #e9ecef;
+  border-bottom: 1px solid #e9ecef;
 }
 
 .table thead th {
@@ -1902,6 +1903,9 @@ pre code {
   background-color: #f6f9fc;
   border-color: #e9ecef;
   text-transform: uppercase;
+}
+.table td {
+  width: 100% !important;
 }
 
 .table-dark {
@@ -4957,6 +4961,10 @@ input[type="button"].btn-block {
   background-clip: border-box;
   border: 1px solid rgba(0, 0, 0, 0.05);
   border-radius: 0.375rem;
+}
+
+.card-grey .h2 {
+  color: #878787 !important;
 }
 
 .card-transparent {
@@ -18479,7 +18487,7 @@ textarea[resize="horizontal"] {
 .card .table td,
 .card .table th {
   padding-left: 1.5rem;
-  padding-right: 1.5rem;
+  padding-right: 2.5rem;
 }
 
 p {
@@ -20831,6 +20839,18 @@ div.card-body .dragdrop {
 
 .bg-customize {
   background-color: #94D8D4 !important;
+}
+
+.card-grey .bg-customize {
+  background-color: #c5e5e3 !important;
+}
+
+.card-grey .bg-upload {
+  background-color: #b5dce2 !important;
+}
+
+.card-grey .bg-results {
+  background-color: #dbe0d9 !important;
 }
 
 .bg-results {
