@@ -132,7 +132,7 @@ class DataSmellType(Enum):
     This smell occurs when a date is encoded as a datetime data type.
     """  # pylint: disable=W0105
 
-    DATE_AS_STRING_SMELL = "DateAsStringSmell"
+    DATE_AS_STRING_SMELL = "Date As String Smell"
     """This smell occurs when a date is encoded as a string."""  # pylint: disable=W0105
 
     DATE_TIME_AS_STRING_SMELL = "DateTime As String Smell"
