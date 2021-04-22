@@ -140,6 +140,7 @@
                   <input type="file" name="upload" />
                 </div>
                 <br>
+                
                 {% if url %}
                   <div class="alert alert-success alert-dismissible fade show" role="alert">
                     <span class="alert-inner--icon"><i class="ni ni-like-2"></i></span>
@@ -149,6 +150,11 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                   </div>
+                  <div>
+                    <div style="float: left;"> 
+                      <button class="btn btn-primary" type="submit">Upload different file</button>
+                      </div>
+                  <div style="float: right;">  
                 <a href="/customize.html">
                   <div style="text-align: right;">
                     <div class="btn btn-primary">
@@ -156,6 +162,8 @@
                     </div>
                   </div>
                 </a>
+              </div>
+              </div>
                 {% else %}
                 <button class="btn btn-primary" type="submit">Upload file</button>
                 {% endif %}

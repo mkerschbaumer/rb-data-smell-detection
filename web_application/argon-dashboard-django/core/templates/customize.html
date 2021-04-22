@@ -81,7 +81,7 @@
               </div>
             </div>
 
-            {% if list %}
+            {% if list_smells %}
             <div class="col-xl-3 col-lg-6">
               <a href="/results.html">
               <div class="card-next card-stats mb-4 mb-xl-0">
@@ -131,15 +131,15 @@
         <div class="col">
           <div class="card shadow">
             <div class="card-header bg-transparent">
-              <h3 class="mb-0">Choose the type(s) of data smell that sould be detected</h3>
+              <h3 class="mb-0">Customize your detection</h3>
             </div>
             <div class="card-body">
               <form id="test" method="post">
                 {% csrf_token %}
               <div class="table-responsive" style="overflow: auto;">
                 <div>
+                <h4>Choose the type(s) of data smell that sould be detected</h4><br>
                 <table class="table align-items-center">
-                    
                     <tbody class="list">
                         {% for key, value in smells.items %}
                         <tr>
@@ -150,7 +150,7 @@
                                     <div class="media-body">
                                         <span class="mb-0 text-sm">
                                           <div class="custom-control custom-checkbox mb-3">
-                                            <input class="custom-control-input" id={{v}} type="checkbox" value="Dummy Value Smell" name="smells"/>
+                                            <input class="custom-control-input" id={{v}} type="checkbox" value={{v}} name="smells"/>
                                             <label class="custom-control-label" for={{v}}>{{ v.value }}</label>
                                           </div>
                                         </span>
@@ -164,15 +164,36 @@
                         
                     </tbody>
                 </table>
+                <br><br><h4>Choose the columns which should be detected</h4><br>
+                <table class="table align-items-center">
+                  <tbody class="list">
+                      <tr>
+                        {% for c in column_names %}
+                          <th scope="row" class="name">
+                              <div class="media align-items-center">
+                                  <div class="media-body">
+                                      <span class="mb-0 text-sm">
+                                        <div class="custom-control custom-checkbox mb-3">
+                                          <input class="custom-control-input" id={{c}} type="checkbox" value={{c}} name="columns"/>
+                                          <label class="custom-control-label" for={{c}}>{{ c }}</label>
+                                        </div>
+                                      </span>
+                                  </div>
+                              </div>
+                          </th>
+                        {% endfor %}
+                      </tr>
+                  </tbody>
+              </table>
             </div>
           
             <br>
             </div>
-            <br><br>
-            {% if list  %}
+            <br>
+            {% if list_smells  %}
               <div class="alert alert-success alert-dismissible fade show" role="alert">
                 <span class="alert-inner--icon"><i class="ni ni-like-2"></i></span>
-                <span class="alert-inner--text"><strong>Success!</strong><br>Successfully selected the following smells: {{ list }}
+                <span class="alert-inner--text"><strong>Success!</strong><br>Successfully selected the following smells: {{ list_smells }}<br> Successfully selected the following columns: {{ list_columns }}
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>

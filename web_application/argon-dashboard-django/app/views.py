@@ -28,24 +28,8 @@ from datasmelldetection.detectors.great_expectations.detector import GreatExpect
 from datasmelldetection.core.detector import DetectionStatistics, DetectionResult
 from datasmelldetection.core.datasmells import DataSmellType
 
-outer = os.path.join(os.getcwd(), "../")
 
-
-context_builder = GreatExpectationsContextBuilder(
-    os.path.join(outer, "../great_expectations"),
-    os.path.join(cwd, "core/media")
-)
-con = context_builder.build()
-
-manager = GreatExpectationsDatasetManager(context=con)
-
-dataset = None
-column_names = None
-detector = None
-supported_smells = None
-
-dummy_user = User(username="dummy_user")
-#dummy_user.save()
+#dummy_user = User.objects.create(username="dummy_user")
 
 def index(request):
     context = {}
@@ -78,32 +62,52 @@ def pages(request):
 
 
 def upload(request):
+    # Some presettings for data smell detection
+    outer = os.path.join(os.getcwd(), "../")
+    context_builder = GreatExpectationsContextBuilder(
+        os.path.join(outer, "../great_expectations"),
+        os.path.join(cwd, "core/media")
+    )
+    con = context_builder.build()
+    manager = GreatExpectationsDatasetManager(context=con)
     context = {}
+
     if request.method == 'POST' and 'upload' in request.FILES:
         uploaded_file = request.FILES['upload']
         fs = FileSystemStorage()
         name = fs.save(uploaded_file.name, uploaded_file)
         context['url'] = fs.url(name)   
         context['size'] = fs.size(name) / 1000000
-        actual_name = context['url'].replace('/media/', '')
+        file_name = context['url'].replace('/media/', '')
+        
+        # Save file to database
         if request.user.is_authenticated:
-            file1 = File(path_to_file=actual_name, user=request.user)
+            file1 = File(path_to_file=file_name, user=request.user)
             file1.save()
         else:
-            file1 = File(path_to_file=actual_name, user=dummy_user)
+            file1 = File(path_to_file=file_name, user=dummy_user)
             file1.save()
         
-        print(actual_name)
-        dataset = manager.get_dataset(actual_name)
+        dataset = manager.get_dataset(file_name)
         column_names = precheck_columns(dataset.get_column_names())
         detector = DetectorBuilder(context=con, dataset=dataset).build()
         supported_smells = detector.get_supported_data_smell_types()
+
+        # Save supported smell to database
         for s in supported_smells:
             smell = SmellType(smell_type=s.value)
             smell.save()
             smell.belonging_file.add(file1)
             print(s)
+
+        detected_smells = detector.detect()
+        sorted_results = sort_results(detected_smells, column_names)
         
+        # Save columns an detected smell to database
+        for key, value in sorted_results.items():
+            column1 = Column.objects.create(column_name=key, belonging_file=file1)
+            for v in value:
+                DetectedSmell.objects.create(data_smell_type=v.data_smell_type.value, total_element_count=v.statistics.total_element_count, faulty_element_count=v.statistics.faulty_element_count, belonging_file=file1, belonging_column=column1)
 
     else:
         context['message'] = 'no file selected'
@@ -111,8 +115,9 @@ def upload(request):
 
 
 def smells(request):
-    
+    context = {}
 
+    # Different smells by it's category
     believability_smells = [DataSmellType.DUMMY_VALUE_SMELL, DataSmellType.DUPLICATED_VALUE_SMELL, DataSmellType.EXTREME_VALUE_SMELL, DataSmellType.MEANINGLESS_VALUE_SMELL, DataSmellType.MISSPELLING_SMELL, DataSmellType.SUSPECT_CLASS_VALUE_SMELL, DataSmellType.SUSPECT_DATE_VALUE_SMELL, DataSmellType.SUSPECT_DATE_TIME_INTERVAL_SMELL, DataSmellType.SUSPECT_SIGN_SMELL, DataSmellType.SUSPECT_DISTRIBUTION_SMELL]
     syntactic_understandability_smells = [DataSmellType.AMBIGUOUS_DATE_TIME_FORMAT_SMELL, DataSmellType.AMBIGUOUS_VALUE_SMELL, DataSmellType.CASING_SMELL, DataSmellType.CONTRACTING_SMELL, DataSmellType.EXTRANEOUS_VALUE_SMELL, DataSmellType.INTERMINGLED_DATA_TYPE_SMELL, DataSmellType.LONG_DATA_VALUE_SMELL, DataSmellType.MISSING_VALUE_SMELL, DataSmellType.SEPARATING_SMELL, DataSmellType.SPACING_SMELL, DataSmellType.SPECIAL_CHARACTER_SMELL, DataSmellType.SYNONYM_SMELL, DataSmellType.TAGGING_SMELL]
     encoding_understandability_smells = [DataSmellType.DATE_AS_DATE_TIME_SMELL, DataSmellType.DATE_AS_STRING_SMELL, DataSmellType.DATE_TIME_AS_STRING_SMELL, DataSmellType.FLOATING_POINT_NUMBER_AS_STRING_SMELL, DataSmellType.INTEGER_AS_FLOATING_POINT_NUMBER_SMELL, DataSmellType.INTEGER_AS_STRING_SMELL, DataSmellType.TIME_AS_STRING_SMELL, DataSmellType.SUSPECT_CHARACTER_ENCODING_SMELL]
@@ -123,58 +128,70 @@ def smells(request):
         current_user_id = request.user.id
     else:
         current_user_id = dummy_user.id
+    
+    # Get file and available smells
     file1 = File.objects.filter(user_id=current_user_id).latest("uploaded_time")
     smells = SmellType.objects.all().filter(belonging_file=file1)#.get().smell_type
-    
     new = []
     for l in list(smells):
         new.append(l.smell_type)
-    print(new)
-
     available_smells = {i: [a for a in j if a.value in new] for i,j in all_smells.items()}
 
-    context = {}
+    # Get column names by id and by name
+    column_names_by_id = list(Column.objects.all().filter(belonging_file=file1))
+    column_names = [c.column_name for c in column_names_by_id]
+    
+    # Smells and column names for customization
     context['smells'] = available_smells
+    context['column_names'] = column_names
+
     if request.method == 'POST':
+      # Selected smells and column names
       some_var = request.POST.getlist('smells')  
-      context['list'] = some_var
+      context['list_smells'] = some_var
+      columns = request.POST.getlist('columns')
+      context['list_columns'] = columns
+
+      # Delete columns which should not be detected according to user's customization
+      columns_to_delete = []
+      for c in column_names_by_id:
+          if c.column_name not in columns:
+              columns_to_delete.append(c.id)
+      for c in columns_to_delete:
+          Column.objects.get(id=c).delete()
+     
     return render(request, 'customize.html', context)
 
 def result(request):
+    # Some presettings for data smell detection
     context = {}
+    outer = os.path.join(os.getcwd(), "../")
+    context_builder = GreatExpectationsContextBuilder(
+        os.path.join(outer, "../great_expectations"),
+        os.path.join(cwd, "core/media")
+    )
+    con = context_builder.build()
+    manager = GreatExpectationsDatasetManager(context=con)
+    
     if request.user.is_authenticated:
         current_user_id = request.user.id
     else:
         current_user_id = dummy_user.id
 
+    # Get file for detection
     file1 = File.objects.filter(user_id=current_user_id).latest("uploaded_time")
 
-    #print(column_names)
-
-
-    #dataset = manager.get_dataset("Titanic.csv")
-    #available_files = manager.get_available_dataset_identifiers()
-
     dataset = manager.get_dataset(file1.path_to_file)
-    column_names = precheck_columns(dataset.get_column_names())
+    column_names = [c.column_name for c in list(Column.objects.all().filter(belonging_file=file1))]
     detector = DetectorBuilder(context=con, dataset=dataset).build()
+
+    # Detect smells and sort result
     detected_smells = detector.detect()
     sorted_results = sort_results(detected_smells, column_names)
     
-    for key, value in sorted_results.items():
-        column1 = Column.objects.create(column_name=key, belonging_file=file1)
-        for v in value:
-            DetectedSmell.objects.create(data_smell_type=v.data_smell_type.value, total_element_count=v.statistics.total_element_count, faulty_element_count=v.statistics.faulty_element_count, belonging_file=file1, belonging_column=column1)
-    #column_names = [c.column_name for c in list(Column.objects.all().filter(belonging_file=file1))]
-    
-    #column_names = precheck_columns(dataset.get_column_names())
     context['column_names'] = column_names
-    #detector = DetectorBuilder(context=con, dataset=dataset).build()
-    #supported_smells = detector.get_supported_data_smell_types()
-    #print(supported_smells)
-    #detected_smells = detector.detect()
-    #sorted_results = sort_results(detected_smells, column_names)
     context['results'] = sorted_results
+    
     return render(request, 'results.html', context)
 
 def sort_results(results, columns):
