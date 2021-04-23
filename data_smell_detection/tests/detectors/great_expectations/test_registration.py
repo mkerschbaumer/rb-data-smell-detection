@@ -26,3 +26,17 @@ class TestExpectationRegistration:
             ),
             expectation_type="expect_column_values_to_not_contain_missing_value_smell"
         )
+
+    def test_expect_column_values_to_not_contain_suspect_sign_smell(self):
+        check_data_smell_stored_in_registry(
+            registry=default_registry,
+            metadata=DataSmellMetadata(
+                data_smell_type=DataSmellType.SUSPECT_SIGN_SMELL,
+                profiler_data_types={
+                    ProfilerDataType.INT,
+                    ProfilerDataType.FLOAT,
+                    ProfilerDataType.NUMERIC
+                }
+            ),
+            expectation_type="expect_column_values_to_not_contain_suspect_sign_smell"
+        )
