@@ -1,2 +1,4 @@
 from .expect_column_values_to_not_contain_missing_value_smell import \
     ExpectColumnValuesToNotContainMissingValueSmell
+from .expect_column_values_to_not_contain_suspect_sign_smell import \
+    ExpectColumnValuesToNotContainSuspectSignSmell
