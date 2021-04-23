@@ -32,6 +32,16 @@ def check_data_smell_stored_in_registry(
         # value.
         assert smell_dict[metadata.data_smell_type] == expectation_type
 
+    # Data types for which the smell should not be registered.
+    not_specified_datatypes = set([
+        x for x in ProfilerDataType if x not in metadata.profiler_data_types
+    ])
+    # Ensure that the data smell was not registered for the not specified data types.
+    for data_type in not_specified_datatypes:
+        smell_dict = registry.get_smell_dict_for_profiler_data_type(data_type)
+        assert metadata.data_smell_type not in smell_dict
+
+
 
 # Ensure that profiler data types for which no data smells have been registered
 # do not contain any smells. Pass the registry to check and the expected types
