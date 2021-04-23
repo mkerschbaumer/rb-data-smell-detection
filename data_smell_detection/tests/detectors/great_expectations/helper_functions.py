@@ -1,13 +1,19 @@
 from typing import Any, Dict, Set, List, Tuple
 
-from great_expectations.core import ExpectationSuite
+from great_expectations.core import ExpectationSuite, ExpectationConfiguration, \
+    ExpectationValidationResult
+from great_expectations.core.batch import Batch
+from great_expectations.execution_engine import PandasExecutionEngine
+from great_expectations.expectations.expectation import Expectation
 from great_expectations.profile.base import ProfilerDataType
+import pandas as pd
 
 from datasmelldetection.core.datasmells import DataSmellType
 from datasmelldetection.detectors.great_expectations.datasmell import (
     DataSmellRegistry,
     DataSmellMetadata,
 )
+from great_expectations.validator.validator import Validator
 
 from .helper_dataclasses import DataSmellInformation
 
@@ -180,3 +186,69 @@ def check_column_types_in_expectation_suite_meta_information(
     assert isinstance(result_dict, dict)
     # Ensure that the generated dictionary matches the expected dictionary.
     assert expected_dict == result_dict
+
+
+# Execute the examples which the passed expectation contains. Ensure
+# a test report exists and that all tests were successful.
+#
+# NOTE: Internally the examples of a Great Expectations Expectation is checked
+# using the mechanism in the run_diagnostics method of the Expectation class.
+# The implementation of the 0.13.16 version has been used. This step was
+# necessary since the examples don't have to be checked for spark or sqlalchemy.
+def check_expectation_examples(expectation: Expectation):
+    # Ensure examples are present which should be checked.
+    assert hasattr(expectation, "examples")
+    examples: List[Dict[str, Any]] = expectation.examples
+    assert isinstance(examples, list)
+    assert len(examples) == 1, f"Expect one example dataset with tests" \
+                               f" for {expectation.expectation_type}"
+    expectation_type = expectation.expectation_type
+
+    # Use the only existing test dataset for the corresponding expectation.
+    # NOTE: Inlined from _choose_example method of Expectation class.
+    example_data = examples[0]["data"]
+    for example_test in examples[0]["tests"]:
+        example_title: str = example_test["title"]
+        # Construct a string which describes for which expectation and
+        # which example testcase a test fails.
+        example_identifier: str = f"{expectation_type}-{example_title}"
+
+        test_batch = Batch(data=pd.DataFrame(example_data))
+
+        expectation_config = ExpectationConfiguration(
+            **{
+                "expectation_type": expectation_type,
+                "kwargs": example_test["in"]
+            }
+        )
+
+        # NOTE: Inlined from _instantiate_example_validation_results method of
+        # Expectation class.
+        validation_results: List[ExpectationValidationResult] = Validator(
+            execution_engine=PandasExecutionEngine(),
+            batches=[test_batch]
+        ).graph_validate(configurations=[expectation_config])
+
+        # NOTE: From run_diagnostics method of Expectation class.
+        assert len(validation_results) == 1, example_identifier
+        validation_result: ExpectationValidationResult = validation_results[0]
+
+        expected_success = example_test["out"]["success"]
+        assert validation_result.success == expected_success, example_identifier
+
+        # Construct a list of keys for which comparison between keys in the
+        # validation result object and the example data should be performed.
+        # Success is not compared since checking has been performed above.
+        out_keys = example_test["out"].keys()
+        comparison_keys = [x for x in out_keys if x != "success"]
+
+        # Perform pairwise comparison of validation results and example test
+        # data.
+        for key in comparison_keys:
+            assert key in validation_result.result, \
+                f"{example_identifier} no result for key {key}."
+            expected = set(example_test["out"][key])
+            actual = set(validation_result.result[key])
+            # Use set equality since the order for results like
+            # "partial_unexpected_list" does not matter.
+            assert actual == expected, f"{example_identifier}: Failed for key {key}"
