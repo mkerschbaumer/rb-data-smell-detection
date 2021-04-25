@@ -40,3 +40,13 @@ class TestExpectationRegistration:
             ),
             expectation_type="expect_column_values_to_not_contain_suspect_sign_smell"
         )
+
+    def test_expect_column_values_to_not_contain_integer_as_string_smell(self):
+        check_data_smell_stored_in_registry(
+            registry=default_registry,
+            metadata=DataSmellMetadata(
+                data_smell_type=DataSmellType.INTEGER_AS_STRING_SMELL,
+                profiler_data_types={ProfilerDataType.STRING}
+            ),
+            expectation_type="expect_column_values_to_not_contain_integer_as_string_smell"
+        )
