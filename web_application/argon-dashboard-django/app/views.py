@@ -74,41 +74,42 @@ def upload(request):
 
     if request.method == 'POST' and 'upload' in request.FILES:
         uploaded_file = request.FILES['upload']
-        fs = FileSystemStorage()
-        name = fs.save(uploaded_file.name, uploaded_file)
-        context['url'] = fs.url(name)   
-        context['size'] = fs.size(name) / 1000000
-        file_name = context['url'].replace('/media/', '')
-        
-        # Save file to database
-        if request.user.is_authenticated:
-            file1 = File(path_to_file=file_name, user=request.user)
-            file1.save()
+        if '.csv' in uploaded_file.name:
+            fs = FileSystemStorage()
+            name = fs.save(uploaded_file.name, uploaded_file)
+            context['url'] = fs.url(name)   
+            context['size'] = fs.size(name) / 1000000
+            file_name = context['url'].replace('/media/', '')
+            # Save file to database
+            if request.user.is_authenticated:
+                file1 = File(path_to_file=file_name, user=request.user)
+                file1.save()
+            else:
+                file1 = File(path_to_file=file_name, user=dummy_user)
+                file1.save()
+            
+            dataset = manager.get_dataset(file_name)
+            column_names = precheck_columns(dataset.get_column_names())
+            detector = DetectorBuilder(context=con, dataset=dataset).build()
+            supported_smells = detector.get_supported_data_smell_types()
+
+            # Save supported smell to database
+            for s in supported_smells:
+                smell = SmellType(smell_type=s.value)
+                smell.save()
+                smell.belonging_file.add(file1)
+                print(s)
+
+            detected_smells = detector.detect()
+            sorted_results = sort_results(detected_smells, column_names)
+            
+            # Save columns an detected smell to database
+            for key, value in sorted_results.items():
+                column1 = Column.objects.create(column_name=key, belonging_file=file1)
+                for v in value:
+                    DetectedSmell.objects.create(data_smell_type=v.data_smell_type.value, total_element_count=v.statistics.total_element_count, faulty_element_count=v.statistics.faulty_element_count, belonging_file=file1, belonging_column=column1)
         else:
-            file1 = File(path_to_file=file_name, user=dummy_user)
-            file1.save()
-        
-        dataset = manager.get_dataset(file_name)
-        column_names = precheck_columns(dataset.get_column_names())
-        detector = DetectorBuilder(context=con, dataset=dataset).build()
-        supported_smells = detector.get_supported_data_smell_types()
-
-        # Save supported smell to database
-        for s in supported_smells:
-            smell = SmellType(smell_type=s.value)
-            smell.save()
-            smell.belonging_file.add(file1)
-            print(s)
-
-        detected_smells = detector.detect()
-        sorted_results = sort_results(detected_smells, column_names)
-        
-        # Save columns an detected smell to database
-        for key, value in sorted_results.items():
-            column1 = Column.objects.create(column_name=key, belonging_file=file1)
-            for v in value:
-                DetectedSmell.objects.create(data_smell_type=v.data_smell_type.value, total_element_count=v.statistics.total_element_count, faulty_element_count=v.statistics.faulty_element_count, belonging_file=file1, belonging_column=column1)
-
+            context['message'] = 'Upload a .csv file.'
     else:
         context['message'] = 'no file selected'
     return render(request, 'index.html', context)
@@ -178,21 +179,62 @@ def result(request):
     else:
         current_user_id = dummy_user.id
 
-    # Get file for detection
-    file1 = File.objects.filter(user_id=current_user_id).latest("uploaded_time")
+    try:
+        # Get file for detection
+        file1 = File.objects.filter(user_id=current_user_id).latest("uploaded_time")
 
-    dataset = manager.get_dataset(file1.path_to_file)
-    column_names = [c.column_name for c in list(Column.objects.all().filter(belonging_file=file1))]
-    detector = DetectorBuilder(context=con, dataset=dataset).build()
+        dataset = manager.get_dataset(file1.path_to_file)
+        column_names = [c.column_name for c in list(Column.objects.all().filter(belonging_file=file1))]
+        detector = DetectorBuilder(context=con, dataset=dataset).build()
 
-    # Detect smells and sort result
-    detected_smells = detector.detect()
-    sorted_results = sort_results(detected_smells, column_names)
-    
-    context['column_names'] = column_names
-    context['results'] = sorted_results
-    
+        # Detect smells and sort result
+        detected_smells = detector.detect()
+        sorted_results = sort_results(detected_smells, column_names)
+        context['column_names'] = column_names
+        context['results'] = sorted_results
+
+        if request.method == 'POST':
+            File.objects.get(path_to_file=file1.path_to_file).delete()
+            context['delete_message'] = 'Result deleted and not viewable in Saved Results.'
+
+    except:
+        context['no_file'] = 'No detection result for this user available.'
+
     return render(request, 'results.html', context)
+
+def saved(request):
+    print("hiii")
+    # Some presettings for data smell detection
+    context = {}
+    outer = os.path.join(os.getcwd(), "../")
+    context_builder = GreatExpectationsContextBuilder(
+        os.path.join(outer, "../great_expectations"),
+        os.path.join(cwd, "core/media")
+    )
+    con = context_builder.build()
+    manager = GreatExpectationsDatasetManager(context=con)
+    
+    if request.user.is_authenticated:
+        current_user_id = request.user.id
+    else:
+        current_user_id = dummy_user.id
+
+    files = File.objects.all().filter(user_id=current_user_id)
+    results = {}
+    for f in files:
+        all_smells_for_file = list(DetectedSmell.objects.all().filter(belonging_file=f)) #.values_list('id', flat=True)
+        all_columns = list(Column.objects.all().filter(belonging_file=f)) #.values_list('column_name', flat=True)
+        sorted_results = {}
+        for c in all_columns:
+            sorted_results[c] = []
+            for s in all_smells_for_file:
+                if s.belonging_column.column_name == c.column_name:
+                    sorted_results[c].append(s)
+        results[f.path_to_file] = sorted_results
+    print(results)
+    context['results'] = results
+
+    return render(request, 'saved.html', context)
 
 def sort_results(results, columns):
     sorted_results = {}

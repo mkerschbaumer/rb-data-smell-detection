@@ -1,31 +1,29 @@
+{% extends 'layouts/base.html' %}
 
-<!DOCTYPE html>
+{% block title %} Dashboard {% endblock title %}
 
-<html>
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>datasmelldetection.core.datasmells &#8212; datasmelldetection  documentation</title>
-    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
-    <script id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
-    <script src="../../../../_static/jquery.js"></script>
-    <script src="../../../../_static/underscore.js"></script>
-    <script src="../../../../_static/doctools.js"></script>
-    <script src="../../../../_static/language_data.js"></script>
-    <link rel="index" title="Index" href="../../../../genindex.html" />
-    <link rel="search" title="Search" href="../../../../search.html" />
-   
-  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
-  
-  
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}{% endblock stylesheets %}
 
-  </head><body>
-  
+{% block content %}
 
-    <div class="document">
+    <!-- Header -->
+    <div class="header bg-gradient-primary pb-8 pt-5 pt-md-8">
+      <div class="container-fluid">
+        <div class="header-body">
+          
+        </div>
+      </div>
+    </div>
+
+    <div class="container-fluid mt--7">
+
+      <div class="row">
+        <div class="col">
+          <div class="card shadow">
+           
+            <div class="card-body">
+              <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
           
@@ -337,7 +335,7 @@ consistency issues which do not fall in one of the other categories related to t
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-<h1 class="logo"><a href="../../../../index.html">datasmelldetection</a></h1>
+<h1 class="logo"><a href="../../../../documentation.html">datasmelldetection</a></h1>
 
 
 
@@ -351,7 +349,7 @@ consistency issues which do not fall in one of the other categories related to t
 <div class="relations">
 <h3>Related Topics</h3>
 <ul>
-  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../../documentation.html">Documentation overview</a><ul>
   </ul></li>
 </ul>
 </div>
@@ -369,28 +367,25 @@ consistency issues which do not fall in one of the other categories related to t
 
 
 
+</div>
+</div>
+<div class="clearer"></div>
+</div>
+<div class="footer">
+&copy;2021, Martin Kerschbaumer.
 
+|
+Powered by <a href="http://sphinx-doc.org/">Sphinx 3.3.1</a>
+&amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
 
+</div>
+</div>
 
+{% include "includes/footer.html" %}
 
-        </div>
-      </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="footer">
-      &copy;2021, Martin Kerschbaumer.
-      
-      |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.3.1</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
-      
-      |
-      <a href="../../../../_sources/autoapi/datasmelldetection/core/datasmells/index.rst.txt"
-          rel="nofollow">Page source</a>
-    </div>
+</div>
 
-    
+{% endblock content %}
 
-    
-  </body>
-</html>
+<!-- Specific JS goes HERE --> 
+{% block javascripts %}{% endblock javascripts %}

@@ -14,7 +14,7 @@
           <!-- Card stats -->
           <div class="row">
             <div class="col-xl-3 col-lg-6">
-              <div class="card card-stats mb-4 mb-xl-0">
+              <div class="card-grey card-stats mb-4 mb-xl-0">
                 <div class="card-body">
                   <div class="row">
                     <div class="col">
@@ -47,27 +47,7 @@
                 </div>
               </div>
             </div>
-
-            {% if url %}
-            <div class="col-xl-4 col-lg-6">
-              <a href="/customize.html">
-              <div class="card-next card-stats mb-4 mb-xl-0">
-                <div class="card-body">
-                  <div class="row">
-                    <div class="col">
-                      <span class="h2 font-weight-bold mb-0">Customize</span>
-                    </div>
-                    <div class="col-auto">
-                      <div class="icon icon-shape bg-customize text-white rounded-circle shadow">
-                        <i class="ni ni-ui-04"></i>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              </a>  
-            </div>
-            {% else %}
+            
             <div class="col-xl-4 col-lg-6">
               <div class="card-grey card-stats mb-4 mb-xl-0">
                 <div class="card-body">
@@ -84,7 +64,7 @@
                 </div>
               </div>
             </div>
-            {% endif %}
+
             <div class="col-xl-1 col-lg-6">
               <div class="card-transparent card-stats mb-4 mb-xl-0">
                 <div class="card-body-transparent">
@@ -102,7 +82,7 @@
             </div>
 
             <div class="col-xl-3 col-lg-6">
-              <div class="card-grey card-stats mb-4 mb-xl-0">
+              <div class="card card-stats mb-4 mb-xl-0">
                 <div class="card-body">
                   <div class="row">
                     <div class="col">
@@ -128,59 +108,63 @@
         <div class="col">
           <div class="card shadow">
             <div class="card-header bg-transparent">
-              <h3 class="mb-0">Upload a .csv file to detect data smells</h3>
+              <h3 class="mb-0">Smell Results By Column Names</h3>
             </div>
             <div class="card-body">
-              <div class="grid-container"></div>
-              <form method="post" enctype="multipart/form-data">
-                {% csrf_token %}
-                <div class="file-droppable">
-                  <img src="/static/assets/img/theme/csv.png" width="100vh" alt="..."><br>
-                  <button class="button buttongrey" type="submit"><i class="ni ni-cloud-upload-96"></i> Select file</button>
-                  <input type="file" name="upload" />
-                </div>
-                <br>
-                
-                {% if url %}
-                  <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    <span class="alert-inner--icon"><i class="ni ni-like-2"></i></span>
-                    <span class="alert-inner--text"><strong>Success!</strong><br>Uploaded file: {{ url }}
-                    <br>Uploaded file size: {{ size }} Mb</span>
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                  </div>
-                  <div>
-                    <div style="float: left;"> 
-                      <button class="btn btn-primary" type="submit">Upload different file</button>
+              {% for f, smells in results.items %}
+              <h2>{{ f }}</h2><br>
+                {% for column, smell in smells.items %}
+                Column - {{ column.column_name }}<br><br>
+                    <div class="table-responsive">
+                      <div>
+                        <table class="table align-items-center">
+                          {% if smell %}
+                          <thead class="thead-light">
+                            <tr>
+                                <th scope="col">
+                                    Data Smell Type
+                                </th>
+                                <th scope="col">
+                                    Total Element Count
+                                </th>
+                                <th scope="col">
+                                    Faulty Element Count
+                                </th>
+                            </tr>
+                          </thead>
+                          {% for s in smell%}
+                          <tbody class="list">
+                            <tr>
+                              <td class="type">
+                                {{ s.data_smell_type }}
+                              </td>
+                              <td class="total">
+                                {{ s.total_element_count }}
+                              </td>
+                              <td class="faulty">
+                                {{ s.faulty_element_count }}
+                              </td>
+                            </tr>
+                          </tbody> 
+                          {% endfor %}
+                          {% else %}
+                          <p class="description">There are no smells for this column.</p>
+                          {% endif %}
+                        </table>
                       </div>
-                  <div style="float: right;">  
-                <a href="/customize.html">
-                  <div style="text-align: right;">
-                    <div class="btn btn-primary">
-                        Next Step
                     </div>
-                  </div>
-                </a>
-              </div>
-              </div>
-                {% elif message == 'Upload a .csv file.' %}
-                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                  <span class="alert-inner--icon"><i class="ni ni-fat-delete"></i></span>
-                  <span class="alert-inner--text"><strong>False file type!</strong><br>{{ message }}
-                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-                <button class="btn btn-primary" type="submit">Upload file</button>
-                {% else %}
-                <button class="btn btn-primary" type="submit">Upload file</button>
-                {% endif %}
-              </form>
-            </div>
+                    <br>
+                {% endfor %}  
+
+                  
+              <br><br>
+              <hr>
+              {% endfor %}    
+              
           </div>
         </div>
       </div>
+      
 
       {% include "includes/footer.html" %}
 

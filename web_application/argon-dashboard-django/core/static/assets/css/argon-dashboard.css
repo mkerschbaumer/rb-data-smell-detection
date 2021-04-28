@@ -1908,6 +1908,10 @@ pre code {
   width: 100% !important;
 }
 
+table.docutils td, table.docutils th{
+  width: 30%!important;
+}
+
 .table-dark {
   color: #f8f9fe;
   background-color: #172b4d;
@@ -4148,11 +4152,11 @@ input[type="button"].btn-block {
 }
 
 .custom-checkbox .custom-control-input:disabled:checked~.custom-control-label::before {
-  background-color: rgba(94, 114, 228, 0.5);
+  background-color: #00C0E5;
 }
 
 .custom-checkbox .custom-control-input:disabled:indeterminate~.custom-control-label::before {
-  background-color: rgba(94, 114, 228, 0.5);
+  background-color: #00C0E5;
 }
 
 .custom-radio .custom-control-label::before {
@@ -15708,7 +15712,7 @@ a.btn-icon-only {
 }
 
 .custom-checkbox .custom-control-input:checked~.custom-control-label::before {
-  border-color: #5e72e4;
+  border-color: #00C0E5;
 }
 
 .custom-checkbox .custom-control-input:checked~.custom-control-label::after {
@@ -15720,7 +15724,7 @@ a.btn-icon-only {
 }
 
 .custom-checkbox .custom-control-input:disabled:checked::before {
-  border-color: rgba(94, 114, 228, 0.5);
+  border-color: #00C0E5;
 }
 
 .custom-control-label::before {
@@ -15757,7 +15761,7 @@ a.btn-icon-only {
 }
 
 .custom-checkbox .custom-control-input:checked~.custom-control-label::before {
-  border-color: #5e72e4;
+  border-color: #00C0E5;
 }
 
 .custom-checkbox .custom-control-input:checked~.custom-control-label::after {
@@ -15769,7 +15773,7 @@ a.btn-icon-only {
 }
 
 .custom-checkbox .custom-control-input:disabled:checked::before {
-  border-color: rgba(94, 114, 228, 0.5);
+  border-color: #00C0E5;
 }
 
 .custom-radio .custom-control-input~.custom-control-label {

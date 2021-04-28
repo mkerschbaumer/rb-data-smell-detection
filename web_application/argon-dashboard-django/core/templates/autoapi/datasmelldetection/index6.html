@@ -1,36 +1,36 @@
+{% extends 'layouts/base.html' %}
 
-<!DOCTYPE html>
+{% block title %} Dashboard {% endblock title %}
 
-<html>
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>datasmelldetection &#8212; datasmelldetection  documentation</title>
-    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
-    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-    <script src="../../_static/jquery.js"></script>
-    <script src="../../_static/underscore.js"></script>
-    <script src="../../_static/doctools.js"></script>
-    <script src="../../_static/language_data.js"></script>
-    <link rel="index" title="Index" href="../../genindex.html" />
-    <link rel="search" title="Search" href="../../search.html" />
-   
-  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
-  
-  
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}{% endblock stylesheets %}
 
-  </head><body>
-  
+{% block content %}
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
+    <!-- Header -->
+    <div class="header bg-gradient-primary pb-8 pt-5 pt-md-8">
+      <div class="container-fluid">
+        <div class="header-body">
           
+        </div>
+      </div>
+    </div>
 
-          <div class="body" role="main">
+    <div class="container-fluid mt--7">
+
+      <div class="row">
+        <div class="col">
+          <div class="card shadow">
+            <div class="card-header bg-transparent">
+              <h3 class="mb-0">Upload a .csv file to detect data smells</h3>
+            </div>
+            <div class="card-body">
+              <div class="document">
+                <div class="documentwrapper">
+                  <div class="bodywrapper">
+                    
+          
+                    <div class="body" role="main">
             
   <div class="section" id="module-datasmelldetection">
 <span id="datasmelldetection"></span><h1><a class="reference internal" href="#module-datasmelldetection" title="datasmelldetection"><code class="xref py py-mod docutils literal notranslate"><span class="pre">datasmelldetection</span></code></a><a class="headerlink" href="#module-datasmelldetection" title="Permalink to this headline">¶</a></h1>
@@ -38,9 +38,9 @@
 <h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">¶</a></h2>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="core/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">datasmelldetection.core</span></code></a><ul>
-<li class="toctree-l2"><a class="reference internal" href="core/datasmells/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">datasmelldetection.core.datasmells</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="core/detector/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">datasmelldetection.core.detector</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="core/index5.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">datasmelldetection.core</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="core/datasmells/index3.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">datasmelldetection.core.datasmells</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="core/detector/index4.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">datasmelldetection.core.detector</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -50,7 +50,7 @@
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="_version/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">datasmelldetection._version</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="_version/index2.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">datasmelldetection._version</span></code></a></li>
 </ul>
 </div>
 </div>
@@ -91,7 +91,7 @@
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-<h1 class="logo"><a href="../../index.html">datasmelldetection</a></h1>
+<h1 class="logo"><a href="../../documentation.html">datasmelldetection</a></h1>
 
 
 
@@ -105,7 +105,7 @@
 <div class="relations">
 <h3>Related Topics</h3>
 <ul>
-  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../../documentation.html">Documentation overview</a><ul>
   </ul></li>
 </ul>
 </div>
@@ -121,30 +121,29 @@
 <script>$('#searchbox').show(0);</script>
 
 
+</div>
+</div>
+<div class="clearer"></div>
+</div>
+<div class="footer">
+&copy;2021, Martin Kerschbaumer.
 
+|
+Powered by <a href="http://sphinx-doc.org/">Sphinx 3.3.1</a>
+&amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
 
+</div>
 
+</div>
+</div>
+</div>
+</div>
 
+{% include "includes/footer.html" %}
 
+</div>
 
-        </div>
-      </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="footer">
-      &copy;2021, Martin Kerschbaumer.
-      
-      |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.3.1</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
-      
-      |
-      <a href="../../_sources/autoapi/datasmelldetection/index.rst.txt"
-          rel="nofollow">Page source</a>
-    </div>
+{% endblock content %}
 
-    
-
-    
-  </body>
-</html>
+<!-- Specific JS goes HERE --> 
+{% block javascripts %}{% endblock javascripts %}

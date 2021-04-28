@@ -28,7 +28,7 @@ class DetectedSmell(models.Model):
     belonging_file = models.ForeignKey(File, on_delete=models.CASCADE) #try if possible without line
     belonging_column = models.ForeignKey(Column, on_delete=models.CASCADE)
 
-#class Parameter(models.Model):
-#    name = models.CharField(max_length=255, primary_key=True)
-#    value = models.FloatField()
-#    belonging_file = models.ManyToManyField(SmellType)    
+class Parameter(models.Model):
+    name = models.CharField(max_length=255, primary_key=True)
+    value = models.FloatField()
+    belonging_file = models.ManyToManyField(SmellType)    

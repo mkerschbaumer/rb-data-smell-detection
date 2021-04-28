@@ -111,6 +111,7 @@
               <h3 class="mb-0">Smell Results By Column Names</h3>
             </div>
             <div class="card-body">
+              {% if not delete_message %}
               <p>Click on the column you wish to view.</p>
               <div class="nav-wrapper">
                 <ul class="nav nav-pills nav-fill flex-column flex-md-row" id="tabs-icons-text" role="tablist">
@@ -177,13 +178,34 @@
                           {% endfor %}
                       </div>
                       <br><br>
-                      <a href="/">
-                        <div style="text-align: right;">
-                          <div class="btn btn-primary">
-                              Upload another file
-                          </div>
+                      {% endif %}
+                      {% if delete_message %}
+                      <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <span class="alert-inner--icon"><i class="ni ni-like-2"></i></span>
+                        <span class="alert-inner--text"><strong>Success!</strong>{{ delete_message }}</span>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      {% endif %}
+                      {{no_file}}
+                      <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                      <div>
+                        <div style="float: left;">
+                          <button class="btn btn-primary" type="submit">Delete result</button>
+                        </div>   
+                        <div style="float: right;"> 
+                          <a href="/">
+                            <div style="text-align: right;">
+                              <div class="btn btn-primary">
+                                  Upload another file
+                              </div>
+                            </div>
+                          </a>
                         </div>
-                      </a>
+                      </div>
+                      </form>
                   </div>
               </div>
             </div>
