@@ -4,3 +4,5 @@ from .expect_column_values_to_not_contain_suspect_sign_smell import \
     ExpectColumnValuesToNotContainSuspectSignSmell
 from .expect_column_values_to_not_contain_integer_as_string_smell import \
     ExpectColumnValuesToNotContainIntegerAsStringSmell
+from .expect_column_values_to_not_contain_floating_point_number_as_string_smell import \
+    ExpectColumnValuesToNotContainFloatingPointNumberAsStringSmell
