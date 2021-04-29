@@ -84,11 +84,43 @@ class ProfilerTestCase:
     columns_by_column_type: Optional[Dict[ProfilerDataType, Set[str]]] = None
 
 
+# Generate data smell configuration testcases which should have 0
+# generated expectations. Any registry used with an empty data smell
+# configuration should have 0 generated expectations. Tests generated
+# by this fixture have the prefix "test_empty_dsc_".
+@pytest.fixture
+def profiler_testcases_empty_data_smell_configuration(
+        pandas_dataset1,
+        expected_column_types_dataset1,
+        data_smell_registry_with_data_smell2,
+        data_smell_registry_empty) -> List[ProfilerTestCase]:
+    testcases: List[ProfilerTestCase] = list()
+
+    registries: Dict[str, Optional[DataSmellRegistry]] = {
+        "none": None,
+        "nonempty": data_smell_registry_with_data_smell2,
+        "empty": data_smell_registry_empty
+    }
+    data_smell_configuration_name: str = "empty"
+    for registry_name, registry in registries.items():
+        testcase: ProfilerTestCase = ProfilerTestCase(
+            dataset=pandas_dataset1,
+            registry=registry,
+            data_smell_configuration={},
+            expected_nr_of_expectations=0,
+            title=f"test_empty_dsc_{registry_name}_registry",
+            columns_by_column_type=expected_column_types_dataset1
+        )
+        testcases.append(testcase)
+
+    return testcases
+
+
 @pytest.fixture
 def profiler_testcases(
-        pandas_dataset1,
-        data_smell_registry_empty) -> List[ProfilerTestCase]:
+        profiler_testcases_empty_data_smell_configuration) -> List[ProfilerTestCase]:
     return [
+        *profiler_testcases_empty_data_smell_configuration
     ]
 
 
