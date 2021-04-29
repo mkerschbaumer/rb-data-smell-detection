@@ -1,5 +1,6 @@
 from typing import Tuple, List
 import pytest
+from copy import deepcopy
 
 # A data smell registry with no smells registered.
 from datasmelldetection.core import DataSmellType
@@ -54,7 +55,7 @@ def data_smell_information2() -> DataSmellInformation:
 @pytest.fixture
 def data_smell_registry_with_data_smell1(data_smell_registry_empty, data_smell_information1) \
         -> DataSmellRegistry:
-    registry = data_smell_registry_empty
+    registry = deepcopy(data_smell_registry_empty)
 
     registry.register(
         metadata=data_smell_information1.metadata,
@@ -69,7 +70,7 @@ def data_smell_registry_with_data_smell1(data_smell_registry_empty, data_smell_i
 def data_smell_registry_with_data_smell2(
         data_smell_registry_with_data_smell1,
         data_smell_information2) -> DataSmellRegistry:
-    registry = data_smell_registry_with_data_smell1
+    registry = deepcopy(data_smell_registry_with_data_smell1)
 
     registry.register(
         metadata=data_smell_information2.metadata,
