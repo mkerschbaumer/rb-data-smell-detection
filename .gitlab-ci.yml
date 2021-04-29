@@ -20,7 +20,7 @@ pytest:
   script:
     - cd data_smell_detection
     - pip install .
-    - pytest . -v
+    - pytest . -vs
 
 mypy:
   stage: test
