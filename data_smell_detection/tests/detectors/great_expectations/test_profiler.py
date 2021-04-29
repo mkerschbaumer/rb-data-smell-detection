@@ -16,6 +16,7 @@ from .fixtures import (
     data_smell_registry_with_data_smell2,
     data_smell_information1,
     data_smell_information2,
+    data_smell_registry_with_data_smell1_information,
     data_smell_registry_with_data_smell2_information
 )
 from .helper_functions import (
