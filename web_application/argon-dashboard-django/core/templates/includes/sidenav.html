@@ -50,11 +50,13 @@
               <i class="ni ni-bullet-list-67 text-info"></i> Documentation
             </a>
           </li>
+          {% if user.is_authenticated %} 
           <li class="nav-item">
             <a class="nav-link {% if 'tables' in segment %} active {% endif %}" href="/saved.html">
               <i class="ni ni-folder-17 text-info"></i> Saved results
             </a>
           </li>
+          {% endif %}
 
           <!-- <li class="nav-item">
             <a class="nav-link {% if 'profile' in segment %} active {% endif %}" href="/profile.html">

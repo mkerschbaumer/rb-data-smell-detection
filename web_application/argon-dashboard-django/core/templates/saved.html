@@ -111,6 +111,9 @@
               <h3 class="mb-0">Smell Results By Column Names</h3>
             </div>
             <div class="card-body">
+              {% if not results %}
+              <p>You haven't detected any smells before.</p>
+              {% else %}
               {% for f, smells in results.items %}
               <h2>{{ f }}</h2><br>
                 {% for column, smell in smells.items %}
@@ -158,9 +161,15 @@
 
                   
               <br><br>
+              <div style="text-align: right;">
+                <form id="test" method="post">
+                  {% csrf_token %}
+                <button class="btn btn-primary" name="del" value={{f}} type="submit">Delete result</button>
+                </form>
+              </div>
               <hr>
               {% endfor %}    
-              
+              {% endif %}
           </div>
         </div>
       </div>
