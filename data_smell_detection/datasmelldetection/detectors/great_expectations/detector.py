@@ -43,7 +43,9 @@ class GreatExpectationsDetector(ConfigurableDetector):
             dataset: GreatExpectationsDataset,
             profiler: DatasetProfiler,
             registry: DataSmellRegistry,
-            converter: DetectionResultConverter):
+            converter: DetectionResultConverter,
+            configuration: Optional[Configuration]):
+        super(GreatExpectationsDetector, self).__init__(configuration)
         self.context = context
         self.dataset = dataset
         self.profiler = profiler
@@ -105,10 +107,21 @@ class GreatExpectationsDetector(ConfigurableDetector):
         self._converter = new_context
 
     def detect(self) -> Iterable[ExtendedDetectionResult]:
+        # Use the data_smell_configuration key if it was provided by the
+        # user.
+        if self.configuration is not None and \
+                isinstance(self.configuration, GreatExpectationsConfiguration):
+            configuration_: GreatExpectationsConfiguration = self.configuration
+            data_smell_configuration: Optional[Dict[DataSmellType, Dict[str, Any]]] = \
+                configuration_.data_smell_configuration
+        else:
+            data_smell_configuration = None
+
         suite, _ = self.profiler.profile(
             data_asset=self.dataset.get_great_expectations_dataset(),
             profiler_configuration={
-                "registry": self.registry
+                "registry": self.registry,
+                "data_smell_configuration": data_smell_configuration
             }
         )
 
@@ -148,6 +161,8 @@ class DetectorBuilder:
         # ExpectationSuiteValidationResult objects to a list of
         # DetectionResult objects.
         self._converter: Optional[DetectionResultConverter] = None
+        # The configuration to use.
+        self._configuration: Optional[Configuration] = None
 
     def set_context(self, context: DataContext):
         self._context = context
@@ -167,6 +182,10 @@ class DetectorBuilder:
 
     def set_converter(self, converter: DetectionResultConverter):
         self._converter = converter
+        return self
+
+    def set_configuration(self, configuration: Configuration):
+        self._configuration = configuration
         return self
 
     def build(self) -> GreatExpectationsDetector:
@@ -192,5 +211,6 @@ class DetectorBuilder:
             dataset=self._dataset,
             registry=registry,
             profiler=profiler,
-            converter=converter
+            converter=converter,
+            configuration=self._configuration
         )
