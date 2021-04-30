@@ -191,14 +191,14 @@ sup {
 }
 
 a {
-  color: #5e72e4;
+  color: #00C0E5;
   text-decoration: none;
   background-color: transparent;
   -webkit-text-decoration-skip: objects;
 }
 
 a:hover {
-  color: #233dd2;
+  color: #00b1d1;
   text-decoration: none;
 }
 
@@ -3722,7 +3722,7 @@ input[type="button"].btn-block {
 .dropdown-item:active {
   color: #fff;
   text-decoration: none;
-  background-color: #5e72e4;
+  background-color: #11CDEF;
 }
 
 .dropdown-item.disabled,
@@ -4076,7 +4076,7 @@ input[type="button"].btn-block {
 
 .custom-control-input:checked~.custom-control-label::before {
   color: #fff;
-  background-color: #5e72e4;
+  background-color: #11cdef;
   box-shadow: none;
 }
 
@@ -4086,7 +4086,7 @@ input[type="button"].btn-block {
 
 .custom-control-input:active~.custom-control-label::before {
   color: #fff;
-  background-color: #5e72e4;
+  background-color: #11cdef;
   box-shadow: none;
 }
 
@@ -13850,7 +13850,7 @@ button.section-darker:focus {
 }
 
 .bg-gradient-default {
-  background: linear-gradient(87deg, #172b4d 0, #1a174d 100%) !important;
+  background: linear-gradient(87deg, #129cb5 0, #13b6d3 100%) !important;
 }
 
 .bg-gradient-white {
