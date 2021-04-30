@@ -29,7 +29,8 @@ from datasmelldetection.core.detector import DetectionStatistics, DetectionResul
 from datasmelldetection.core.datasmells import DataSmellType
 
 
-#dummy_user = User.objects.create(username="dummy_user")
+dummy_user, c = User.objects.get_or_create(username="dummy_user")
+
 
 def index(request):
     context = {}
@@ -57,7 +58,7 @@ def pages(request):
 
     except:
     
-        html_template = loader.get_template( 'page-500.html' )
+        html_template = loader.get_template( 'page-403.html' )
         return HttpResponse(html_template.render(context, request))
 
 
@@ -148,18 +149,23 @@ def smells(request):
 
     if request.method == 'POST':
       # Selected smells and column names
-      some_var = request.POST.getlist('smells')  
-      context['list_smells'] = some_var
+      smells_list = request.POST.getlist('smells')  
       columns = request.POST.getlist('columns')
-      context['list_columns'] = columns
 
-      # Delete columns which should not be detected according to user's customization
-      columns_to_delete = []
-      for c in column_names_by_id:
-          if c.column_name not in columns:
-              columns_to_delete.append(c.id)
-      for c in columns_to_delete:
-          Column.objects.get(id=c).delete()
+      if smells_list and columns:
+        context['list_smells'] = smells_list
+        context['list_columns'] = columns
+    
+        # Delete columns which should not be detected according to user's customization
+        columns_to_delete = []
+        for c in column_names_by_id:
+            if c.column_name not in columns:
+                columns_to_delete.append(c.id)
+        for c in columns_to_delete:
+            Column.objects.get(id=c).delete()
+
+      else:
+        context['message'] = 'Select smells AND columns!'      
      
     return render(request, 'customize.html', context)
 
@@ -202,8 +208,13 @@ def result(request):
 
     return render(request, 'results.html', context)
 
+@login_required
 def saved(request):
-    print("hiii")
+
+    if request.method == 'POST':
+        file_name = request.POST.get('del')
+        File.objects.get(path_to_file=file_name).delete()
+    
     # Some presettings for data smell detection
     context = {}
     outer = os.path.join(os.getcwd(), "../")
@@ -219,11 +230,12 @@ def saved(request):
     else:
         current_user_id = dummy_user.id
 
-    files = File.objects.all().filter(user_id=current_user_id)
+    files = File.objects.all().filter(user_id=current_user_id).order_by('-uploaded_time')
+    
     results = {}
     for f in files:
-        all_smells_for_file = list(DetectedSmell.objects.all().filter(belonging_file=f)) #.values_list('id', flat=True)
-        all_columns = list(Column.objects.all().filter(belonging_file=f)) #.values_list('column_name', flat=True)
+        all_smells_for_file = list(DetectedSmell.objects.all().filter(belonging_file=f))
+        all_columns = list(Column.objects.all().filter(belonging_file=f))
         sorted_results = {}
         for c in all_columns:
             sorted_results[c] = []
@@ -231,7 +243,6 @@ def saved(request):
                 if s.belonging_column.column_name == c.column_name:
                     sorted_results[c].append(s)
         results[f.path_to_file] = sorted_results
-    print(results)
     context['results'] = results
 
     return render(request, 'saved.html', context)

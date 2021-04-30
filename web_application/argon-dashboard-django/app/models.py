@@ -31,4 +31,4 @@ class DetectedSmell(models.Model):
 class Parameter(models.Model):
     name = models.CharField(max_length=255, primary_key=True)
     value = models.FloatField()
-    belonging_file = models.ManyToManyField(SmellType)    
+    belonging_smell = models.ManyToManyField(SmellType)    
