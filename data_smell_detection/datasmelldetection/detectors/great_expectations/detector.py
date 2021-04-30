@@ -1,4 +1,5 @@
-from typing import Set, Optional, Iterable
+from dataclasses import dataclass
+from typing import Set, Optional, Iterable, Dict, Any
 from great_expectations.profile.base import DatasetProfiler
 from great_expectations import DataContext
 from great_expectations.validator.validator import ExpectationSuiteValidationResult
@@ -6,7 +7,7 @@ from great_expectations.validator.validator import ExpectationSuiteValidationRes
 from datasmelldetection.core.datasmells import DataSmellType
 from datasmelldetection.core.detector import (
     ConfigurableDetector,
-    DetectionResult
+    DetectionResult, Configuration
 )
 from .dataset import GreatExpectationsDataset
 from .datasmell import DataSmellRegistry, default_registry
@@ -16,6 +17,23 @@ from .converter import (
     StandardResultConverter
 )
 from .profiler import DataSmellAwareProfiler
+
+
+@dataclass
+class GreatExpectationsConfiguration(Configuration):
+    """
+    A configuration class which controls how data smell detection is performed
+    by the :class:`.GreatExpectationsDetector`.
+    """
+
+    data_smell_configuration: Optional[Dict[DataSmellType, Dict[str, Any]]]
+    """
+    Data smell specific kwargs which should be used for data smell detection.
+    Kwargs can be seen as parameters to configure how a data smell should be
+    detected. This field is meant to be passed to the
+    :class:`.DataSmellAwareProfiler` as the "data_smell_configuration"
+    configuration value.
+    """  # pylint: disable=W0105
 
 
 class GreatExpectationsDetector(ConfigurableDetector):
