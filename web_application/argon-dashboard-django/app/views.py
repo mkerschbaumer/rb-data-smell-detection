@@ -153,7 +153,7 @@ def smells(request):
       columns = request.POST.getlist('columns')
 
       if smells_list and columns:
-        context['list_smells'] = smells_list
+        context['list_smells'] = [s.split('.')[1].replace("_", " ") for s in smells_list]
         context['list_columns'] = columns
     
         # Delete columns which should not be detected according to user's customization
@@ -188,7 +188,7 @@ def result(request):
     try:
         # Get file for detection
         file1 = File.objects.filter(user_id=current_user_id).latest("uploaded_time")
-
+        
         dataset = manager.get_dataset(file1.path_to_file)
         column_names = [c.column_name for c in list(Column.objects.all().filter(belonging_file=file1))]
         detector = DetectorBuilder(context=con, dataset=dataset).build()
@@ -196,9 +196,10 @@ def result(request):
         # Detect smells and sort result
         detected_smells = detector.detect()
         sorted_results = sort_results(detected_smells, column_names)
+
         context['column_names'] = column_names
         context['results'] = sorted_results
-
+        context['file'] = file1.path_to_file
         if request.method == 'POST':
             File.objects.get(path_to_file=file1.path_to_file).delete()
             context['delete_message'] = 'Result deleted and not viewable in Saved Results.'
@@ -260,4 +261,3 @@ def precheck_columns(columns):
     if "Unnamed: 0" in columns:
         columns.remove("Unnamed: 0")
     return sorted(columns)
-
