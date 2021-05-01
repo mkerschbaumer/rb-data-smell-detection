@@ -13,7 +13,7 @@
               <div class="media align-items-center">
                 <div class="media-body ml-2 d-none d-lg-block">
                   <span class="mb-0 text-sm  font-weight-bold">
-                    {{ request.user.username }}
+                    <div class="username"><p data-letters={{initials}}>{{ request.user.username }}</p></div>
                   </span>
                 </div>
               </div>
@@ -37,8 +37,7 @@
         {% else %}
         <ul class="navbar-nav align-items-center d-none d-md-flex">
           <a href="{% url 'login' %}" class="nav-link">
-            <i class="ni ni-user-run"></i>
-            <span>Login</span>
+            <div class="username"><p data-letters-grey='-'> Login</p></div>
           </a>
         </ul>
         {% endif %}

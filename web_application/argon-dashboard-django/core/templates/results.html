@@ -112,6 +112,7 @@
             </div>
             <div class="card-body">
               {% if not delete_message %}
+              <h2>{{ file }}</h2><br>
               <p>Click on the column you wish to view.</p>
               <div class="nav-wrapper">
                 <ul class="nav nav-pills nav-fill flex-column flex-md-row" id="tabs-icons-text" role="tablist">
@@ -146,7 +147,7 @@
                                               Faulty Element Count
                                           </th>
                                           <th scope="col">
-                                              Faulty Element List
+                                              Faulty Element Overview
                                           </th>
                                       </tr>
                                     </thead>
@@ -193,7 +194,30 @@
                         {% csrf_token %}
                       <div>
                         <div style="float: left;">
-                          <button class="btn btn-primary" type="submit">Delete result</button>
+                          {% if user.is_authenticated %}
+                          <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#exampleModal">Delete result</button>
+                          <!-- Modal -->
+                          <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <h5 class="modal-title" id="exampleModalLabel">Confirm Deletion</h5>
+                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                  </button>
+                                </div>
+                                <div class="modal-body">
+                                  Delete the file '{{file}}' and it's detection results? <br>
+                                  <p>Detection result will not be viewable in Saved Results.</p>
+                                </div>
+                                <div class="modal-footer">
+                                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                  <button name="del" value={{file}} type="submit" class="btn btn-primary">Delete</button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          {% endif %}
                         </div>   
                         <div style="float: right;"> 
                           <a href="/">
