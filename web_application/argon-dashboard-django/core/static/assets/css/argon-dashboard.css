@@ -471,8 +471,7 @@ h6,
 hr {
   margin-top: 2rem;
   margin-bottom: 2rem;
-  border: 0;
-  border-top: 1px solid rgba(0, 0, 0, 0.1) !important;
+  border: 1px solid rgba(0, 0, 0, 0.1) !important;
 }
 
 small,
@@ -6239,6 +6238,7 @@ button.close {
   position: relative;
   flex: 1 1 auto;
   padding: 1.5rem;
+  text-align: left !important;
 }
 
 .modal-footer {
@@ -20879,6 +20879,41 @@ div.card-body .dragdrop {
 }
 .box.has-advanced-upload .box__dragndrop {
   display: inline;
+}
+
+[data-letters]:before {
+  content: attr(data-letters);
+  display: inline-block;
+  font-size: 1em;
+  width: 2.5em;
+  height: 2.5em;
+  line-height: 2.5em;
+  text-align: center;
+  border-radius: 50%;
+  background: #00C0E5;
+  vertical-align: middle;
+  margin-right: 1em;
+  color: white;
+  font-weight: bold;
+}
+
+[data-letters-grey]:before {
+  content: attr(data-letters-grey);
+  display: inline-block;
+  font-size: 1em;
+  width: 2.5em;
+  height: 2.5em;
+  line-height: 2.5em;
+  text-align: center;
+  border-radius: 50%;
+  background: #878787;
+  vertical-align: middle;
+  margin-right: 1em;
+  color: white;
+  font-weight: bold;
+}
+.username {
+  color: #878787;
 }
 
 
