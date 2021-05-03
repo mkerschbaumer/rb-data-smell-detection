@@ -11,93 +11,6 @@
     <div class="header bg-gradient-primary pb-8 pt-5 pt-md-8">
       <div class="container-fluid">
         <div class="header-body">
-          <!-- Card stats -->
-          <div class="row">
-            <div class="col-xl-3 col-lg-6">
-              <div class="card-grey card-stats mb-4 mb-xl-0">
-                <div class="card-body">
-                  <div class="row">
-                    <div class="col">
-
-                      <span class="h2 font-weight-bold mb-0">Upload file</span>
-                    </div>
-                    <div class="col-auto">
-                      <div class="icon icon-shape bg-upload text-white rounded-circle shadow">
-                        <i class="ni ni-cloud-upload-96"></i>
-                      </div>
-                    </div>
-                  </div>
-                  
-                </div>
-              </div>
-            </div>
-
-            <div class="col-xl-1 col-lg-6">
-              <div class="card-transparent card-stats mb-4 mb-xl-0">
-                <div class="card-body-transparent">
-                  <div class="row">
-                    
-                    <div class="col-auto">
-                      <div class="icon icon-shape bg-dark text-white rounded-circle shadow">
-                        <i class="ni ni-bold-right"></i>
-                      </div>
-                    </div>
-                  </div>
-                  
-                </div>
-              </div>
-            </div>
-            
-            <div class="col-xl-4 col-lg-6">
-              <div class="card-grey card-stats mb-4 mb-xl-0">
-                <div class="card-body">
-                  <div class="row">
-                    <div class="col">
-                      <span class="h2 font-weight-bold mb-0">Customize</span>
-                    </div>
-                    <div class="col-auto">
-                      <div class="icon icon-shape bg-customize text-white rounded-circle shadow">
-                        <i class="ni ni-ui-04"></i>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="col-xl-1 col-lg-6">
-              <div class="card-transparent card-stats mb-4 mb-xl-0">
-                <div class="card-body-transparent">
-                  <div class="row">
-                    
-                    <div class="col-auto">
-                      <div class="icon icon-shape bg-dark text-white rounded-circle shadow">
-                        <i class="ni ni-bold-right"></i>
-                      </div>
-                    </div>
-                  </div>
-                  
-                </div>
-              </div>
-            </div>
-
-            <div class="col-xl-3 col-lg-6">
-              <div class="card card-stats mb-4 mb-xl-0">
-                <div class="card-body">
-                  <div class="row">
-                    <div class="col">
-                      <span class="h2 font-weight-bold mb-0">Results</span>
-                    </div>
-                    <div class="col-auto">
-                      <div class="icon icon-shape bg-results text-white rounded-circle shadow">
-                        <i class="ni ni-chart-bar-32"></i>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </div>
@@ -112,7 +25,7 @@
             </div>
             <div class="card-body">
               {% if not results %}
-              <p>You haven't detected any smells before.</p>
+              <p>There aren't any saved detection results.</p>
               {% else %}
               {% for f, smells in results.items %}
               <h2>{{ f }}</h2><br>
