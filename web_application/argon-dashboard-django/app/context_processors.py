@@ -7,7 +7,7 @@ def get_initials(request):
         return { 'initials': '-'} 
 
     elif len(current_user_name) > 0:
-        return { 'initials': current_user_name[0]}
+        return { 'initials': request.user.first_name[0]+request.user.last_name[0]}
     
     else:
         return ''

@@ -11,7 +11,7 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from django.forms.utils import ErrorList
 from django.http import HttpResponse
-from .forms import LoginForm, SignUpForm
+from .forms import LoginForm, SignUpForm, UserUpdateForm
 from django.contrib.auth import logout
 from django.contrib import messages
 
@@ -47,8 +47,13 @@ def register_user(request):
             form.save()
             username = form.cleaned_data.get("username")
             raw_password = form.cleaned_data.get("password1")
+            firstname = form.cleaned_data.get("firstname")
+            lastname = form.cleaned_data.get("lastname")
             user = authenticate(username=username, password=raw_password)
-
+            new_user = User.objects.get(username=username)
+            new_user.first_name = firstname
+            new_user.last_name = lastname
+            new_user.save()
             msg     = 'User created - please <a href="/login">login</a>.'
             success = True
             
@@ -64,3 +69,18 @@ def register_user(request):
 def logout_view(request):
     logout(request)
     return render(request, "accounts/logout.html", {'some_flag': True})
+
+def profile(request):
+    msg = None
+
+    if request.method == "POST":
+        if request.POST.get('close') == 'close':
+            form = UserUpdateForm(instance=request.user)
+        else:
+            form = UserUpdateForm(request.POST, instance=request.user)
+
+            if form.is_valid():
+                form.save()
+    else:
+        form = UserUpdateForm(instance=request.user)
+    return render(request, "profile.html", {"form": form, "msg" : msg})
