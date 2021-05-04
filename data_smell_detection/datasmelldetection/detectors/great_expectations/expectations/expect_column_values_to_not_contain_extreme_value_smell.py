@@ -53,7 +53,9 @@ class ExpectColumnValuesToNotContainExtremeValueSmell(ColumnMapExpectation, Data
         assert configuration is not None
         assert "double_sided" not in configuration.kwargs, "double_sided cannot be altered"
         if "threshold" in configuration.kwargs:
-            assert configuration.kwargs["threshold"].isdigit(), "Threshold must be a positive integer."
+            threshold = configuration.kwargs["threshold"]
+            assert isinstance(threshold, int) and threshold > 0, \
+                "Threshold must be a positive integer."
 
 
 expectation = ExpectColumnValuesToNotContainExtremeValueSmell()
