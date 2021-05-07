@@ -66,7 +66,7 @@ class ProfilerTestCase:
     dataset: DataAsset
 
     # The data smell registry which is used for profiling.
-    registry: Optional[DataSmellRegistry]
+    registry: DataSmellRegistry
 
     # The data smell configuration which contains data smell specific kwargs
     # which should be used by the profiler.
@@ -99,12 +99,10 @@ def profiler_testcases_empty_data_smell_configuration(
         data_smell_registry_empty) -> List[ProfilerTestCase]:
     testcases: List[ProfilerTestCase] = list()
 
-    registries: Dict[str, Optional[DataSmellRegistry]] = {
-        "none": None,
+    registries: Dict[str, DataSmellRegistry] = {
         "nonempty": data_smell_registry_with_data_smell2,
         "empty": data_smell_registry_empty
     }
-    data_smell_configuration_name: str = "empty"
     for registry_name, registry in registries.items():
         testcase: ProfilerTestCase = ProfilerTestCase(
             dataset=pandas_dataset1,
@@ -328,38 +326,3 @@ class TestDataSmellAwareProfiler:
                 process_testcase(testcase)
             except AssertionError as e:
                 raise AssertionError(f"During execution of testcase {testcase.title}: {e}")
-
-    def test_no_data_smell_registry(self, pandas_dataset1):
-        # Ensure that the default_registry is used as a fallback if no
-        # registry is provided.
-
-        # Set configuration to None and perform profiling
-        profiler_configuration_none = DataSmellAwareProfiler()
-        expectation_suite_none, _ = profiler_configuration_none.profile(
-            data_asset=pandas_dataset1,
-            profiler_configuration=None
-        )
-
-        # Set configuration to empty dictionary and perform profiling.
-        # Purpose: Provide a configuration but don't provide a registry.
-        profiler_configuration_empty = DataSmellAwareProfiler()
-        expectation_suite_empty, _ = profiler_configuration_empty.profile(
-            data_asset=pandas_dataset1,
-            profiler_configuration={}
-        )
-
-        # Explicitly provide the default registry.
-        profiler_configuration_default_registry = DataSmellAwareProfiler()
-        expectation_suite_default, _ = profiler_configuration_default_registry.profile(
-            data_asset=pandas_dataset1,
-            profiler_configuration={"registry": default_registry}
-        )
-
-        # Ensure both cases with no explicit data smell registry set
-        # produce the same expectations and column type results.
-        assert expectation_suite_none.expectations == expectation_suite_default.expectations
-        assert expectation_suite_none.meta['columns'] == expectation_suite_default.meta['columns']
-        assert expectation_suite_empty.expectations == expectation_suite_default.expectations
-        assert expectation_suite_empty.meta['columns'] == expectation_suite_default.meta['columns']
-        # Ensure at least one expectation has been generated.
-        assert len(expectation_suite_default.expectations) > 0
