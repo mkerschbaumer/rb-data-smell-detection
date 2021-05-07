@@ -63,6 +63,13 @@ class DataSmellAwareProfiler(BasicDatasetProfilerBase):
         which only contains the relevant data smells. Data smells which are
         not registered in the provided data smell registry may be provided but
         are ignored.
+
+    column_names:
+        A set of type Set[str]. It stores column names which should be
+        processed. If this key is provided then profiling is restricted
+        to the specified columns. Columns which are specified in the set but
+        are not present in a dataset to profile are ignored. If this key is not
+        provided it is assumed that all columns should be processed.
     """
 
     @classmethod
@@ -94,6 +101,13 @@ class DataSmellAwareProfiler(BasicDatasetProfilerBase):
         df.set_config_value("interactive_evaluation", False)
 
         columns: List[str] = df.get_table_columns()
+        if configuration is not None and \
+                "column_names" in configuration and \
+                isinstance(configuration["column_names"], set):
+            # The user specified column names. Assume that only the specified
+            # columns should be processed.
+            specified_column_names = configuration["column_names"]
+            columns = [x for x in columns if x in specified_column_names]
 
         # Store information about the column types (needed for analysis)
         meta_columns: Dict[str, Dict[str, str]] = {}
