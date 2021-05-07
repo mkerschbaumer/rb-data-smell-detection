@@ -29,6 +29,7 @@ class DetectedSmell(models.Model):
     belonging_column = models.ForeignKey(Column, on_delete=models.CASCADE)
 
 class Parameter(models.Model):
-    name = models.CharField(max_length=255, primary_key=True)
+    name = models.CharField(max_length=255)
     value = models.FloatField()
-    belonging_smell = models.ManyToManyField(SmellType)    
+    data_type = models.CharField(max_length=255)
+    belonging_smell = models.ForeignKey(SmellType, on_delete=models.CASCADE)    
