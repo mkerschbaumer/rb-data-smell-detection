@@ -86,6 +86,9 @@ class ProfilerTestCase:
     # expectations. The column names are stored as the dict values.
     columns_by_column_type: Optional[Dict[ProfilerDataType, Set[str]]] = None
 
+    # If provided, the set of column names which should be processed.
+    column_names: Optional[Set[str]] = None
+
 
 # Generate data smell configuration testcases which should have 0
 # generated expectations. Any registry used with an empty data smell
@@ -288,7 +291,8 @@ class TestDataSmellAwareProfiler:
             profiler = DataSmellAwareProfiler()
             configuration = {
                 "registry": testcase.registry,
-                "data_smell_configuration": testcase.data_smell_configuration
+                "data_smell_configuration": testcase.data_smell_configuration,
+                "column_names": testcase.column_names
             }
 
             expectation_suite, _ = profiler.profile(
