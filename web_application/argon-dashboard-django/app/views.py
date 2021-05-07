@@ -172,7 +172,6 @@ def smells(request):
           temp = dict(values)
           for v in values:
             smell_db = SmellType.objects.get(smell_type=v.value)
-            print(smell_db)
             parameter_list = list(Parameter.objects.all().filter(belonging_smell=smell_db))
             form_dict = {}
             for p in parameter_list:
@@ -185,21 +184,6 @@ def smells(request):
             temp[v] = dict(form_dict)
           forms[k] = dict(temp)
 
-      #parameters = request.POST.getlist('parameters')
-      #parameters = [s for s in parameters if s != ""]
-      #print(smells_list)
-      #all_smells = ['DataSmellType.'+s.name for s in all_smells_list if s in [DataSmellType(str(a.smell_type)) for a in smells]]
-      #print("-------------")
-      #print(all_smells)
-      #smell_parameter_dict = dict(zip(all_smells, parameters))
-      #print(smell_parameter_dict)
-
-
-      #print(smell_parameter_dict)
-      #smell_parameter_dict = {'DataSmellType.'+DataSmellType(i).name:j for i,j in smell_parameter_dict.items()}
-      #smell_parameter_dict = {i:j for i,j in smell_parameter_dict.items() if i in smells_list}
-      #print(smell_parameter_dict)
-    
       if smells_list and columns:
         context['list_smells'] = [s.split('.')[1].replace("_", " ") for s in smells_list]
         context['list_columns'] = columns
@@ -212,6 +196,10 @@ def smells(request):
         for c in columns_to_delete:
             Column.objects.get(id=c).delete()
 
+        smells_to_delete = []
+        for s in list(smells):
+            if 'DataSmellType.'+s.smell_type.replace(" ", "_").upper() not in smells_list:
+                s.belonging_file.remove(file1)
       else:
         context['message'] = 'Select smells AND columns!'    
     else:
@@ -220,7 +208,6 @@ def smells(request):
           temp = dict(values)
           for v in values:
             smell_db = SmellType.objects.get(smell_type=v.value)
-            print(smell_db)
             parameter_list = list(Parameter.objects.all().filter(belonging_smell=smell_db))
             form_dict = {}
             for p in parameter_list:
@@ -254,7 +241,25 @@ def result(request):
         
         dataset = manager.get_dataset(file1.path_to_file)
         column_names = [c.column_name for c in list(Column.objects.all().filter(belonging_file=file1))]
-        detector = DetectorBuilder(context=con, dataset=dataset).build()
+        smells = list(SmellType.objects.all().filter(belonging_file=file1))
+        ds_config = {}
+        for s in smells:
+            pars = list(Parameter.objects.all().filter(belonging_smell=s))
+            par_dict = {}
+            for p in pars:
+                par_dict[p.name] = p.value
+
+            temp = DataSmellType(s.smell_type)
+            assert isinstance(temp, DataSmellType)
+            ds_config[temp] = dict(par_dict)
+
+        conf = GreatExpectationsConfiguration(
+            column_names=column_names,
+            data_smell_configuration=ds_config
+        )
+        print(DataSmellType('Suspect Sign Smell'))
+        print(ds_config)
+        detector = DetectorBuilder(context=con, dataset=dataset).set_configuration(conf).build()
 
         # Detect smells and sort result
         detected_smells = detector.detect()

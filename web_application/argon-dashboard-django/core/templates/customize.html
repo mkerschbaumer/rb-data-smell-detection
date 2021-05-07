@@ -134,17 +134,58 @@
               <h3 class="mb-0">Customize your detection</h3>
             </div>
             <div class="card-body">
-              <form id="test" method="post">
+              <form id="test" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
+
               <div class="table-responsive" style="overflow: auto;">
                 <div>
                 <h4>Choose the type(s) of data smell that sould be detected</h4><br>
+
+                {% if list_smells  %}
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                  <span class="alert-inner--icon"><i class="ni ni-like-2"></i></span>
+                  <span class="alert-inner--text"><strong>Success!</strong><br>Successfully selected the following smells: {{ list_smells }}<br> Successfully selected the following columns: {{ list_columns }}
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <a href="/results.html">
+                  <div style="text-align: right;">
+                    <div class="btn btn-primary">
+                        Next Step
+                    </div>
+                  </div>
+                </a>
+              {% elif message %}
+              <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <span class="alert-inner--icon"><i class="ni ni-fat-delete"></i></span>
+                <span class="alert-inner--text"><strong></strong><br>{{ message }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              {% endif %}
+
+                <br>
                 <table class="table align-items-center">
-                    <tbody class="list">
-                        {% for key, value in smells.items %}
+                    {% for key, value in forms.items %}
+                      <thead class="thead-light">
                         <tr>
-                          <th>{{ key }}</th>
-                          {% for v in value %}
+                            <th scope="col">
+                                {{key}}
+                            </th>
+                            {% for v, parameters in value.items %}
+                            <th scope="col">
+                            </th>
+                            
+                            {% endfor %}
+                            
+                        </tr>
+                    </thead>
+                    <tbody class="list">
+                        
+                        <tr>
+                          {% for v, parameters in value.items %}
                             <td scope="row" class="name">
                                 <div class="media align-items-center">
                                     <div class="media-body">
@@ -153,6 +194,10 @@
                                             <input class="custom-control-input" id={{v}} type="checkbox" value={{v}} name="smells"/>
                                             <label class="custom-control-label" for={{v}}>{{ v.value }}</label>
                                           </div>
+                                          {% for name, parameter in parameters.items %}
+                                          {{name}}: {{parameter.value}}
+                                          <br>
+                                          {% endfor %}
                                         </span>
                                     </div>
                                 </div>
@@ -160,11 +205,12 @@
                           {% endfor %}  
                             
                         </tr>
-                        {% endfor %}
+                        
                         
                     </tbody>
+                    {% endfor %}
                 </table>
-                <br><br><h4>Choose the columns which should be detected</h4><br>
+                <br><br><h4 id="here">Choose the columns which should be detected</h4><br>
                 <table class="table align-items-center">
                   <tbody class="list">
                       <tr>
@@ -191,32 +237,31 @@
             </div>
             <br>
             {% if list_smells  %}
-              <div class="alert alert-success alert-dismissible fade show" role="alert">
-                <span class="alert-inner--icon"><i class="ni ni-like-2"></i></span>
-                <span class="alert-inner--text"><strong>Success!</strong><br>Successfully selected the following smells: {{ list_smells }}<br> Successfully selected the following columns: {{ list_columns }}
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <a href="/results.html">
-                <div style="text-align: right;">
-                  <div class="btn btn-primary">
-                      Next Step
+            {% elif message %}
+            <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#exampleModal">Customize</button>
+            {% else %}
+            <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#exampleModal">Customize</button>
+            {% endif %}
+            <!-- Modal -->
+            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Confirm Customization</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    Are you sure you want the chosen parameters?
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                    <button name="del" type="submit" class="btn btn-primary">Yes</button>
                   </div>
                 </div>
-              </a>
-            {% elif message %}
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-              <span class="alert-inner--icon"><i class="ni ni-fat-delete"></i></span>
-              <span class="alert-inner--text"><strong></strong><br>{{ message }}
-              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-              </button>
+              </div>
             </div>
-            <button class="btn btn-primary" type="submit">Customize</button>
-            {% else %}
-            <button class="btn btn-primary" type="submit">Customize</button>
-            {% endif %}
           </form>
             </div>
           </div>
