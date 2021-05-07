@@ -2004,7 +2004,7 @@ table.docutils td, table.docutils th{
 
 .form-control {
   display: block;
-  width: 100%;
+  width: auto !important;
   height: calc(2.75rem + 2px);
   padding: 0.625rem 0.75rem;
   font-size: 1rem;
@@ -18491,7 +18491,8 @@ textarea[resize="horizontal"] {
 .card .table td,
 .card .table th {
   padding-left: 1.5rem;
-  padding-right: 2.5rem;
+  padding-right: 1.5rem;
+  width: auto !important;
 }
 
 p {
@@ -20916,5 +20917,11 @@ div.card-body .dragdrop {
   color: #878787;
 }
 
+.custom-checkbox .custom-control-input ~ .custom-control-label {
+  cursor: pointer;
+  font-size: 0.875rem;
+  color: #00C0E5;
+  font-weight: bold;
+}
 
 /*# sourceMappingURL=dashboard-free.css.map */
