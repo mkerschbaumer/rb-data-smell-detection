@@ -44,7 +44,7 @@ class DataSmellAwareProfiler(BasicDatasetProfilerBase):
         :class:`~datasmelldetection.detectors.great_expectations.datasmell.DataSmellRegistry`
         to use. If this key does not exist or is None, then the default registry (
         :class:`~datasmelldetection.detectors.great_expectations.datasmell.default_registry`
-        ) is used.
+        ) is used. This key must be passed.
 
     data_smell_configuration:
         A dictionary of type Dict[DataSmellType, Dict[str, Any]]. It stores
@@ -74,13 +74,13 @@ class DataSmellAwareProfiler(BasicDatasetProfilerBase):
             expectation_suite_name="profiled_expectation_suite"
         )
 
-        if configuration is None or \
-                "registry" not in configuration or \
-                not isinstance(configuration["registry"], DataSmellRegistry):
-            registry: DataSmellRegistry = default_registry
-        else:
-            # Custom valid data smell registry provided
-            registry = configuration["registry"]
+        # Ensure that a valid data smell registry is passed.
+        assert configuration is not None and \
+            "registry" in configuration and \
+            isinstance(configuration["registry"], DataSmellRegistry), \
+            "Data smell registry is not valid."
+        # TODO: Test assert
+        registry: DataSmellRegistry = configuration["registry"]
 
         # Kwargs to use for each data smell type.
         if configuration is None or \
