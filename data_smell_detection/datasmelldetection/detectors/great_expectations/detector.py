@@ -107,22 +107,25 @@ class GreatExpectationsDetector(ConfigurableDetector):
         self._converter = new_context
 
     def detect(self) -> Iterable[ExtendedDetectionResult]:
-        # Use the data_smell_configuration key if it was provided by the
-        # user.
-        if self.configuration is not None and \
-                isinstance(self.configuration, GreatExpectationsConfiguration):
-            configuration_: GreatExpectationsConfiguration = self.configuration
-            data_smell_configuration: Optional[Dict[DataSmellType, Dict[str, Any]]] = \
-                configuration_.data_smell_configuration
-        else:
-            data_smell_configuration = None
+        profiler_configuration: Dict[str, Any] = {
+            "registry": self.registry
+        }
+
+        if self.configuration is not None:
+            # Use the data_smell_configuration key if it was provided by the
+            # user.
+            if isinstance(self.configuration, GreatExpectationsConfiguration):
+                configuration_: GreatExpectationsConfiguration = self.configuration
+                profiler_configuration["data_smell_configuration"] = \
+                    configuration_.data_smell_configuration
+
+            # Use the column names information (if provided)
+            column_names: Optional[Set[str]] = self.configuration.column_names
+            profiler_configuration["column_names"] = column_names
 
         suite, _ = self.profiler.profile(
             data_asset=self.dataset.get_great_expectations_dataset(),
-            profiler_configuration={
-                "registry": self.registry,
-                "data_smell_configuration": data_smell_configuration
-            }
+            profiler_configuration=profiler_configuration
         )
 
         # Import dataset
