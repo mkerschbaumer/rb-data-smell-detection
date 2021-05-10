@@ -252,3 +252,18 @@ def check_expectation_examples(expectation: Expectation):
             # Use set equality since the order for results like
             # "partial_unexpected_list" does not matter.
             assert actual == expected, f"{example_identifier}: Failed for key {key}"
+
+
+# Only keep columns which are present in the specified column names.
+# This helper function is required to test column name filtering of the
+# DataSmellAwareProfiler.
+def filter_expected_column_types(
+        expected_column_types: Dict[ProfilerDataType, Set[str]],
+        column_names: Set[str]) -> Dict[ProfilerDataType, Set[str]]:
+    result: Dict[ProfilerDataType, Set[str]] = dict()
+
+    # Only keep relevant column entries.
+    for data_type, columns in expected_column_types.items():
+        result[data_type] = {x for x in columns if x in column_names}
+
+    return result
