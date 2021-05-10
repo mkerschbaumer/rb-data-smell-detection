@@ -52,7 +52,7 @@ TEMPLATE_DIR = os.path.join(CORE_DIR, "core/templates")  # ROOT dir for template
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [TEMPLATE_DIR],
+        'DIRS': [TEMPLATE_DIR, 'core/templates/autoapi/datasmelldetection/core/datasmells/', 'core/templates/autoapi/datasmelldetection/_version/', 'core/templates/autoapi/datasmelldetection/', 'core/templates/autoapi/datasmelldetection/core/', 'core/templates/autoapi/datasmelldetection/core/detector/'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

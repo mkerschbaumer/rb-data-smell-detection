@@ -20761,18 +20761,22 @@ div.card-body .dragdrop {
 }
 
 .file-droppable.filled {
-  background-color: green;
-  border: solid 2px #6faca5;
+  background-color: #84d5d7;
+  border: solid 5px #6faca5;
   border-radius: 5px;
+  color: white;
+  font-weight: bold;
+  font-size: 20px;
 }
 
 .file-droppable:after {
-  background-color: green;
+  background-color: #84d5d7;
   position: absolute;
   left: 13px;
   top: 38px;
-  font-size: 10px;
   font-weight: bold;
+  color: white;
+  font-size: 20px;
 }
 
 .file-droppable::before {
@@ -20781,6 +20785,7 @@ div.card-body .dragdrop {
   height: 100%;
   width: 1%;
   vertical-align: middle;
+  color: white;
 }
 
 .file-droppable div {
@@ -20789,6 +20794,7 @@ div.card-body .dragdrop {
   padding: 10px;
   overflow: hidden;
   word-break: break-all;
+  color: white;
 }
 
 .file-droppable span {
@@ -20800,10 +20806,10 @@ div.card-body .dragdrop {
   cursor: pointer;
   z-index: 10;
   display: none;
+  color: white;
 }
 
 .file-droppable input {
-  
   position: absolute;
   z-index: 3;
   display: block;
@@ -20811,6 +20817,7 @@ div.card-body .dragdrop {
   width: 100%;
   height: 100%;
   top: 0;
+  color: white;
 }
 
 .button {

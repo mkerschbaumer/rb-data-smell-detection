@@ -15,7 +15,6 @@ from django.core.cache import cache
 from .forms import ParameterForm
 import os
 import sys
-import datetime
 from app.models import File, Column, DetectedSmell, SmellType, Parameter
 from django.contrib.auth.models import User
 
@@ -27,7 +26,6 @@ from datasmelldetection.detectors.great_expectations.detector import DetectorBui
 from datasmelldetection.detectors.great_expectations.detector import GreatExpectationsDetector
 from datasmelldetection.detectors.great_expectations.profiler import DataSmellAwareProfiler
 from datasmelldetection.detectors.great_expectations.detector import GreatExpectationsConfiguration
-
 from datasmelldetection.core.detector import DetectionStatistics, DetectionResult
 from datasmelldetection.core.datasmells import DataSmellType
 
@@ -66,13 +64,15 @@ def pages(request):
         return HttpResponse(html_template.render(context, request))
 
     except:
-    
         html_template = loader.get_template( 'page-403.html' )
         return HttpResponse(html_template.render(context, request))
 
 
 def upload(request):
     global all_smells, believability_smells, syntactic_understandability_smells, encoding_understandability_smells, consistency_smells
+    
+    #https://jsfiddle.net/xg1kwv67/
+
     # Some presettings for data smell detection
     outer = os.path.join(os.getcwd(), "../")
     context_builder = GreatExpectationsContextBuilder(
@@ -91,40 +91,35 @@ def upload(request):
             context['url'] = fs.url(name)   
             context['size'] = fs.size(name) / 1000000
             file_name = context['url'].replace('/media/', '')
+
             # Save file to database
             if request.user.is_authenticated:
-                file1 = File(path_to_file=file_name, user=request.user)
+                file1 = File(file_name=file_name, user=request.user)
                 file1.save()
             else:
-                file1 = File(path_to_file=file_name, user=dummy_user)
+                file1 = File(file_name=file_name, user=dummy_user)
                 file1.save()
             
             dataset = manager.get_dataset(file_name)
             column_names = precheck_columns(dataset.get_column_names())
             detector = DetectorBuilder(context=con, dataset=dataset).build()
             supported_smells = detector.get_supported_data_smell_types()
-            print(supported_smells)
+            
             # Save supported smell to database
             for s in supported_smells:
-                print(s)
                 smell = SmellType(smell_type=s.value)
                 smell.save()
                 smell.belonging_file.add(file1)
                 
+                # Save parameters for smells
                 parameters = believability_smells.get(s) or syntactic_understandability_smells.get(s) or encoding_understandability_smells.get(s) or consistency_smells.get(s)
                 if parameters is not None:
                     for p,v in parameters.items():
                         par = Parameter(name=p, value=0.0, data_type=v, belonging_smell=smell)
                         par.save()
-
-            detected_smells = detector.detect()
-            sorted_results = sort_results(detected_smells, column_names)
-            
-            # Save columns an detected smell to database
-            for key, value in sorted_results.items():
-                column1 = Column.objects.create(column_name=key, belonging_file=file1)
-                for v in value:
-                    DetectedSmell.objects.create(data_smell_type=v.data_smell_type.value, total_element_count=v.statistics.total_element_count, faulty_element_count=v.statistics.faulty_element_count, belonging_file=file1, belonging_column=column1)
+            columns = precheck_columns(dataset.get_column_names())
+            for c in columns:
+                Column.objects.create(column_name=c, belonging_file=file1)
         else:
             context['message'] = 'Upload a .csv file.'
     else:
@@ -239,7 +234,7 @@ def result(request):
         # Get file for detection
         file1 = File.objects.filter(user_id=current_user_id).latest("uploaded_time")
         
-        dataset = manager.get_dataset(file1.path_to_file)
+        dataset = manager.get_dataset(file1.file_name)
         column_names = [c.column_name for c in list(Column.objects.all().filter(belonging_file=file1))]
         smells = list(SmellType.objects.all().filter(belonging_file=file1))
         ds_config = {}
@@ -259,17 +254,23 @@ def result(request):
         )
         print(DataSmellType('Suspect Sign Smell'))
         print(ds_config)
-        detector = DetectorBuilder(context=con, dataset=dataset).set_configuration(conf).build()
+        detector = DetectorBuilder(context=con, dataset=dataset).build() #.set_configuration(conf)
 
         # Detect smells and sort result
         detected_smells = detector.detect()
         sorted_results = sort_results(detected_smells, column_names)
 
+        # Save detected smell to database
+        for key, value in sorted_results.items():
+            column1 = Column.objects.get(column_name=key, belonging_file=file1)
+            for v in value:
+                DetectedSmell.objects.create(data_smell_type=v.data_smell_type.value, total_element_count=v.statistics.total_element_count, faulty_element_count=v.statistics.faulty_element_count, belonging_column=column1)
+
         context['column_names'] = column_names
         context['results'] = sorted_results
-        context['file'] = file1.path_to_file
+        context['file'] = file1.file_name
         if request.method == 'POST':
-            File.objects.get(path_to_file=file1.path_to_file).delete()
+            File.objects.get(file_name=file1.file_name).delete()
             context['delete_message'] = 'Result deleted and not viewable in Saved Results.'
 
     except:
@@ -282,8 +283,10 @@ def saved(request):
 
     if request.method == 'POST':
         file_name = request.POST.get('del')
-        File.objects.get(path_to_file=file_name).delete()
-    
+        try:
+            File.objects.get(file_name=file_name).delete()
+        except:
+            pass
     # Some presettings for data smell detection
     context = {}
     outer = os.path.join(os.getcwd(), "../")
@@ -303,15 +306,17 @@ def saved(request):
     
     results = {}
     for f in files:
-        all_smells_for_file = list(DetectedSmell.objects.all().filter(belonging_file=f))
         all_columns = list(Column.objects.all().filter(belonging_file=f))
+        all_smells_for_file = [] #list(DetectedSmell.objects.all().filter(belonging_file=f))
+        for c in all_columns:
+            all_smells_for_file.extend(list(DetectedSmell.objects.all().filter(belonging_column=c)))
         sorted_results = {}
         for c in all_columns:
             sorted_results[c] = []
             for s in all_smells_for_file:
                 if s.belonging_column.column_name == c.column_name:
                     sorted_results[c].append(s)
-        results[f.path_to_file] = sorted_results
+        results[f.file_name] = sorted_results
     context['results'] = results
 
     return render(request, 'saved.html', context)
