@@ -9,7 +9,7 @@ from django.contrib.auth.models import User
 # Create your models here.
 
 class File(models.Model):
-    path_to_file = models.CharField(max_length=255, primary_key=True)
+    file_name = models.CharField(max_length=255, primary_key=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     uploaded_time = models.DateTimeField(auto_now_add=True)
 
@@ -25,7 +25,6 @@ class DetectedSmell(models.Model):
     data_smell_type = models.CharField(max_length=100)
     total_element_count = models.IntegerField()
     faulty_element_count = models.IntegerField()
-    belonging_file = models.ForeignKey(File, on_delete=models.CASCADE) #try if possible without line
     belonging_column = models.ForeignKey(Column, on_delete=models.CASCADE)
 
 class Parameter(models.Model):
