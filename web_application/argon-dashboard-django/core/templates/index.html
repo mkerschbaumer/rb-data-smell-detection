@@ -135,10 +135,12 @@
               <form method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 <div class="file-droppable">
-                  <img src="/static/assets/img/theme/csv.png" width="100vh" alt="..."><br>
-                  <button class="button buttongrey" type="submit"><i class="ni ni-cloud-upload-96"></i> Select file</button>
+                  <div><img src="/static/assets/img/theme/csv.png" width="100vh" alt="..."><br>
+                    <button class="button buttongrey" type="submit"><i class="ni ni-cloud-upload-96"></i> Select file</button></div>
+                  <span>&times;</span>
                   <input type="file" name="upload" />
                 </div>
+                
                 <br>
                 
                 {% if url %}
@@ -189,4 +191,5 @@
 {% endblock content %}
 
 <!-- Specific JS goes HERE --> 
-{% block javascripts %}{% endblock javascripts %}
+{% block javascripts %}
+{% endblock javascripts %}

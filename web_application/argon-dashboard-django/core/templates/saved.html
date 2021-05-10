@@ -70,16 +70,16 @@
                       </div>
                     </div>
                     <br>
-                {% endfor %}  
+                 {% endfor %}  
 
                   
               <br><br>
               <div style="text-align: right;">
                 <form id="test" method="post">
                   {% csrf_token %}
-                <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#exampleModal">Delete result</button>
+                <button class="btn btn-primary" id="myBtn{{f}}" type="button" data-toggle="modal" data-target="#myModal{{f}}">Delete result</button>
                 <!-- Modal -->
-                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal fade" id="myModal{{f}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                   <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content">
                       <div class="modal-header">
@@ -101,6 +101,13 @@
                 </form>
               </div>
               <hr style="border: 4px solid rgba(0, 0, 0, 0.1) !important;">
+              <script> 
+              $(document).ready(function(){ 
+                $(".btn").click(function(){ 
+                  $(this).parent().find('.modal').modal({show:true}); 
+                  }); 
+              }); 
+              </script>
               {% endfor %}    
               {% endif %}
           </div>
