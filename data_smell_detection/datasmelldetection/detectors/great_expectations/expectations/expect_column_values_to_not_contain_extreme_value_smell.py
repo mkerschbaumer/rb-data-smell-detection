@@ -22,7 +22,8 @@ class ExpectColumnValuesToNotContainExtremeValueSmell(ColumnMapExpectation, Data
     Parameters:
         threshold: \
             The threshold to use regarding the z-score. This parameter can be
-            configured by users but is set to 3 by default.
+            configured by users but is set to 3 by default. It is assumed that
+            this parameter is a positive number.
 
     Keyword Args:
         mostly:
@@ -54,8 +55,7 @@ class ExpectColumnValuesToNotContainExtremeValueSmell(ColumnMapExpectation, Data
         assert "double_sided" not in configuration.kwargs, "double_sided cannot be altered"
         if "threshold" in configuration.kwargs:
             threshold = configuration.kwargs["threshold"]
-            assert isinstance(threshold, int) and threshold > 0, \
-                "Threshold must be a positive integer."
+            assert threshold > 0, "Threshold must be a positive integer."
 
 
 expectation = ExpectColumnValuesToNotContainExtremeValueSmell()
