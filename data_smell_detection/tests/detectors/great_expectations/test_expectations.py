@@ -21,4 +21,5 @@ class TestExpectations:
 
     def test_examples_of_all_expectations(self):
         for expectation in self.expectations_to_test:
+            print(f"Executing tests for {expectation.expectation_type}")
             check_expectation_examples(expectation)

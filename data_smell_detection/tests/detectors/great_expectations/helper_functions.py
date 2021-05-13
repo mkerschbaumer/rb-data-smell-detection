@@ -209,6 +209,7 @@ def check_expectation_examples(expectation: Expectation):
     example_data = examples[0]["data"]
     for example_test in examples[0]["tests"]:
         example_title: str = example_test["title"]
+        print(f"\tExecuting testcase {example_title}")
         # Construct a string which describes for which expectation and
         # which example testcase a test fails.
         example_identifier: str = f"{expectation_type}-{example_title}"
