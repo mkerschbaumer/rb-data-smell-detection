@@ -25,6 +25,7 @@ class DetectedSmell(models.Model):
     data_smell_type = models.CharField(max_length=100)
     total_element_count = models.IntegerField()
     faulty_element_count = models.IntegerField()
+    faulty_list = models.CharField(max_length=1024)
     belonging_column = models.ForeignKey(Column, on_delete=models.CASCADE)
 
 class Parameter(models.Model):
@@ -32,3 +33,4 @@ class Parameter(models.Model):
     value = models.FloatField()
     data_type = models.CharField(max_length=255)
     belonging_smell = models.ForeignKey(SmellType, on_delete=models.CASCADE)    
+
