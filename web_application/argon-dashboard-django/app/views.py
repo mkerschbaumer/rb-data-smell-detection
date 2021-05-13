@@ -252,19 +252,17 @@ def result(request):
             column_names=column_names,
             data_smell_configuration=ds_config
         )
-        print(DataSmellType('Suspect Sign Smell'))
-        print(ds_config)
-        detector = DetectorBuilder(context=con, dataset=dataset).build() #.set_configuration(conf)
+        detector = DetectorBuilder(context=con, dataset=dataset).set_configuration(conf).build() 
 
         # Detect smells and sort result
         detected_smells = detector.detect()
         sorted_results = sort_results(detected_smells, column_names)
-
+        print(sorted_results)
         # Save detected smell to database
         for key, value in sorted_results.items():
             column1 = Column.objects.get(column_name=key, belonging_file=file1)
             for v in value:
-                DetectedSmell.objects.create(data_smell_type=v.data_smell_type.value, total_element_count=v.statistics.total_element_count, faulty_element_count=v.statistics.faulty_element_count, belonging_column=column1)
+                DetectedSmell.objects.create(data_smell_type=v.data_smell_type.value, total_element_count=v.statistics.total_element_count, faulty_element_count=v.statistics.faulty_element_count, faulty_list=v.faulty_elements, belonging_column=column1)
 
         context['column_names'] = column_names
         context['results'] = sorted_results
@@ -274,7 +272,7 @@ def result(request):
             context['delete_message'] = 'Result deleted and not viewable in Saved Results.'
 
     except:
-        context['no_file'] = 'No detection result for this user available.'
+       context['no_file'] = 'No detection result for this user available.'
 
     return render(request, 'results.html', context)
 
@@ -311,6 +309,12 @@ def saved(request):
         for c in all_columns:
             all_smells_for_file.extend(list(DetectedSmell.objects.all().filter(belonging_column=c)))
         sorted_results = {}
+
+        # Delete files which do not have any detected smells
+        if not all_smells_for_file:
+            File.objects.get(file_name=f.file_name).delete()
+            continue
+
         for c in all_columns:
             sorted_results[c] = []
             for s in all_smells_for_file:

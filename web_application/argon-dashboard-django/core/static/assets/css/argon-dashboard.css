@@ -1903,8 +1903,13 @@ pre code {
   border-color: #e9ecef;
   text-transform: uppercase;
 }
+
 .table td {
-  width: 100% !important;
+  width: 50% !important;
+}
+
+.table td:last-child {
+  border-right: none !important;
 }
 
 table.docutils td, table.docutils th{
@@ -16159,9 +16164,6 @@ textarea[resize="horizontal"] {
   border-color: rgba(50, 151, 211, 0.25);
 }
 
-.header {
-  position: relative;
-}
 
 .icon {
   width: 3rem;
@@ -18492,7 +18494,6 @@ textarea[resize="horizontal"] {
 .card .table th {
   padding-left: 1.5rem;
   padding-right: 1.5rem;
-  width: auto !important;
 }
 
 p {
@@ -20929,6 +20930,16 @@ div.card-body .dragdrop {
   font-size: 0.875rem;
   color: #00C0E5;
   font-weight: bold;
+}
+
+.smell-name {
+  padding: 0.75rem;
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border-bottom: 1px solid #e9ecef;
+  border-top: 1px solid #e9ecef;
+  background-color: #f7f7f7;
 }
 
 /*# sourceMappingURL=dashboard-free.css.map */

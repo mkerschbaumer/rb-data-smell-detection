@@ -30,11 +30,12 @@
               {% for f, smells in results.items %}
               <h2>{{ f }}</h2><br>
                 {% for column, smell in smells.items %}
-                Column - {{ column.column_name }}<br><br>
+                {% if smell %}
+                {{ column.column_name }}<br><br>
                     <div class="table-responsive">
                       <div>
                         <table class="table align-items-center">
-                          {% if smell %}
+                          
                           <thead class="thead-light">
                             <tr>
                                 <th scope="col">
@@ -46,6 +47,9 @@
                                 <th scope="col">
                                     Faulty Element Count
                                 </th>
+                                <th scope="col">
+                                  Faulty Element Overview
+                              </th>
                             </tr>
                           </thead>
                           {% for s in smell%}
@@ -60,16 +64,19 @@
                               <td class="faulty">
                                 {{ s.faulty_element_count }}
                               </td>
+                              <td class="faulty">
+                                {{ s.faulty_list }}
+                              </td>
                             </tr>
                           </tbody> 
                           {% endfor %}
-                          {% else %}
-                          <p class="description">There are no smells for this column.</p>
-                          {% endif %}
+                         
+                          
                         </table>
                       </div>
                     </div>
                     <br>
+                    {% endif %}
                  {% endfor %}  
 
                   
@@ -115,7 +122,6 @@
       </div>
       
 
-      {% include "includes/footer.html" %}
 
     </div>
 
