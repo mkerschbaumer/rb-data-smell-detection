@@ -8,6 +8,7 @@ from datasmelldetection.detectors.great_expectations.expectations import (
     ExpectColumnValuesToNotContainIntegerAsStringSmell,
     ExpectColumnValuesToNotContainFloatingPointNumberAsStringSmell,
     ExpectColumnValuesToNotContainLongDataValueSmell,
+    ExpectColumnValuesToNotContainIntegerAsFloatingPointNumberSmell
 )
 
 from .helper_functions import check_expectation_examples
@@ -18,7 +19,8 @@ class TestExpectations:
         ExpectColumnValuesToNotContainSuspectSignSmell(),
         ExpectColumnValuesToNotContainIntegerAsStringSmell(),
         ExpectColumnValuesToNotContainFloatingPointNumberAsStringSmell(),
-        ExpectColumnValuesToNotContainLongDataValueSmell()
+        ExpectColumnValuesToNotContainLongDataValueSmell(),
+        ExpectColumnValuesToNotContainIntegerAsFloatingPointNumberSmell()
     ]
 
     def test_examples_of_all_expectations(self):
