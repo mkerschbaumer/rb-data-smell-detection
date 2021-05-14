@@ -80,3 +80,13 @@ class TestExpectationRegistration:
             ),
             expectation_type="expect_column_values_to_not_contain_long_data_value_smell"
         )
+
+    def test_expect_column_values_to_not_contain_integer_af_floating_point_number_smell(self):
+        check_data_smell_stored_in_registry(
+            registry=default_registry,
+            metadata=DataSmellMetadata(
+                data_smell_type=DataSmellType.INTEGER_AS_FLOATING_POINT_NUMBER_SMELL,
+                profiler_data_types={ProfilerDataType.FLOAT}
+            ),
+            expectation_type="expect_column_values_to_not_contain_integer_as_floating_point_number_smell"
+        )
