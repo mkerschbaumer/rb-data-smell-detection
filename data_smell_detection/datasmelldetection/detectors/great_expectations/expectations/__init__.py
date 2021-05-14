@@ -10,3 +10,5 @@ from .expect_column_values_to_not_contain_extreme_value_smell import \
     ExpectColumnValuesToNotContainExtremeValueSmell
 from .expect_column_values_to_not_contain_long_data_value_smell import \
     ExpectColumnValuesToNotContainLongDataValueSmell
+from .expect_column_values_to_not_contain_integer_as_floating_point_number_smell import \
+    ExpectColumnValuesToNotContainIntegerAsFloatingPointNumberSmell
