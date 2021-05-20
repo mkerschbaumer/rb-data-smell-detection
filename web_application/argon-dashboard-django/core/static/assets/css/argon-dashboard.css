@@ -20836,8 +20836,17 @@ div.card-body .dragdrop {
 
 .buttongrey {
   background-color: white;
-  color: black;
+  color: black !important;
   border: 1px solid white;
+  border-radius: 10px;
+  color: white;
+  padding: 1vh;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 1vw;
+  cursor: pointer;
+  margin: 1vh;
 }
 
 .buttonsubmit {

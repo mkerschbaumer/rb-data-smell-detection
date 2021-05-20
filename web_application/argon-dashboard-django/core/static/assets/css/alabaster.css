@@ -12,8 +12,8 @@ body {
 
 
 div.document {
-    width: 70%;
-    margin: 30px auto 0 auto;
+    width: 100%;
+    margin: 4em auto 0 4em;
 }
 
 div.documentwrapper {
@@ -22,7 +22,7 @@ div.documentwrapper {
 }
 
 div.bodywrapper {
-    margin: 0 0 0 220px;
+    margin: 0 0 0 5em;
 }
 
 div.sphinxsidebar {
@@ -519,7 +519,7 @@ a:hover tt, a:hover code {
 	}
 
     .document {
-    	width: auto;
+    	width: 100%;
     }
 
     .footer {
