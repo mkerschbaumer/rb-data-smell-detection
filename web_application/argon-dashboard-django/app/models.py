@@ -22,7 +22,7 @@ class Column(models.Model):
     belonging_file = models.ForeignKey(File, on_delete=models.CASCADE)
 
 class DetectedSmell(models.Model):
-    data_smell_type = models.CharField(max_length=100)
+    data_smell_type = models.ForeignKey(SmellType, on_delete=models.CASCADE)    
     total_element_count = models.IntegerField()
     faulty_element_count = models.IntegerField()
     faulty_list = models.CharField(max_length=1024)
@@ -32,5 +32,6 @@ class Parameter(models.Model):
     name = models.CharField(max_length=255)
     value = models.FloatField()
     data_type = models.CharField(max_length=255)
-    belonging_smell = models.ForeignKey(SmellType, on_delete=models.CASCADE)    
+    belonging_smell = models.ForeignKey(SmellType, on_delete=models.CASCADE)
+    belonging_file = models.ForeignKey(File, on_delete=models.CASCADE)
 

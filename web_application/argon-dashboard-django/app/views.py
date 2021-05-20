@@ -2,7 +2,7 @@
 """
 Copyright (c) 2019 - present AppSeed.us
 """
-
+from django.template.defaulttags import register
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
 from django.template import loader
@@ -38,6 +38,9 @@ encoding_understandability_smells = {DataSmellType.DATE_AS_DATE_TIME_SMELL: {}, 
 consistency_smells = {DataSmellType.ABBREVIATION_INCONSISTENCY_SMELL: {}, DataSmellType.CASING_INCONSISTENCY_SMELL: {}, DataSmellType.CLASS_INCONSISTENCY_SMELL: {}, DataSmellType.DATE_TIME_FORMAT_INCONSISTENCY_SMELL: {}, DataSmellType.MISSING_VALUE_INCONSISTENCY_SMELL: {}, DataSmellType.SEPARATING_INCONSISTENCY_SMELL: {}, DataSmellType.SPACING_INCONSISTENCY_SMELL: {}, DataSmellType.SPECIAL_CHARACTER_INCONSISTENCY_SMELL: {}, DataSmellType.SYNTAX_INCONSISTENCY_SMELL: {}, DataSmellType.UNIT_INCONSISTENCY_SMELL: {}, DataSmellType.TRANSPOSITION_INCONSISTENCY_SMELL: {}}
 all_smells = {'Believability Smells': believability_smells, 'Encoding Understandability Smells': encoding_understandability_smells, 'Syntactic Understandability Smells': syntactic_understandability_smells, 'Consistency Smells': consistency_smells}
 
+@register.filter
+def get_item(dictionary, key):
+    return dictionary.get(key)
 
 def index(request):
     context = {}
@@ -115,7 +118,7 @@ def upload(request):
                 parameters = believability_smells.get(s) or syntactic_understandability_smells.get(s) or encoding_understandability_smells.get(s) or consistency_smells.get(s)
                 if parameters is not None:
                     for p,v in parameters.items():
-                        par = Parameter(name=p, value=0.0, data_type=v, belonging_smell=smell)
+                        par = Parameter(name=p, value=0.0, data_type=v, belonging_smell=smell, belonging_file=file1)
                         par.save()
             columns = precheck_columns(dataset.get_column_names())
             for c in columns:
@@ -233,7 +236,6 @@ def result(request):
     try:
         # Get file for detection
         file1 = File.objects.filter(user_id=current_user_id).latest("uploaded_time")
-        
         dataset = manager.get_dataset(file1.file_name)
         column_names = [c.column_name for c in list(Column.objects.all().filter(belonging_file=file1))]
         smells = list(SmellType.objects.all().filter(belonging_file=file1))
@@ -245,7 +247,6 @@ def result(request):
                 par_dict[p.name] = p.value
 
             temp = DataSmellType(s.smell_type)
-            assert isinstance(temp, DataSmellType)
             ds_config[temp] = dict(par_dict)
 
         conf = GreatExpectationsConfiguration(
@@ -262,7 +263,8 @@ def result(request):
         for key, value in sorted_results.items():
             column1 = Column.objects.get(column_name=key, belonging_file=file1)
             for v in value:
-                DetectedSmell.objects.create(data_smell_type=v.data_smell_type.value, total_element_count=v.statistics.total_element_count, faulty_element_count=v.statistics.faulty_element_count, faulty_list=v.faulty_elements, belonging_column=column1)
+                data_smell_t = SmellType.objects.get(smell_type=v.data_smell_type.value)
+                DetectedSmell.objects.create(data_smell_type=data_smell_t, total_element_count=v.statistics.total_element_count, faulty_element_count=v.statistics.faulty_element_count, faulty_list=v.faulty_elements, belonging_column=column1)
 
         context['column_names'] = column_names
         context['results'] = sorted_results
@@ -302,6 +304,7 @@ def saved(request):
 
     files = File.objects.all().filter(user_id=current_user_id).order_by('-uploaded_time')
     
+    parameter_dict = {}
     results = {}
     for f in files:
         all_columns = list(Column.objects.all().filter(belonging_file=f))
@@ -309,17 +312,24 @@ def saved(request):
         for c in all_columns:
             all_smells_for_file.extend(list(DetectedSmell.objects.all().filter(belonging_column=c)))
         sorted_results = {}
-
+        
         # Delete files which do not have any detected smells
         if not all_smells_for_file:
             File.objects.get(file_name=f.file_name).delete()
             continue
 
+        smell_dict = {}
+            
         for c in all_columns:
             sorted_results[c] = []
             for s in all_smells_for_file:
                 if s.belonging_column.column_name == c.column_name:
                     sorted_results[c].append(s)
+                    s_type = SmellType.objects.get(smell_type=s.data_smell_type.smell_type)
+                    smell_dict[s.data_smell_type.smell_type] = list(Parameter.objects.all().filter(belonging_smell=s_type, belonging_file=f))
+                    parameter_dict[f.file_name] = dict(smell_dict)
+
+        context['parameter_dict'] = parameter_dict
         results[f.file_name] = sorted_results
     context['results'] = results
 
