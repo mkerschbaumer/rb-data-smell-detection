@@ -194,8 +194,8 @@
                         {% csrf_token %}
                       <div>
                         <div style="float: left;">
-                          {% if user.is_authenticated %}
-                          <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#exampleModal">Delete result</button>
+                          {% if user.is_authenticated and not delete_message%}
+                          <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#exampleModal">Delete file and result</button>
                           <!-- Modal -->
                           <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered" role="document">

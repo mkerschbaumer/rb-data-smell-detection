@@ -21,14 +21,55 @@
         <div class="col">
           <div class="card shadow">
             <div class="card-header bg-transparent">
-              <h3 class="mb-0">Smell Results By Column Names</h3>
+              <h3 class="mb-0">Detected Smell Results By File Names</h3>
+              <p>On this site you can see all previously detected smells. The smells are ordered by the file's columns.
+              Further, you can see which parameters where chosen on the customization site.</p>
             </div>
             <div class="card-body">
               {% if not results %}
               <p>There aren't any saved detection results.</p>
               {% else %}
               {% for f, smells in results.items %}
-              <h2>{{ f }}</h2><br>
+              <h1>{{ f }}</h1><br>
+              <h3>Selected parameters</h3> 
+              {% for k in parameter_dict|get_item:f%}
+
+              <div class="table-responsive">
+                <div>
+                  <table class="table align-items-center">
+                    
+                    <thead class="thead-light">
+                      <tr>
+                        <th scope="col">
+                            {{k}}
+                        </th>
+                    </tr>
+                    </thead>
+                  
+              
+                  <tbody class="list">
+                    <tr>
+                      
+                      <td class="type">
+                        {% if parameter_dict|get_item:f|get_item:k %}
+                          {% for p in parameter_dict|get_item:f|get_item:k %}
+                          {{ p.name  }}: {{p.value }}<br>
+                          {% endfor %}
+                        {% else %}  
+                        -
+                        {% endif %}  
+                      </td>
+                      
+                    </tr>
+                  </tbody> 
+                </table>
+              </div>
+            </div>  
+              
+              <br>
+              {% endfor %}
+              <br>
+              <h3>Columns</h3>
                 {% for column, smell in smells.items %}
                 {% if smell %}
                 {{ column.column_name }}<br><br>
@@ -56,7 +97,7 @@
                           <tbody class="list">
                             <tr>
                               <td class="type">
-                                {{ s.data_smell_type }}
+                                {{ s.data_smell_type.smell_type }}
                               </td>
                               <td class="total">
                                 {{ s.total_element_count }}

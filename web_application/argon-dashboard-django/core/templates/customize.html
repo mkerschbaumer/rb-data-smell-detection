@@ -132,15 +132,15 @@
           <div class="card shadow">
             <div class="card-header bg-transparent">
               <h3 class="mb-0">Customize your detection</h3>
+              <p>Choose the type(s) of data smells and parameters that should be detected. Further, chose the file's columns for the detection.</p>
             </div>
             <div class="card-body">
+              <h3>Data smells</h3>
               <form id="test" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
 
               <div class="table-responsive" style="overflow: auto;">
                 <div>
-                <h4>Choose the type(s) of data smell that sould be detected</h4><br>
-
                 {% if list_smells  %}
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
                   <span class="alert-inner--icon"><i class="ni ni-like-2"></i></span>
@@ -202,7 +202,7 @@
                     
                 </table>
                 {% endfor %}
-                <br><br><h4 id="here">Choose the columns which should be detected</h4><br>
+                <br><br><h3 id="here">Columns</h4><br>
                 <table class="table align-items-center">
                   <tbody class="list">
                       <tr>
@@ -246,7 +246,7 @@
                     </button>
                   </div>
                   <div class="modal-body">
-                    Are you sure you want the chosen parameters?
+                    Are you sure you want to save the customization?
                   </div>
                   <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>

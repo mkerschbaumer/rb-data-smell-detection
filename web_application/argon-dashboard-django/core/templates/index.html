@@ -129,14 +129,15 @@
           <div class="card shadow">
             <div class="card-header bg-transparent">
               <h3 class="mb-0">Upload a .csv file to detect data smells</h3>
+              <p>Drag & drop or click & select a .csv file for data smell detection. </p>
             </div>
             <div class="card-body">
               <div class="grid-container"></div>
               <form method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 <div class="file-droppable">
-                  <div><img src="/static/assets/img/theme/csv.png" width="100vh" alt="..."><br>
-                    <button class="button buttongrey" type="submit"><i class="ni ni-cloud-upload-96"></i> Select file</button></div>
+                  <div><img src="/static/assets/img/theme/csv.png" width="15%" alt="..."><br>
+                    <button class="buttongrey" type="submit"><i class="ni ni-cloud-upload-96"></i> Select file</button></div>
                   <span>&times;</span>
                   <input type="file" name="upload" />
                 </div>
