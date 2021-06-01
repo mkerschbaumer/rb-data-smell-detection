@@ -1,0 +1,12 @@
+{
+	"medium": {
+		"Missing Value": {
+			"mostly": 0.9
+		}
+	},
+	"hardcore": {
+		"Missing Value": {
+			"mostly": 1.0
+		}
+	}
+}
