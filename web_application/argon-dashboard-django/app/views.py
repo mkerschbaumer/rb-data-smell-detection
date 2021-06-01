@@ -16,8 +16,9 @@ from .forms import ParameterForm
 import os
 import sys
 from app.models import File, Column, DetectedSmell, SmellType, Parameter
+from app import forms
 from django.contrib.auth.models import User
-
+import json
 cwd = os.getcwd()
 sys.path.append("/home/loryg/Documents/Gitlab/bachelor-thesis/data_smell_detection/")
 from datasmelldetection.detectors.great_expectations.dataset import GreatExpectationsDatasetManager
@@ -28,19 +29,18 @@ from datasmelldetection.detectors.great_expectations.profiler import DataSmellAw
 from datasmelldetection.detectors.great_expectations.detector import GreatExpectationsConfiguration
 from datasmelldetection.core.detector import DetectionStatistics, DetectionResult
 from datasmelldetection.core.datasmells import DataSmellType
+from django.contrib import messages 
 
 
-dummy_user, c = User.objects.get_or_create(username="dummy_user")
-# Different smells by it's category
-believability_smells = {DataSmellType.DUMMY_VALUE_SMELL: {}, DataSmellType.DUPLICATED_VALUE_SMELL: {}, DataSmellType.EXTREME_VALUE_SMELL: {'mostly': 'double', 'threshold': 'integer'}, DataSmellType.MEANINGLESS_VALUE_SMELL: {}, DataSmellType.MISSPELLING_SMELL: {}, DataSmellType.SUSPECT_CLASS_VALUE_SMELL: {}, DataSmellType.SUSPECT_DATE_VALUE_SMELL: {}, DataSmellType.SUSPECT_DATE_TIME_INTERVAL_SMELL: {}, DataSmellType.SUSPECT_SIGN_SMELL: {'mostly': 'double', 'prercentile_threshold': 'double'}, DataSmellType.SUSPECT_DISTRIBUTION_SMELL: {}}
-syntactic_understandability_smells = {DataSmellType.AMBIGUOUS_DATE_TIME_FORMAT_SMELL: {}, DataSmellType.AMBIGUOUS_VALUE_SMELL: {}, DataSmellType.CASING_SMELL: {}, DataSmellType.CONTRACTING_SMELL: {}, DataSmellType.EXTRANEOUS_VALUE_SMELL: {}, DataSmellType.INTERMINGLED_DATA_TYPE_SMELL: {}, DataSmellType.LONG_DATA_VALUE_SMELL: {}, DataSmellType.MISSING_VALUE_SMELL: {}, DataSmellType.SEPARATING_SMELL: {}, DataSmellType.SPACING_SMELL: {}, DataSmellType.SPECIAL_CHARACTER_SMELL: {}, DataSmellType.SYNONYM_SMELL: {}, DataSmellType.TAGGING_SMELL: {}}
-encoding_understandability_smells = {DataSmellType.DATE_AS_DATE_TIME_SMELL: {}, DataSmellType.DATE_AS_STRING_SMELL: {}, DataSmellType.DATE_TIME_AS_STRING_SMELL: {}, DataSmellType.FLOATING_POINT_NUMBER_AS_STRING_SMELL: {'mostly': 'double'}, DataSmellType.INTEGER_AS_FLOATING_POINT_NUMBER_SMELL: {}, DataSmellType.INTEGER_AS_STRING_SMELL: {'mostly': 'double'}, DataSmellType.TIME_AS_STRING_SMELL: {}, DataSmellType.SUSPECT_CHARACTER_ENCODING_SMELL: {}}
-consistency_smells = {DataSmellType.ABBREVIATION_INCONSISTENCY_SMELL: {}, DataSmellType.CASING_INCONSISTENCY_SMELL: {}, DataSmellType.CLASS_INCONSISTENCY_SMELL: {}, DataSmellType.DATE_TIME_FORMAT_INCONSISTENCY_SMELL: {}, DataSmellType.MISSING_VALUE_INCONSISTENCY_SMELL: {}, DataSmellType.SEPARATING_INCONSISTENCY_SMELL: {}, DataSmellType.SPACING_INCONSISTENCY_SMELL: {}, DataSmellType.SPECIAL_CHARACTER_INCONSISTENCY_SMELL: {}, DataSmellType.SYNTAX_INCONSISTENCY_SMELL: {}, DataSmellType.UNIT_INCONSISTENCY_SMELL: {}, DataSmellType.TRANSPOSITION_INCONSISTENCY_SMELL: {}}
-all_smells = {'Believability Smells': believability_smells, 'Encoding Understandability Smells': encoding_understandability_smells, 'Syntactic Understandability Smells': syntactic_understandability_smells, 'Consistency Smells': consistency_smells}
+# Different smells by its category
+with open('/home/loryg/Documents/Gitlab/bachelor-thesis/web_application/argon-dashboard-django/app/smells.json') as json_file:
+    data = json.load(json_file)
 
-@register.filter
-def get_item(dictionary, key):
-    return dictionary.get(key)
+all_smells = {i: {DataSmellType(a):b for a,b in j.items()} for i,j in data.items()}
+believability_smells = all_smells['Believability Smells']
+syntactic_understandability_smells = all_smells['Encoding Understandability Smells']
+encoding_understandability_smells = all_smells['Syntactic Understandability Smells']
+consistency_smells = all_smells['Consistency Smells']
 
 def index(request):
     context = {}
@@ -72,9 +72,8 @@ def pages(request):
 
 
 def upload(request):
+    dummy_user, c = User.objects.get_or_create(username="dummy_user")
     global all_smells, believability_smells, syntactic_understandability_smells, encoding_understandability_smells, consistency_smells
-    
-    #https://jsfiddle.net/xg1kwv67/
 
     # Some presettings for data smell detection
     outer = os.path.join(os.getcwd(), "../")
@@ -86,6 +85,7 @@ def upload(request):
     manager = GreatExpectationsDatasetManager(context=con)
     context = {}
 
+    # File upload
     if request.method == 'POST' and 'upload' in request.FILES:
         uploaded_file = request.FILES['upload']
         if '.csv' in uploaded_file.name:
@@ -104,7 +104,6 @@ def upload(request):
                 file1.save()
             
             dataset = manager.get_dataset(file_name)
-            column_names = precheck_columns(dataset.get_column_names())
             detector = DetectorBuilder(context=con, dataset=dataset).build()
             supported_smells = detector.get_supported_data_smell_types()
             
@@ -118,21 +117,27 @@ def upload(request):
                 parameters = believability_smells.get(s) or syntactic_understandability_smells.get(s) or encoding_understandability_smells.get(s) or consistency_smells.get(s)
                 if parameters is not None:
                     for p,v in parameters.items():
-                        par = Parameter(name=p, value=0.0, data_type=v, belonging_smell=smell, belonging_file=file1)
+                        if v["max"] != "inf":
+                            par = Parameter(name=p, value=1.0, belonging_smell=smell, belonging_file=file1, min_value=v["min"], max_value=v["max"])
+                        else: 
+                            par = Parameter(name=p, value=1.0, belonging_smell=smell, belonging_file=file1, min_value=v["min"], max_value=-1)
                         par.save()
+
+            # Save columns to database
             columns = precheck_columns(dataset.get_column_names())
             for c in columns:
                 Column.objects.create(column_name=c, belonging_file=file1)
         else:
+            # Message if unsupported datatype was uploaded
             context['message'] = 'Upload a .csv file.'
-    else:
-        context['message'] = 'no file selected'
+
     return render(request, 'index.html', context)
 
 
-def smells(request):
+def customize(request):
+    dummy_user, c = User.objects.get_or_create(username="dummy_user")
+    global all_smells, believability_smells, syntactic_understandability_smells, encoding_understandability_smells, consistency_smells
     context = {}
-    global all_smells
     
     all_smells_list = list(believability_smells.keys()) + list(syntactic_understandability_smells.keys()) + list(encoding_understandability_smells.keys()) + list(consistency_smells.keys())
 
@@ -141,52 +146,74 @@ def smells(request):
     else:
         current_user_id = dummy_user.id
     
-    # Get file and available smells
+    # Get latest file and available smells of current user
     file1 = File.objects.filter(user_id=current_user_id).latest("uploaded_time")
-    smells = SmellType.objects.all().filter(belonging_file=file1)#.get().smell_type
-    new = []
-    for l in list(smells):
-        new.append(l.smell_type)
-
-    available_smells = {i: {a:b for (a,b) in j.items() if a.value in new} for i,j in all_smells.items()}
+    smells = SmellType.objects.all().filter(belonging_file=file1)
+    smell_types = [s.smell_type for s in list(smells)]
+    available_smells = {i: {a:b for (a,b) in j.items() if a.value in smell_types} for i,j in all_smells.items()}
     
-    # Get column names by id and by name
+    # Get column names by id and by name for user selection
     column_names_by_id = list(Column.objects.all().filter(belonging_file=file1))
     column_names = [c.column_name for c in column_names_by_id]
-    
+    column_names.insert(0, "All columns")
+
     # Smells and column names for customization
     context['smells'] = available_smells
     context['column_names'] = column_names
-    
+    data = {}
 
+    # Do presettings here
+    if request.method == 'GET' and request.GET:
+        if list(request.GET.keys())[0] == 'tolerant':
+            data = {'value': 0.8}
+            # set values for checkboxses here
+            context['checks'] = True
+        context['pre'] = list(request.GET.keys())[0]
+
+    # After customization button submit
     if request.method == 'POST':
       # Selected smells and column names
-      #test_form = CustomizationForm(request.POST, prefix='test_form')
       smells_list = request.POST.getlist('smells')  
       columns = request.POST.getlist('columns')
-      forms = dict(available_smells)
 
+      # If the checkbox 'All columns' was selected then get all columns for file
+      if "All" in columns:
+          columns = [c.column_name for c in list(Column.objects.all().filter(belonging_file=file1))]
+
+      # Build smell dictionary with parameters for template
+      forms = dict(available_smells)
+      form_error = False
       for k,values in available_smells.items():
           temp = dict(values)
           for v in values:
             smell_db = SmellType.objects.get(smell_type=v.value)
             parameter_list = list(Parameter.objects.all().filter(belonging_smell=smell_db))
+
             form_dict = {}
             for p in parameter_list:
+                # Build prefix for form
                 prefix_name = str(v)+str(p)
-                form_dict[p.name] = ParameterForm(request.POST, prefix=prefix_name, instance=p)
 
-                if form_dict[p.name].is_valid():
-                    form_dict[p.name].save()
+                form_dict[p.name] = list()
+                form_dict[p.name].append(p)
+                form_dict[p.name].append(ParameterForm(request.POST, prefix=prefix_name, instance=p))
+                
+                # Save values if form is valid or set error to True
+                if form_dict[p.name][1].is_valid():
+                    form_dict[p.name][1].save()
+
+                elif "This field is required." not in form_dict[p.name][1].errors.as_json():
+                    form_error = True
 
             temp[v] = dict(form_dict)
           forms[k] = dict(temp)
 
-      if smells_list and columns:
+      # If smells and columns had been selected and no error occurred
+      if not form_error and smells_list and columns:
         context['list_smells'] = [s.split('.')[1].replace("_", " ") for s in smells_list]
         context['list_columns'] = columns
     
-        # Delete columns which should not be detected according to user's customization
+        # Delete columns and smells which should not be detected according to user's customization
         columns_to_delete = []
         for c in column_names_by_id:
             if c.column_name not in columns:
@@ -198,26 +225,45 @@ def smells(request):
         for s in list(smells):
             if 'DataSmellType.'+s.smell_type.replace(" ", "_").upper() not in smells_list:
                 s.belonging_file.remove(file1)
+      elif form_error:
+        context['message'] = 'Select right parameters!'
       else:
-        context['message'] = 'Select smells AND columns!'    
+        context['message'] = 'Select smells AND columns!'  
+    
+    # Before customization button submit  
     else:
+        # Build smell dictionary with parameters for template
         forms = dict(available_smells)
+
         for k,values in available_smells.items():
           temp = dict(values)
+
           for v in values:
             smell_db = SmellType.objects.get(smell_type=v.value)
-            parameter_list = list(Parameter.objects.all().filter(belonging_smell=smell_db))
+            parameter_list = list(Parameter.objects.all().filter(belonging_smell=smell_db, belonging_file=file1))
             form_dict = {}
+
             for p in parameter_list:
                 prefix_name = str(v)+str(p)
-                form_dict[p.name] = ParameterForm(prefix=prefix_name, instance=p)
+                form_dict[p.name] = list()
+                form_dict[p.name].append(p)
+
+                if data:
+                    form_dict[p.name].append(ParameterForm(initial=data, prefix=prefix_name, instance=p))
+                else:
+                    form_dict[p.name].append(ParameterForm(prefix=prefix_name, instance=p))
+                
             temp[v] = dict(form_dict)
           forms[k] = dict(temp)
+
     context['forms'] = forms
+    context['forms_easy'] = forms
 
     return render(request, 'customize.html', context)
 
 def result(request):
+    dummy_user, c = User.objects.get_or_create(username="dummy_user")
+
     # Some presettings for data smell detection
     context = {}
     outer = os.path.join(os.getcwd(), "../")
@@ -233,12 +279,13 @@ def result(request):
     else:
         current_user_id = dummy_user.id
 
+    # Get file for detection
     try:
-        # Get file for detection
         file1 = File.objects.filter(user_id=current_user_id).latest("uploaded_time")
         dataset = manager.get_dataset(file1.file_name)
         column_names = [c.column_name for c in list(Column.objects.all().filter(belonging_file=file1))]
         smells = list(SmellType.objects.all().filter(belonging_file=file1))
+        
         ds_config = {}
         for s in smells:
             pars = list(Parameter.objects.all().filter(belonging_smell=s))
@@ -257,8 +304,13 @@ def result(request):
 
         # Detect smells and sort result
         detected_smells = detector.detect()
-        sorted_results = sort_results(detected_smells, column_names)
-        print(sorted_results)
+        sorted_results = {}
+        for c in column_names:
+            sorted_results[c] = []
+            for s in detected_smells:
+                if s.column_name == c:
+                    sorted_results[c].append(s)
+
         # Save detected smell to database
         for key, value in sorted_results.items():
             column1 = Column.objects.get(column_name=key, belonging_file=file1)
@@ -269,6 +321,7 @@ def result(request):
         context['column_names'] = column_names
         context['results'] = sorted_results
         context['file'] = file1.file_name
+
         if request.method == 'POST':
             File.objects.get(file_name=file1.file_name).delete()
             context['delete_message'] = 'Result deleted and not viewable in Saved Results.'
@@ -280,13 +333,14 @@ def result(request):
 
 @login_required
 def saved(request):
-
+    dummy_user, c = User.objects.get_or_create(username="dummy_user")
     if request.method == 'POST':
         file_name = request.POST.get('del')
         try:
             File.objects.get(file_name=file_name).delete()
         except:
             pass
+
     # Some presettings for data smell detection
     context = {}
     outer = os.path.join(os.getcwd(), "../")
@@ -308,9 +362,10 @@ def saved(request):
     results = {}
     for f in files:
         all_columns = list(Column.objects.all().filter(belonging_file=f))
-        all_smells_for_file = [] #list(DetectedSmell.objects.all().filter(belonging_file=f))
+        all_smells_for_file = []
         for c in all_columns:
             all_smells_for_file.extend(list(DetectedSmell.objects.all().filter(belonging_column=c)))
+        
         sorted_results = {}
         
         # Delete files which do not have any detected smells
@@ -319,7 +374,6 @@ def saved(request):
             continue
 
         smell_dict = {}
-            
         for c in all_columns:
             sorted_results[c] = []
             for s in all_smells_for_file:
@@ -331,20 +385,18 @@ def saved(request):
 
         context['parameter_dict'] = parameter_dict
         results[f.file_name] = sorted_results
+
     context['results'] = results
 
     return render(request, 'saved.html', context)
 
-def sort_results(results, columns):
-    sorted_results = {}
-    for c in columns:
-        sorted_results[c] = []
-        for s in results:
-            if s.column_name == c:
-                sorted_results[c].append(s)
-    return sorted_results
-
+# Remove row indexes 
 def precheck_columns(columns):
     if "Unnamed: 0" in columns:
         columns.remove("Unnamed: 0")
     return sorted(columns)
+
+# Get item of dictionary in template
+@register.filter
+def get_item(dictionary, key):
+    return dictionary.get(key)

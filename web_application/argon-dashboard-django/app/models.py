@@ -5,6 +5,7 @@ Copyright (c) 2019 - present AppSeed.us
 
 from django.db import models
 from django.contrib.auth.models import User
+from django.core.validators import MaxValueValidator, MinValueValidator
 
 # Create your models here.
 
@@ -30,8 +31,11 @@ class DetectedSmell(models.Model):
 
 class Parameter(models.Model):
     name = models.CharField(max_length=255)
-    value = models.FloatField()
-    data_type = models.CharField(max_length=255)
+    min_value = models.FloatField()
+    max_value = models.FloatField()
+    value = models.FloatField(blank=True, null=True)
+    #data_type = models.CharField(max_length=255)
     belonging_smell = models.ForeignKey(SmellType, on_delete=models.CASCADE)
     belonging_file = models.ForeignKey(File, on_delete=models.CASCADE)
+    
 

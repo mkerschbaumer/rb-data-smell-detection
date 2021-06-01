@@ -12,13 +12,14 @@ urlpatterns = [
 
     path('', views.upload, name='upload'),
 
-    re_path('customize.html', views.smells, name='smells'),
+    re_path('customize.html', views.customize, name='customize'),
 
     re_path('results.html', views.result, name='result'),
 
     re_path('saved.html', views.saved, name='saved'),
     
     re_path(r'^.*\.*', views.pages, name='pages'),
+
 
 ]
 
