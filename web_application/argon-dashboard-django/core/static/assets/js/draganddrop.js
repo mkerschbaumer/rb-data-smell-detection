@@ -1,3 +1,5 @@
+// https://jsfiddle.net/xg1kwv67/
+
 document.addEventListener("DOMContentLoaded", function() {
   document.querySelectorAll('.file-droppable').forEach(function(droppable) {
     var originalText = droppable.querySelector('div').innerHTML;
