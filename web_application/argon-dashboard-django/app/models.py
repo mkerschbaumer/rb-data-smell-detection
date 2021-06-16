@@ -34,7 +34,6 @@ class Parameter(models.Model):
     min_value = models.FloatField()
     max_value = models.FloatField()
     value = models.FloatField(blank=True, null=True)
-    #data_type = models.CharField(max_length=255)
     belonging_smell = models.ForeignKey(SmellType, on_delete=models.CASCADE)
     belonging_file = models.ForeignKey(File, on_delete=models.CASCADE)
     

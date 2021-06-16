@@ -15,12 +15,14 @@ from django.core.cache import cache
 from .forms import ParameterForm
 import os
 import sys
+import time
 from app.models import File, Column, DetectedSmell, SmellType, Parameter
 from app import forms
+from core.settings import SMELL_FOLDER, BASE_DIR, CORE_DIR, LIBRARY_DIR
 from django.contrib.auth.models import User
 import json
 cwd = os.getcwd()
-sys.path.append("/home/loryg/Documents/Gitlab/bachelor-thesis/data_smell_detection/")
+sys.path.append(LIBRARY_DIR+"/data_smell_detection/")
 from datasmelldetection.detectors.great_expectations.dataset import GreatExpectationsDatasetManager
 from datasmelldetection.detectors.great_expectations.context import GreatExpectationsContextBuilder
 from datasmelldetection.detectors.great_expectations.detector import DetectorBuilder
@@ -33,7 +35,7 @@ from django.contrib import messages
 
 
 # Different smells by its category
-with open('/home/loryg/Documents/Gitlab/bachelor-thesis/web_application/argon-dashboard-django/app/smells.json') as json_file:
+with open(SMELL_FOLDER+'smells.json') as json_file:
     data = json.load(json_file)
 
 all_smells = {i: {DataSmellType(a):b for a,b in j.items()} for i,j in data.items()}
@@ -155,56 +157,62 @@ def customize(request):
     # Get column names by id and by name for user selection
     column_names_by_id = list(Column.objects.all().filter(belonging_file=file1))
     column_names = [c.column_name for c in column_names_by_id]
-    column_names.insert(0, "All columns")
 
     # Smells and column names for customization
     context['smells'] = available_smells
     context['column_names'] = column_names
     data = {}
-
-    # Do presettings here
-    if request.method == 'GET' and request.GET:
-        if list(request.GET.keys())[0] == 'tolerant':
-            data = {'value': 0.8}
-            # set values for checkboxses here
-            context['checks'] = True
-        context['pre'] = list(request.GET.keys())[0]
+    forms = dict(available_smells)
 
     # After customization button submit
-    if request.method == 'POST':
+    if request.method == 'POST' and 'tolerant' not in request.POST and 'base' not in request.POST and 'strict' not in request.POST:
       # Selected smells and column names
       smells_list = request.POST.getlist('smells')  
       columns = request.POST.getlist('columns')
-
-      # If the checkbox 'All columns' was selected then get all columns for file
-      if "All" in columns:
-          columns = [c.column_name for c in list(Column.objects.all().filter(belonging_file=file1))]
+      checked_columns = {}
+      for c in column_names:
+          if not columns:
+            checked_columns[c] = "column_checked"
+              
+          elif c in columns:
+              checked_columns[c] = "column_checked"
+          else:
+              checked_columns[c] = "column_unchecked"
+      context['column_names'] = dict(checked_columns)
 
       # Build smell dictionary with parameters for template
       forms = dict(available_smells)
       form_error = False
+      start_time = time.time()
       for k,values in available_smells.items():
           temp = dict(values)
           for v in values:
             smell_db = SmellType.objects.get(smell_type=v.value)
-            parameter_list = list(Parameter.objects.all().filter(belonging_smell=smell_db))
-
+            parameter_list = list(Parameter.objects.all().filter(belonging_smell=smell_db, belonging_file=file1))
             form_dict = {}
+            if not smells_list:
+                form_dict["checkbox"] = "smell_checked"
+            elif str(v) in smells_list:
+                form_dict["checkbox"] = "smell_checked"
+            else:
+                form_dict["checkbox"] = "smell_unchecked"
             for p in parameter_list:
                 # Build prefix for form
                 prefix_name = str(v)+str(p)
-
+                
                 form_dict[p.name] = list()
                 form_dict[p.name].append(p)
-                form_dict[p.name].append(ParameterForm(request.POST, prefix=prefix_name, instance=p))
+                if len(request.POST) > 4:
+                    form_dict[p.name].append(ParameterForm(request.POST, prefix=prefix_name, instance=p))
+                    # Save values if form is valid or set error to True
+                    if form_dict[p.name][1].is_valid():
+                        form_dict[p.name][1].save()
+                    elif "This field is required." not in form_dict[p.name][1].errors.as_json():
+                        form_error = True
+
+                else:
+                    form_dict[p.name].append(ParameterForm(prefix=prefix_name, instance=p))
                 
-                # Save values if form is valid or set error to True
-                if form_dict[p.name][1].is_valid():
-                    form_dict[p.name][1].save()
-
-                elif "This field is required." not in form_dict[p.name][1].errors.as_json():
-                    form_error = True
-
             temp[v] = dict(form_dict)
           forms[k] = dict(temp)
 
@@ -226,15 +234,38 @@ def customize(request):
             if 'DataSmellType.'+s.smell_type.replace(" ", "_").upper() not in smells_list:
                 s.belonging_file.remove(file1)
       elif form_error:
-        context['message'] = 'Select right parameters!'
+        context['message'] = 'Invalid parameter values.'
       else:
-        context['message'] = 'Select smells AND columns!'  
+        context['message'] = 'Select smells AND columns.'  
     
     # Before customization button submit  
     else:
         # Build smell dictionary with parameters for template
-        forms = dict(available_smells)
+        
+        if 'tolerant' in request.POST:
+            print("hi")
+            data = {'value': 0.5}
+            context['pre'] = 'tolerant'
 
+        elif 'base' in request.POST:
+            data = {'value': 0.75}
+            context['pre'] = 'base'
+        
+        elif 'strict' in request.POST:
+            data = {'value': 0.9}
+            context['pre'] = 'strict'
+
+        columns = request.POST.getlist('columns')
+
+        checked_columns = {}
+        for c in column_names:
+            if not columns:
+                checked_columns[c] = "column_checked"
+            elif c in columns:
+                checked_columns[c] = "column_checked"
+            else:
+                checked_columns[c] = "column_unchecked"
+        context['column_names'] = dict(checked_columns)
         for k,values in available_smells.items():
           temp = dict(values)
 
@@ -242,6 +273,12 @@ def customize(request):
             smell_db = SmellType.objects.get(smell_type=v.value)
             parameter_list = list(Parameter.objects.all().filter(belonging_smell=smell_db, belonging_file=file1))
             form_dict = {}
+            if not request.POST.getlist('smells'):
+                form_dict["checkbox"] = "smell_checked"
+            elif str(v) in request.POST.getlist('smells'):
+                form_dict["checkbox"] = "smell_checked"
+            else:
+                form_dict["checkbox"] = "smell_unchecked"
 
             for p in parameter_list:
                 prefix_name = str(v)+str(p)
@@ -252,6 +289,8 @@ def customize(request):
                     form_dict[p.name].append(ParameterForm(initial=data, prefix=prefix_name, instance=p))
                 else:
                     form_dict[p.name].append(ParameterForm(prefix=prefix_name, instance=p))
+                
+                form_dict[p.name].append("False")
                 
             temp[v] = dict(form_dict)
           forms[k] = dict(temp)

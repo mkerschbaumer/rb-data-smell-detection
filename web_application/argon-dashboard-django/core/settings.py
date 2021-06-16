@@ -10,7 +10,11 @@ import dj_database_url
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = Path(__file__).parent
+LIBRARY_DIR = Path(__file__).parent.parent.parent.parent
 CORE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+settings_dir = os.path.dirname(__file__)
+PROJECT_ROOT = os.path.abspath(os.path.dirname(settings_dir))
+SMELL_FOLDER = os.path.join(PROJECT_ROOT, 'app/')
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = config('SECRET_KEY', default='S#perS3crEt_1122')
@@ -30,7 +34,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'app'  # Enable the inner app 
+    'django_crontab',
+    'app'
 ]
 
 MIDDLEWARE = [
@@ -77,6 +82,12 @@ DATABASES = {
         'NAME'  : 'db.sqlite3',
     }
 }
+
+# cronjobs
+CRONJOBS = [
+    ('0 * * * *', 'app.management.commands.deletefiles', '>> /home/loryg/Documents/logfile.log')
+]
+
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators

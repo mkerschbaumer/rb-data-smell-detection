@@ -2844,16 +2844,17 @@ fieldset:disabled a.btn {
 }
 
 .btn-default {
+  font-size: 0.5rem;
   color: #fff;
-  background-color: #172b4d;
-  border-color: #172b4d;
+  background-color: #545454;
+  border-color: #545454;
   box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
 }
 
 .btn-default:hover {
   color: #fff;
-  background-color: #172b4d;
-  border-color: #172b4d;
+  background-color: #545454;
+  border-color: #545454;
 }
 
 .btn-default:focus,
@@ -2864,16 +2865,16 @@ fieldset:disabled a.btn {
 .btn-default.disabled,
 .btn-default:disabled {
   color: #fff;
-  background-color: #172b4d;
-  border-color: #172b4d;
+  background-color: #545454;
+  border-color: #545454;
 }
 
 .btn-default:not(:disabled):not(.disabled):active,
 .btn-default:not(:disabled):not(.disabled).active,
 .show>.btn-default.dropdown-toggle {
   color: #fff;
-  background-color: #0b1526;
-  border-color: #172b4d;
+  background-color: #545454;
+  border-color: #545454;
 }
 
 .btn-default:not(:disabled):not(.disabled):active:focus,
@@ -4472,6 +4473,7 @@ input[type="button"].btn-block {
 .nav-link:hover,
 .nav-link:focus {
   text-decoration: none;
+  
 }
 
 .nav-link.disabled {
@@ -4995,7 +4997,7 @@ input[type="button"].btn-block {
   background-color: #fff;
   background-clip: border-box;
   border: 2px solid #4FD69C;
-  border-radius: 0.375rem;
+  border-radius: 0.4rem;
 }
 
 
@@ -16705,6 +16707,14 @@ textarea[resize="horizontal"] {
   border-top-right-radius: 0.375rem;
 }
 
+
+.nav-wrapper-doc {
+  padding: 1rem 0;
+  border-top-left-radius: 0.375rem;
+  border-top-right-radius: 0.375rem;
+  letter-spacing: 1px !important;
+}
+
 .nav-wrapper+.card {
   border-top-left-radius: 0;
   border-top-right-radius: 0;
@@ -20844,7 +20854,7 @@ div.card-body .dragdrop {
   text-align: center;
   text-decoration: none;
   display: inline-block;
-  font-size: 1vw;
+  font-size: 1rem;
   cursor: pointer;
   margin: 1vh;
 }
@@ -20954,6 +20964,13 @@ div.card-body .dragdrop {
 ul.errorlist{
   color: #F75676 !important; 
   font-weight: bold;
+}
+
+.parnames {
+  color: #545454;
+  margin-bottom: 0.5rem;
+  margin-top: 0.5rem;
+  font-size: 0.75rem !important;
 }
 
 /*# sourceMappingURL=dashboard-free.css.map */

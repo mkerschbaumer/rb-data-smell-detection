@@ -1,5 +1,4 @@
-// https://jsfiddle.net/xg1kwv67/
-
+// Code by https://jsfiddle.net/xg1kwv67/
 document.addEventListener("DOMContentLoaded", function() {
   document.querySelectorAll('.file-droppable').forEach(function(droppable) {
     var originalText = droppable.querySelector('div').innerHTML;
@@ -10,7 +9,7 @@ document.addEventListener("DOMContentLoaded", function() {
         droppable.querySelector('span').style.display = 'block';
         droppable.querySelector('div').innerHTML = '';
 				for (var i = 0; i < files.length; i++) {
-					droppable.querySelector('div').innerHTML += files[i].name + '<br>';
+					droppable.querySelector('div').innerHTML += files[i].name + '<br>' + '<p>click on \'Upload file\' button</p><i class="ni ni-bold-down"></i><br>';
         }
         droppable.classList.add('filled');
       } else {
