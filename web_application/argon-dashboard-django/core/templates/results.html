@@ -1,248 +1,226 @@
 {% extends 'layouts/base.html' %}
-
 {% block title %} Dashboard {% endblock title %}
-
 <!-- Specific CSS goes HERE -->
 {% block stylesheets %}{% endblock stylesheets %}
-
 {% block content %}
-
-    <!-- Header -->
-    <div class="header bg-gradient-primary pb-8 pt-5 pt-md-8">
-      <div class="container-fluid">
-        <div class="header-body">
-          <!-- Card stats -->
-          <div class="row">
+<!-- Header -->
+<div class="header bg-gradient-primary pb-8 pt-5 pt-md-8">
+   <div class="container-fluid">
+      <div class="header-body">
+         <!-- Card stats -->
+         <div class="row">
             <div class="col-xl-3 col-lg-6">
-              <div class="card-grey card-stats mb-4 mb-xl-0">
-                <div class="card-body">
-                  <div class="row">
-                    <div class="col">
-
-                      <span class="h2 font-weight-bold mb-0">Upload file</span>
-                    </div>
-                    <div class="col-auto">
-                      <div class="icon icon-shape bg-upload text-white rounded-circle shadow">
-                        <i class="ni ni-cloud-upload-96"></i>
-                      </div>
-                    </div>
+               <div class="card-grey card-stats mb-4 mb-xl-0">
+                  <div class="card-body">
+                     <div class="row">
+                        <div class="col">
+                           <span class="h2 font-weight-bold mb-0">Upload file</span>
+                        </div>
+                        <div class="col-auto">
+                           <div class="icon icon-shape bg-upload text-white rounded-circle shadow">
+                              <i class="ni ni-cloud-upload-96"></i>
+                           </div>
+                        </div>
+                     </div>
                   </div>
-                  
-                </div>
-              </div>
+               </div>
             </div>
-
             <div class="col-xl-1 col-lg-6">
-              <div class="card-transparent card-stats mb-4 mb-xl-0">
-                <div class="card-body-transparent">
-                  <div class="row">
-                    
-                    <div class="col-auto">
-                      <div class="icon icon-shape bg-dark text-white rounded-circle shadow">
-                        <i class="ni ni-bold-right"></i>
-                      </div>
-                    </div>
+               <div class="card-transparent card-stats mb-4 mb-xl-0">
+                  <div class="card-body-transparent">
+                     <div class="row">
+                        <div class="col-auto">
+                           <div class="icon icon-shape bg-dark text-white rounded-circle shadow">
+                              <i class="ni ni-bold-right"></i>
+                           </div>
+                        </div>
+                     </div>
                   </div>
-                  
-                </div>
-              </div>
+               </div>
             </div>
-            
             <div class="col-xl-4 col-lg-6">
-              <div class="card-grey card-stats mb-4 mb-xl-0">
-                <div class="card-body">
-                  <div class="row">
-                    <div class="col">
-                      <span class="h2 font-weight-bold mb-0">Customize</span>
-                    </div>
-                    <div class="col-auto">
-                      <div class="icon icon-shape bg-customize text-white rounded-circle shadow">
-                        <i class="ni ni-ui-04"></i>
-                      </div>
-                    </div>
+               <div class="card-grey card-stats mb-4 mb-xl-0">
+                  <div class="card-body">
+                     <div class="row">
+                        <div class="col">
+                           <span class="h2 font-weight-bold mb-0">Customize</span>
+                        </div>
+                        <div class="col-auto">
+                           <div class="icon icon-shape bg-customize text-white rounded-circle shadow">
+                              <i class="ni ni-ui-04"></i>
+                           </div>
+                        </div>
+                     </div>
                   </div>
-                </div>
-              </div>
+               </div>
             </div>
-
             <div class="col-xl-1 col-lg-6">
-              <div class="card-transparent card-stats mb-4 mb-xl-0">
-                <div class="card-body-transparent">
-                  <div class="row">
-                    
-                    <div class="col-auto">
-                      <div class="icon icon-shape bg-dark text-white rounded-circle shadow">
-                        <i class="ni ni-bold-right"></i>
-                      </div>
-                    </div>
+               <div class="card-transparent card-stats mb-4 mb-xl-0">
+                  <div class="card-body-transparent">
+                     <div class="row">
+                        <div class="col-auto">
+                           <div class="icon icon-shape bg-dark text-white rounded-circle shadow">
+                              <i class="ni ni-bold-right"></i>
+                           </div>
+                        </div>
+                     </div>
                   </div>
-                  
-                </div>
-              </div>
+               </div>
             </div>
-
             <div class="col-xl-3 col-lg-6">
-              <div class="card card-stats mb-4 mb-xl-0">
-                <div class="card-body">
-                  <div class="row">
-                    <div class="col">
-                      <span class="h2 font-weight-bold mb-0">Results</span>
-                    </div>
-                    <div class="col-auto">
-                      <div class="icon icon-shape bg-results text-white rounded-circle shadow">
-                        <i class="ni ni-chart-bar-32"></i>
-                      </div>
-                    </div>
+               <div class="card card-stats mb-4 mb-xl-0">
+                  <div class="card-body">
+                     <div class="row">
+                        <div class="col">
+                           <span class="h2 font-weight-bold mb-0">Results</span>
+                        </div>
+                        <div class="col-auto">
+                           <div class="icon icon-shape bg-results text-white rounded-circle shadow">
+                              <i class="ni ni-chart-bar-32"></i>
+                           </div>
+                        </div>
+                     </div>
                   </div>
-                </div>
-              </div>
+               </div>
             </div>
-          </div>
-        </div>
+         </div>
       </div>
-    </div>
-
-    <div class="container-fluid mt--7">
-
-      <div class="row">
-        <div class="col">
-          <div class="card shadow">
+   </div>
+</div>
+<div class="container-fluid mt--7">
+   <div class="row">
+      <div class="col">
+         <div class="card shadow">
             <div class="card-header bg-transparent">
-              <h3 class="mb-0">Smell Results By Column Names</h3>
+               <h3 class="mb-0">Smell Results By Column Names</h3>
             </div>
             <div class="card-body">
-              {% if not delete_message %}
-              <h2>{{ file }}</h2><br>
-              <p>Click on the column you wish to view.</p>
-              <div class="nav-wrapper">
-                <ul class="nav nav-pills nav-fill flex-column flex-md-row" id="tabs-icons-text" role="tablist">
-                  {% for item in column_names%}  
-                      <li class="nav-item">
+               {% if not delete_message %}
+               <h2>{{ file }}</h2>
+               <br>
+               <p>Click on the column you wish to view.</p>
+               <div class="nav-wrapper">
+                  <ul class="nav nav-pills nav-fill flex-column flex-md-row" id="tabs-icons-text" role="tablist">
+                     {% for item in column_names%}  
+                     <li class="nav-item">
                         <a class="nav-link mb-sm-3 mb-md-0" id="tabs-icons-text-3-tab" data-toggle="tab" href='#{{ item }}' role="tab" aria-controls="tabs-icons-text-3" aria-selected="false">{{ item }}</a>
-                      </li>
-                  {% endfor %}
-
-                </ul>
-              </div>
-              <div class="card shadow">
+                     </li>
+                     {% endfor %}
+                  </ul>
+               </div>
+               <div class="card shadow">
                   <div class="card-body">
-                      <div class="tab-content" id="myTabContent">
-                          {% for column, value in results.items %}
-                          <div class="tab-pane fade" id={{column}} role="tabpanel" aria-labelledby="tabs-icons-text-2-tab">
-                              <p class="description"></p>
-                              
-                              <div class="table-responsive">
-                                <div>
-                                  <table class="table align-items-center">
+                     <div class="tab-content" id="myTabContent">
+                        {% for column, value in results.items %}
+                        <div class="tab-pane fade" id={{column}} role="tabpanel" aria-labelledby="tabs-icons-text-2-tab">
+                           <p class="description"></p>
+                           <div class="table-responsive">
+                              <div>
+                                 <table class="table align-items-center">
                                     {% if value %}
                                     <thead class="thead-light">
-                                      <tr>
+                                       <tr>
                                           <th scope="col">
-                                              Data Smell Type
+                                             Data Smell Type
                                           </th>
                                           <th scope="col">
-                                              Total Element Count
+                                             Total Element Count
                                           </th>
                                           <th scope="col">
-                                              Faulty Element Count
+                                             Faulty Element Count
                                           </th>
                                           <th scope="col">
-                                              Faulty Element Overview
+                                             Faulty Element Overview
                                           </th>
-                                      </tr>
+                                       </tr>
                                     </thead>
                                     {% for smell in value%}
                                     <tbody class="list">
-                                      <tr>
-                                        <td class="type">
-                                          {{ smell.data_smell_type.value }}
-                                        </td>
-                                        <td class="total">
-                                          {{ smell.statistics.total_element_count }}
-                                        </td>
-                                        <td class="faulty">
-                                          {{ smell.statistics.faulty_element_count }}
-                                        </td>
-                                        <td class="faultylist">
-                                          {{ smell.faulty_elements }}
-                                        </td>
-                                      </tr>
-                                    </tbody> 
+                                       <tr>
+                                          <td class="type">
+                                             {{ smell.data_smell_type.value }}
+                                          </td>
+                                          <td class="total">
+                                             {{ smell.statistics.total_element_count }}
+                                          </td>
+                                          <td class="faulty">
+                                             {{ smell.statistics.faulty_element_count }}
+                                          </td>
+                                          <td class="faultylist">
+                                             {{ smell.faulty_elements }}
+                                          </td>
+                                       </tr>
+                                    </tbody>
                                     {% endfor %}
                                     {% else %}
                                     <p class="description">There are no smells for this column.</p>
                                     {% endif %}
-                                  </table>
-                                </div>
+                                 </table>
                               </div>
-                          </div>
-                          {% endfor %}
-                      </div>
-                      <br><br>
-                      {% endif %}
-                      {% if delete_message %}
-                      <div class="alert alert-success alert-dismissible fade show" role="alert">
+                           </div>
+                        </div>
+                        {% endfor %}
+                     </div>
+                     <br><br>
+                     {% endif %}
+                     {% if delete_message %}
+                     <div class="alert alert-success alert-dismissible fade show" role="alert">
                         <span class="alert-inner--icon"><i class="ni ni-like-2"></i></span>
                         <span class="alert-inner--text"><strong>Success! </strong>{{ delete_message }}</span>
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
+                        <span aria-hidden="true">&times;</span>
                         </button>
-                      </div>
-                      {% endif %}
-                      {{no_file}}
-                      <form method="post" enctype="multipart/form-data">
+                     </div>
+                     {% endif %}
+                     {{no_file}}
+                     <form method="post" enctype="multipart/form-data">
                         {% csrf_token %}
-                      <div>
-                        <div style="float: left;">
-                          {% if user.is_authenticated and not delete_message%}
-                          <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#exampleModal">Delete file and result</button>
-                          <!-- Modal -->
-                          <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                            <div class="modal-dialog modal-dialog-centered" role="document">
-                              <div class="modal-content">
-                                <div class="modal-header">
-                                  <h5 class="modal-title" id="exampleModalLabel">Confirm Deletion</h5>
-                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                  </button>
-                                </div>
-                                <div class="modal-body">
-                                  Delete the file '{{file}}' and it's detection results? <br>
-                                  <p>Detection result will not be viewable in Saved Results.</p>
-                                </div>
-                                <div class="modal-footer">
-                                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                  <button name="del" value={{file}} type="submit" class="btn btn-primary">Delete</button>
-                                </div>
+                        <div>
+                           <div style="float: left;">
+                              {% if user.is_authenticated and not delete_message%}
+                              <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#exampleModal">Delete file and result</button>
+                              <!-- Modal -->
+                              <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                 <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                       <div class="modal-header">
+                                          <h5 class="modal-title" id="exampleModalLabel">Confirm Deletion</h5>
+                                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                          <span aria-hidden="true">&times;</span>
+                                          </button>
+                                       </div>
+                                       <div class="modal-body">
+                                          Delete the file '{{file}}' and it's detection results? <br>
+                                          <p>Detection result will not be viewable in Saved Results.</p>
+                                       </div>
+                                       <div class="modal-footer">
+                                          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                          <button name="del" value={{file}} type="submit" class="btn btn-primary">Delete</button>
+                                       </div>
+                                    </div>
+                                 </div>
                               </div>
-                            </div>
-                          </div>
-                          {% endif %}
-                        </div>   
-                        <div style="float: right;"> 
-                          <a href="/">
-                            <div style="text-align: right;">
-                              <div class="btn btn-primary">
-                                  Upload another file
-                              </div>
-                            </div>
-                          </a>
+                              {% endif %}
+                           </div>
+                           <div style="float: right;">
+                              <a href="/">
+                                 <div style="text-align: right;">
+                                    <div class="btn btn-primary">
+                                       Upload another file
+                                    </div>
+                                 </div>
+                              </a>
+                           </div>
                         </div>
-                      </div>
-                      </form>
+                     </form>
                   </div>
-              </div>
+               </div>
             </div>
-          </div>
-        </div>
+         </div>
       </div>
-      
-
-      {% include "includes/footer.html" %}
-
-    </div>
-
+   </div>
+   {% include "includes/footer.html" %}
+</div>
 {% endblock content %}
-
 <!-- Specific JS goes HERE --> 
 {% block javascripts %}{% endblock javascripts %}

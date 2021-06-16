@@ -1,172 +1,154 @@
+
+
 {% extends 'layouts/base.html' %}
-
 {% block title %} Dashboard {% endblock title %}
-
 <!-- Specific CSS goes HERE -->
 {% block stylesheets %}{% endblock stylesheets %}
-
 {% block content %}
-
-    <!-- Header -->
-    <div class="header bg-gradient-primary pb-8 pt-5 pt-md-8">
-      <div class="container-fluid">
-        <div class="header-body">
-        </div>
+<!-- Header -->
+<div class="header bg-gradient-primary pb-8 pt-5 pt-md-8">
+   <div class="container-fluid">
+      <div class="header-body">
       </div>
-    </div>
-
-    <div class="container-fluid mt--7">
-
-      <div class="row">
-        <div class="col">
-          <div class="card shadow">
-            <div class="card-header bg-transparent">
-              <h3 class="mb-0">Detected Smell Results By File Names</h3>
-              <p>On this site you can see all previously detected smells. The smells are ordered by the file's columns.
-              Further, you can see which parameters where chosen on the customization site.</p>
-            </div>
-            <div class="card-body">
-              {% if not results %}
-              <p>There aren't any saved detection results.</p>
-              {% else %}
-              {% for f, smells in results.items %}
-              <h1>{{ f }}</h1><br>
-              <h3>Selected parameters</h3> 
-              {% for k in parameter_dict|get_item:f%}
-
-              <div class="table-responsive">
-                <div>
+   </div>
+</div>
+<div class="container-fluid mt--7">
+<div class="row">
+   <div class="col">
+      <div class="card shadow">
+         <div class="card-header bg-transparent">
+            <h3 class="mb-0">Detected Smell Results By File Names</h3>
+            <p>On this site you can see all previously detected smells. The smells are ordered by the file's columns.
+               Further, you can see which parameters where chosen on the customization site.
+            </p>
+         </div>
+         <div class="card-body">
+            {% if not results %}
+            <p>There aren't any saved detection results.</p>
+            {% else %}
+            {% for f, smells in results.items %}
+            <h1>{{ f }}</h1>
+            <br>
+            <h3>Selected parameters</h3>
+            {% for k in parameter_dict|get_item:f%}
+            <div class="table-responsive">
+               <div>
                   <table class="table align-items-center">
-                    
-                    <thead class="thead-light">
-                      <tr>
-                        <th scope="col">
-                            {{k}}
-                        </th>
-                    </tr>
-                    </thead>
-                  
-              
-                  <tbody class="list">
-                    <tr>
-                      
-                      <td class="type">
-                        {% if parameter_dict|get_item:f|get_item:k %}
-                          {% for p in parameter_dict|get_item:f|get_item:k %}
-                          {{ p.name  }}: {{p.value }}<br>
-                          {% endfor %}
-                        {% else %}  
-                        -
-                        {% endif %}  
-                      </td>
-                      
-                    </tr>
-                  </tbody> 
-                </table>
-              </div>
-            </div>  
-              
-              <br>
-              {% endfor %}
-              <br>
-              <h3>Columns</h3>
-                {% for column, smell in smells.items %}
-                {% if smell %}
-                {{ column.column_name }}<br><br>
-                    <div class="table-responsive">
-                      <div>
-                        <table class="table align-items-center">
-                          
-                          <thead class="thead-light">
-                            <tr>
-                                <th scope="col">
-                                    Data Smell Type
-                                </th>
-                                <th scope="col">
-                                    Total Element Count
-                                </th>
-                                <th scope="col">
-                                    Faulty Element Count
-                                </th>
-                                <th scope="col">
-                                  Faulty Element Overview
-                              </th>
-                            </tr>
-                          </thead>
-                          {% for s in smell%}
-                          <tbody class="list">
-                            <tr>
-                              <td class="type">
-                                {{ s.data_smell_type.smell_type }}
-                              </td>
-                              <td class="total">
-                                {{ s.total_element_count }}
-                              </td>
-                              <td class="faulty">
-                                {{ s.faulty_element_count }}
-                              </td>
-                              <td class="faulty">
-                                {{ s.faulty_list }}
-                              </td>
-                            </tr>
-                          </tbody> 
-                          {% endfor %}
-                         
-                          
-                        </table>
-                      </div>
-                    </div>
-                    <br>
-                    {% endif %}
-                 {% endfor %}  
-
-                  
-              <br><br>
-              <div style="text-align: right;">
-                <form id="test" method="post">
+                     <thead class="thead-light">
+                        <tr>
+                           <th scope="col">
+                              {{k}}
+                           </th>
+                        </tr>
+                     </thead>
+                     <tbody class="list">
+                        <tr>
+                           <td class="type">
+                              {% if parameter_dict|get_item:f|get_item:k %}
+                              {% for p in parameter_dict|get_item:f|get_item:k %}
+                              {{ p.name  }}: {{p.value }}<br>
+                              {% endfor %}
+                              {% else %}  
+                              -
+                              {% endif %}  
+                           </td>
+                        </tr>
+                     </tbody>
+                  </table>
+               </div>
+            </div>
+            <br>
+            {% endfor %}
+            <br>
+            <h3>Columns</h3>
+            {% for column, smell in smells.items %}
+            {% if smell %}
+            {{ column.column_name }}<br><br>
+            <div class="table-responsive">
+               <div>
+                  <table class="table align-items-center">
+                     <thead class="thead-light">
+                        <tr>
+                           <th scope="col">
+                              Data Smell Type
+                           </th>
+                           <th scope="col">
+                              Total Element Count
+                           </th>
+                           <th scope="col">
+                              Faulty Element Count
+                           </th>
+                           <th scope="col">
+                              Faulty Element Overview
+                           </th>
+                        </tr>
+                     </thead>
+                     {% for s in smell%}
+                     <tbody class="list">
+                        <tr>
+                           <td class="type">
+                              {{ s.data_smell_type.smell_type }}
+                           </td>
+                           <td class="total">
+                              {{ s.total_element_count }}
+                           </td>
+                           <td class="faulty">
+                              {{ s.faulty_element_count }}
+                           </td>
+                           <td class="faulty">
+                              {{ s.faulty_list }}
+                           </td>
+                        </tr>
+                     </tbody>
+                     {% endfor %}
+                  </table>
+               </div>
+            </div>
+            <br>
+            {% endif %}
+            {% endfor %}  
+            <br><br>
+            <div style="text-align: right;">
+               <form id="test" method="post">
                   {% csrf_token %}
-                <button class="btn btn-primary" id="myBtn{{f}}" type="button" data-toggle="modal" data-target="#myModal{{f}}">Delete result</button>
-                <!-- Modal -->
-                <div class="modal fade" id="myModal{{f}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                  <div class="modal-dialog modal-dialog-centered" role="document">
-                    <div class="modal-content">
-                      <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Confirm Deletion</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                          <span aria-hidden="true">&times;</span>
-                        </button>
-                      </div>
-                      <div class="modal-body">
-                        Delete the file '{{f}}' and it's detection results?
-                      </div>
-                      <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button name="del" value={{f}} type="submit" class="btn btn-primary">Delete</button>
-                      </div>
-                    </div>
+                  <button class="btn btn-primary" id="myBtn{{f}}" type="button" data-toggle="modal" data-target="#myModal{{f}}">Delete result</button>
+                  <!-- Modal -->
+                  <div class="modal fade" id="myModal{{f}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                     <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                           <div class="modal-header">
+                              <h5 class="modal-title" id="exampleModalLabel">Confirm Deletion</h5>
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                              </button>
+                           </div>
+                           <div class="modal-body">
+                              Delete the file '{{f}}' and it's detection results?
+                           </div>
+                           <div class="modal-footer">
+                              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                              <button name="del" value={{f}} type="submit" class="btn btn-primary">Delete</button>
+                           </div>
+                        </div>
+                     </div>
                   </div>
-                </div>
-                </form>
-              </div>
-              <hr style="border: 4px solid rgba(0, 0, 0, 0.1) !important;">
-              <script> 
-              $(document).ready(function(){ 
-                $(".btn").click(function(){ 
-                  $(this).parent().find('.modal').modal({show:true}); 
-                  }); 
-              }); 
-              </script>
-              {% endfor %}    
-              {% endif %}
-          </div>
-        </div>
+               </form>
+            </div>
+            <hr style="border: 4px solid rgba(0, 0, 0, 0.1) !important;">
+            <script> 
+               $(document).ready(function(){ 
+                 $(".btn").click(function(){ 
+                   $(this).parent().find('.modal').modal({show:true}); 
+                   }); 
+               }); 
+            </script>
+            {% endfor %}    
+            {% endif %}
+         </div>
       </div>
-      
-
-
-    </div>
-
+   </div>
+</div>
 {% endblock content %}
-
 <!-- Specific JS goes HERE --> 
 {% block javascripts %}{% endblock javascripts %}
+
