@@ -6,7 +6,14 @@ CMD cron && tail -f /var/log/cron.log
 
 COPY web_application/argon-dashboard-django/requirements.txt requirements.txt
 RUN pip install -r requirements.txt
+COPY data_smell_detection/requirements-dev.in requirements-dsd-library.txt
+RUN pip install -r requirements-dsd-library.txt
+COPY data_smell_detection data_smell_detection
+RUN cd data_smell_detection && python setup.py install && cd ..
 
+COPY great_expectations great_expectations
+COPY web_application/argon-dashboard-django/gunicorn-cfg.py .
+COPY .env .
 COPY web_application/argon-dashboard-django/manage.py manage.py
 COPY web_application/argon-dashboard-django/app app
 COPY web_application/argon-dashboard-django/authentication authentication
