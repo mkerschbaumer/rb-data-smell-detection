@@ -243,7 +243,6 @@ def customize(request):
         # Build smell dictionary with parameters for template
         
         if 'tolerant' in request.POST:
-            print("hi")
             data = {'value': 0.5}
             context['pre'] = 'tolerant'
 
