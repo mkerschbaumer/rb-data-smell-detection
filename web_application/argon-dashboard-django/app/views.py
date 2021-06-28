@@ -38,6 +38,9 @@ from django.contrib import messages
 with open(SMELL_FOLDER+'smells.json') as json_file:
     data = json.load(json_file)
 
+with open(SMELL_FOLDER+'presettings.json') as json_file:
+    presettings_smells = json.load(json_file)
+
 all_smells = {i: {DataSmellType(a):b for a,b in j.items()} for i,j in data.items()}
 believability_smells = all_smells['Believability Smells']
 syntactic_understandability_smells = all_smells['Encoding Understandability Smells']
@@ -243,16 +246,18 @@ def customize(request):
         # Build smell dictionary with parameters for template
         
         if 'tolerant' in request.POST:
-            data = {'value': 0.5}
+            pres = 'tolerant'
             context['pre'] = 'tolerant'
 
         elif 'base' in request.POST:
-            data = {'value': 0.75}
+            pres = 'base' 
             context['pre'] = 'base'
         
         elif 'strict' in request.POST:
-            data = {'value': 0.9}
+            pres = 'strict'
             context['pre'] = 'strict'
+        else:
+            pres = None
 
         columns = request.POST.getlist('columns')
 
@@ -284,7 +289,12 @@ def customize(request):
                 form_dict[p.name] = list()
                 form_dict[p.name].append(p)
 
-                if data:
+                if p.name in presettings_smells[pres][v.value]:
+                    data = {'value': presettings_smells[pres][v.value][p.name]}
+                else:
+                    data = {'value': 1.0}
+                    
+                if pres:
                     form_dict[p.name].append(ParameterForm(initial=data, prefix=prefix_name, instance=p))
                 else:
                     form_dict[p.name].append(ParameterForm(prefix=prefix_name, instance=p))

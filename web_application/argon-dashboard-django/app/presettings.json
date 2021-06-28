@@ -1,12 +1,80 @@
 {
-	"medium": {
-		"Missing Value": {
-			"mostly": 0.9
-		}
+	"tolerant": {
+	  "Extreme Value Smell": {
+		"mostly": 0.9
+	  },
+	  "Suspect Sign Smell": {
+		"mostly": 0.9
+	  },
+	  "Long Data Value Smell": {
+		"mostly": 0.9
+	  },
+	  "Missing Value Smell": {
+		"mostly": 0.9
+	  },
+	  "Floating Point Number As String Smell": {
+		"mostly": 0.1
+	  },
+	  "Integer As Floating Point Number Smell": {
+		"mostly": 0.1
+	  },
+	  "Integer As String Smell": {
+		"mostly": 0.1
+	  },
+	  "Casing Inconsistency Smell": {
+		"mostly": 0.9
+	  }
 	},
-	"hardcore": {
-		"Missing Value": {
-			"mostly": 1.0
-		}
+	"base": {
+	  "Extreme Value Smell": {
+		"mostly": 0.95
+	  },
+	  "Suspect Sign Smell": {
+		"mostly": 0.95
+	  },
+	  "Long Data Value Smell": {
+		"mostly": 0.95
+	  },
+	  "Missing Value Smell": {
+		"mostly": 0.95
+	  },
+	  "Floating Point Number As String Smell": {
+		"mostly": 0.2
+	  },
+	  "Integer As Floating Point Number Smell": {
+		"mostly": 0.2
+	  },
+	  "Integer As String Smell": {
+		"mostly": 0.2
+	  },
+	  "Casing Inconsistency Smell": {
+		"mostly": 0.95
+	  }
+	},
+	"strict": {
+	  "Extreme Value Smell": {
+		"mostly": 1
+	  },
+	  "Suspect Sign Smell": {
+		"mostly": 1
+	  },
+	  "Long Data Value Smell": {
+		"mostly": 1
+	  },
+	  "Missing Value Smell": {
+		"mostly": 1
+	  },
+	  "Floating Point Number As String Smell": {
+		"mostly": 0.3
+	  },
+	  "Integer As Floating Point Number Smell": {
+		"mostly": 0.3
+	  },
+	  "Integer As String Smell": {
+		"mostly": 0.3
+	  },
+	  "Casing Inconsistency Smell": {
+		"mostly": 1
+	  }
 	}
-}
+  }

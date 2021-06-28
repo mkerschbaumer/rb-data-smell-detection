@@ -74,6 +74,7 @@ class SignUpForm(UserCreationForm):
 
 class UserUpdateForm(forms.ModelForm):
     username = forms.CharField(
+        max_length = 20,
         widget=forms.TextInput(
             attrs={
                 "placeholder" : "Username",                
@@ -88,6 +89,7 @@ class UserUpdateForm(forms.ModelForm):
             }
         ))
     first_name = forms.CharField(
+        max_length = 20,
         widget=forms.TextInput(
             attrs={
                 "placeholder" : "First name",                
@@ -95,6 +97,7 @@ class UserUpdateForm(forms.ModelForm):
             }
         ))
     last_name = forms.CharField(
+        max_length = 20,
         widget=forms.TextInput(
             attrs={
                 "placeholder" : "Last name",                
