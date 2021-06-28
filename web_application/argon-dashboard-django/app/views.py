@@ -289,7 +289,7 @@ def customize(request):
                 form_dict[p.name] = list()
                 form_dict[p.name].append(p)
 
-                if p.name in presettings_smells[pres][v.value]:
+                if pres and p.name in presettings_smells[pres][v.value]:
                     data = {'value': presettings_smells[pres][v.value][p.name]}
                 else:
                     data = {'value': 1.0}
