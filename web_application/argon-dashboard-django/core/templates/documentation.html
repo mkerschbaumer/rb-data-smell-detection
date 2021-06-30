@@ -44,27 +44,104 @@
                 <div class="card-body">
                     <div class="tab-content" id="myTabContent">
                         <div class="tab-pane fade show active" id="tabs-icons-text-1" role="tabpanel" aria-labelledby="tabs-icons-text-1-tab">
-                            <p class="description"><ul>
-                              <li>Dummy Value Smell</li>
-                              <li>Duplicated Value Smell</li>
-                              <li>Extreme Value Smell</li>
-                              <li>Meaningless Value Smell</li>
-                              <li>Misspelling Smell</li>
-                              <li>Suspect Class Value Smell</li>
-                              <li>Suspect Date Value Smell</li>
-                              <li>Suspect Date/Time Interval Smell</li>
-                              <li>Suspect Sign Smell</li>
-                              <li>Suspect Distribution Smell</li>
-                            </ul></p>
+                            <p class="description">
+                              <h3>Dummy Value Smell</h3>
+                              <p><em>This smell characterizes a situation in which a kind of substitute value (sentinel value) is used due to several reasons (e.g. missing values, unknown values, computation errors, surpass "not NULL" constraints etc.).</em><br>Example: 1970-01-01 (Unix epoch), 999</p>
+                              <h3>Duplicated Value Smell</h3>
+                              <p><em>This smell occurs when data values are syntactically equal across several data instances.</em><br>Example: 12, 2, 2, 2, 2, 2, 2, 2, 2, 3, 6, 13</p>
+                              <h3>Extreme Value Smell</h3>
+                              <p><em>This smell occurs when data instances have extreme data values relating to other data instances.</em><br>Example: 1, 5, 10, 12, 6, 7, 2300, 13, 17</p>
+                              <h3>Meaningless Value Smell</h3>
+                              <p><em>This smell arises when a data value has no common meaning or contains suspect repeating sequences of characters.</em><br>Example: £$1%S13, aaa, abcabc, 123412341234</p>
+                              <h3>Misspelling Smell</h3>
+                              <p><em>This smell arises when a data value probably has a spelling error.</em><br>Example: combuter, sofdware, 7O34 ‘O’ instead of ‘0’</p>
+                              <h3>Suspect Class Value Smell</h3>
+                              <p><em>This smell characterizes a situation in which categorical data instances have uncommon class values.</em><br>Example: high, high. high, low, low, sunny, high</p>
+                              <h3>Suspect Date Value Smell</h3>
+                              <p><em>This smell occurs when a data value represents a date far in the past or future.</em><br>Example: 1899-03-22, 2099-03-02</p>
+                              <h3>Suspect Date/Time Interval Smell</h3>
+                              <p><em>This smell occurs when there is a very long/short date/time interval between data instances.</em><br>Example: 2019-01-01, 2019-01-02, 2019-10-01, 2019-10-02</p>
+                              <h3>Suspect Sign Smell</h3>
+                              <p><em>This smell occurs when data instances have a different sign (+/-) than the rest of the instances.</em><br>Example: 2, 7, 22, 13, 95, -5, 65, 20</p>
+                              <h3>Suspect Distribution Smell</h3>
+                              <p><em>This smell characterizes a situation in which the data values have a suspect distribution.</em><br>Example: 1, 3, 4, 5, 3, 4, 3, 500, 15000, 780000, 800000, 800000</p>
+                            </p>
                         </div>
                         <div class="tab-pane fade" id="tabs-icons-text-2" role="tabpanel" aria-labelledby="tabs-icons-text-2-tab">
-                            <p class="description">Cosby sweater eu banh mi, qui irure terry richardson ex squid. Aliquip placeat salvia cillum iphone. Seitan aliquip quis cardigan american apparel, butcher voluptate nisi qui.</p>
+                            <p class="description">
+                              <h3>Date as DateTime</h3>
+                              <p><em>This smell occurs when a date is encoded as a datetime data type.</em><br>Example: 2020-12-30 00:00:00</p>
+                              <h3>Date as String</h3>
+                              <p><em>This smell occurs when a date is encoded as a string.</em><br>Example: "2020-12-30"</p>
+                              <h3>DateTime as String </h3>
+                              <p><em>This smell occurs when a date and a timestamp are encoded as a string.</em><br>Example: "2020-12-30 11:50:40"</p>
+                              <h3>Floating-point Number as String </h3>
+                              <p><em>This smell occurs when a floating-point number is encoded as a string.</em><br>Example: "3.5"</p>
+                              <h3>Integer as Floating-point Number </h3>
+                              <p><em>This smell occurs when an integer is encoded as a floating-point number.</em><br>Example: 3.0</p>
+                              <h3>Integer as String </h3>
+                              <p><em>This smell occurs when an integer is encoded as a string.</em><br>Example: "3"</p>
+                              <h3>Time as String </h3>
+                              <p><em>This smell occurs when a timestamp is encoded as a string.</em><br>Example: "11:50:40"</p>
+                              <h3>Suspect Character Encoding</h3>
+                              <p><em>This smells occurs when special characters or umlauts are incorrectly encoded.</em><br>Example: Ã, Ã¼, Ã¤ Ã¶, �</p>
+                            </p>
                         </div>
                         <div class="tab-pane fade" id="tabs-icons-text-3" role="tabpanel" aria-labelledby="tabs-icons-text-3-tab">
-                            <p class="description">Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth master cleanse. Mustache cliche tempor, williamsburg carles vegan helvetica. Reprehenderit butcher retro keffiyeh dreamcatcher synth.</p>
+                            <p class="description">
+                              <h3>Ambiguous Date/Time Format </h3>
+                              <p><em>This smell occurs when a date is represented in short format or a timestamp is represented in 12 hour format.</em><br>Example: 06-03-05 vs. date: 06-05-03, 05:13</p>
+                              <h3>Ambiguous Value </h3>
+                              <p><em>This smell arises when data values represent abbreviations, homonyms, acronyms or an ambiguous context.</em><br>Example: Dr (doctor vs. drive), express (done fast vs. show thoughts with words), address (speak to vs. location), Miami (Florida vs. Ohio)</p>
+                              <h3>Casing</h3>
+                              <p><em>This smell occurs when data values represent an unusual use of upper and lower case (Mixed Case, Upper Only, Lower Only). </em><br>Example: GoOD MorNiNg, GOOD MORNING, good morning</p>
+                              <h3>Contracting</h3>
+                              <p><em>This smell occurs when data values represent shortened version of words or phrases.</em><br>Example: don't, I'd</p>
+                              <h3>Extraneous Value </h3>
+                              <p><em>This smell occurs when data values provide additional, likely unnecessary information.</em><br>Example: CJ. John Roberts Jr., Fri Mar 05 2021 17:27:40 GMT+0100 </p>
+                              <h3>Intermingled Data Type </h3>
+                              <p><em>This smell characterizes a situation in which data values contain numeric and alphabetic characters.</em><br>Example: Room 12, 90 Days</p>
+                              <h3>Long Data Value </h3>
+                              <p><em>This smell arises when data values are too long to understand.</em><br>Example: Pneumonoultramicroscopicsilicovolcanoconiosis, 12Am12-12-20highpressalarmset0</p>
+                              <h3>Missing Value </h3>
+                              <p><em>This smell arises when data instances have no data values.</em><br>Example: 12, 2, 3, , , 4, 55</p>
+                              <h3>Separating</h3>
+                              <p><em>This smell arises when data values contain thousands separators (space, underbar, dot etc.) for grouping digits. The usage of delimiters can result in ambiguity when also a decimal separator is used and lead to problems decoding the values.</em><br>Example: 23 432, 21.321, 12 340 000</p>
+                              <h3>Spacing </h3>
+                              <p><em>This smell arises when data values contain an uncommon pattern of spaces (Trailing Space, Leading Spaces, Multiple Spaces, Missing Spaces).</em><br>Example: “John Smith “, " John Smith”, ” John Smith “, "JohnSmith"</p>
+                              <h3>Special Character </h3>
+                              <p><em>This smell occurs when data values contain special characters (non-alphanumeric) like Commas, Dots, Hyphens, Apostrophes, Tab Char, Punctuation, Parentheses, Dashes, accented Letters, etc. </em><br>Example: "Hello, how are you - today", "New.York.", "John's house"</p>
+                              <h3>Synonym</h3>
+                              <p><em>This smell occurs when data values have the same semantic meaning but are syntactically different (e.g. Aliases, Nick names, Pseudonyms).</em><br>Example: (intelligent, clever, smart), (Bill Clinton, President Clinton, William Jefferson Clinton)</p>
+                              <h3>Tagging</h3>
+                              <p><em>This smell occurs when data values represent tags.</em><br>Example: \begin{itemize}, &lt;head&gt;</p>
+                            </p>
                         </div>
                         <div class="tab-pane fade" id="tabs-icons-text-4" role="tabpanel" aria-labelledby="tabs-icons-text-3-tab">
-                          <p class="description">Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth master cleanse. Mustache cliche tempor, williamsburg carles vegan helvetica. Reprehenderit butcher retro keffiyeh dreamcatcher synth.</p>
+                          <p class="description">
+                            <h3>Abbreviation Inconsistency </h3>
+                            <p><em>This smell occurs when abbreviations or contractions are not used consistently.</em><br>Example: Dr. Hofer vs. Doctor Huber, I'd vs. I would</p>
+                            <h3>Casing Inconsistency </h3>
+                            <p><em>This smell characterizes a situation in which upper and lower case is not used consistently.</em><br>Example: How are you?, fine., and you? Great.</p>
+                            <h3>Class Inconsistency </h3>
+                            <p><em>This smell arises when class values for categorical data instances are not used consistently (e.g. different representations or abstractions).</em><br>Example: male, male, women, 1, 1, male, frozen pizza, frozen food</p>
+                            <h3>Date/Time Format Inconsistency </h3>
+                            <p><em>This smell occurs when date or time formats are not used consistently.</em><br>Example: 2020-01-30, 30-01-2020, 20-01-30, 05:13, 05:13:25</p>
+                            <h3>Missing Value Inconsistency </h3>
+                            <p><em>This smell characterizes a situation in which constants are not used consistently to represent missing data values.</em><br>Example: 12, NaN, Na, NULL, 22, inf, , 23</p>
+                            <h3>Separating Inconsistency </h3>
+                            <p><em>This smell occurs when thousands separator are not used consistently.</em><br>Example: 23 100, 23.500, 25_000, 27 000</p>
+                            <h3>Spacing Inconsistency </h3>
+                            <p><em>This smell occurs when spacing is not used consistenly.</em><br>Example: +43 664 123, +43664 546</p>
+                            <h3>Special Character Inconsistency </h3>
+                            <p><em>This smell occurs when special characters are not used consistently.</em><br>Example: (2), (44), [32], (32)</p>
+                            <h3>Syntax Inconsistency </h3>
+                            <p><em>This smell characterizes a situation in which the general syntax (decimal places, telephone area codes, extraneous information etc.) of data values is not used consistently. Mainly, all other consistency issues which do not fall in one of the other categories related to this category.</em><br>Example: 32.2, 44.1111, +43650123, 0043654124, Miss Smith, Miss Taylor, Mayer, Miss Stone</p>
+                            <h3>Unit Inconsistency </h3>
+                            <p><em>This smell arises when units of measurement are not (implicitly) used consistently.</em><br>Example: 1.80, 1.84, 190, 176, 1.6</p>
+                            <h3>Transposition Inconsistency</h3>
+                            <p><em>This smell arises when ordering of words or special characters is not used consistently.</em><br>Example: €10.5 vs. 11.0€, Jack Smith vs. Stevens John</p>
+                          </p>
                       </div>
                     </div>
                 </div>
