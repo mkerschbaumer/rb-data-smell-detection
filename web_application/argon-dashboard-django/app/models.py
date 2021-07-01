@@ -1,13 +1,6 @@
-# -*- encoding: utf-8 -*-
-"""
-Copyright (c) 2019 - present AppSeed.us
-"""
-
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator
-
-# Create your models here.
 
 class File(models.Model):
     file_name = models.CharField(max_length=255, primary_key=True)
