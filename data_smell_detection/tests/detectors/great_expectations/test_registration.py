@@ -90,3 +90,13 @@ class TestExpectationRegistration:
             ),
             expectation_type="expect_column_values_to_not_contain_integer_as_floating_point_number_smell"
         )
+
+    def test_expect_column_values_to_not_contain_duplicated_value_smell(self):
+        check_data_smell_stored_in_registry(
+            registry=default_registry,
+            metadata=DataSmellMetadata(
+                data_smell_type=DataSmellType.DUPLICATED_VALUE_SMELL,
+                profiler_data_types={ProfilerDataType.STRING, ProfilerDataType.INT}
+            ),
+            expectation_type="expect_column_values_to_not_contain_duplicated_value_smell"
+        )
