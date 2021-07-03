@@ -14,3 +14,5 @@ from .expect_column_values_to_not_contain_integer_as_floating_point_number_smell
     ExpectColumnValuesToNotContainIntegerAsFloatingPointNumberSmell
 from .expect_column_values_to_not_contain_casing_smell import \
     ExpectColumnValuesToNotContainCasingSmell
+from .expect_column_values_to_not_contain_duplicated_value_smell import \
+    ExpectColumnValuesToNotContainDuplicatedValueSmell
