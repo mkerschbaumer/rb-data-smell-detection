@@ -37,8 +37,6 @@ with open(SMELL_FOLDER+'smells.json') as json_file:
 with open(SMELL_FOLDER+'presettings.json') as json_file:
     presettings_smells = json.load(json_file)
 
-print(presettings_smells)
-
 all_smells = {i: {DataSmellType(a):b for a,b in j.items()} for i,j in data.items()}
 believability_smells = all_smells['Believability Smells']
 syntactic_understandability_smells = all_smells['Encoding Understandability Smells']
@@ -356,7 +354,7 @@ def result(request):
             context['delete_message'] = 'Result deleted and not viewable in Saved Results.'
 
     except:
-       context['no_file'] = 'No detection result for this user available.'
+       context['no_result'] = 'No detection result for this user available.'
 
     return render(request, 'results.html', context)
 

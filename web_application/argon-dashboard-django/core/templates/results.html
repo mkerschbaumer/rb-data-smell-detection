@@ -172,7 +172,7 @@
                         </button>
                      </div>
                      {% endif %}
-                     {{no_file}}
+                     {{no_result}}
                      <form method="post" enctype="multipart/form-data">
                         {% csrf_token %}
                         <div>
@@ -190,7 +190,7 @@
                                           </button>
                                        </div>
                                        <div class="modal-body">
-                                          Delete the file '{{file}}' and it's detection results? <br>
+                                          Delete the file '{{file}}' and its detection results? <br>
                                           <p>Detection result will not be viewable in Saved Results.</p>
                                        </div>
                                        <div class="modal-footer">
