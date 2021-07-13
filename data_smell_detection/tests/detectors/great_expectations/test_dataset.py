@@ -27,8 +27,14 @@ class TestGreatExpectationsDatasetManager:
     def test_get_available_dataset_identifiers(self):
         identifiers = manager.get_available_dataset_identifiers()
         assert isinstance(identifiers, set)
-        assert len(identifiers) == 1
-        assert "Titanic.csv" in identifiers
+        assert len(identifiers) == 2
+        expected_datasets = [
+            "Titanic.csv",
+            "data_smell_testset.csv"
+        ]
+        # Ensure all expected datasets are returned by
+        # get_available_dataset_identifiers.
+        assert all([x in identifiers for x in expected_datasets])
 
     def test_get_dataset(self):
         dataset = manager.get_dataset("Titanic.csv")

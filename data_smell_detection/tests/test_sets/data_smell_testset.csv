@@ -1,0 +1,12 @@
+int1,int2,float1,float2,string1,string2,string3
+1,1,1.1,1.1,abc def ghi,abc,abc
+2,2,2.2,2.2,abc def ghi,2,-2.2
+3,3,3.3,3.8,This is a sentence.,-3,3.8
+4,4,4.4,4.9,ghi,4,-4.9
+5,5,5.5,5.1,cAsing 1,-5,5.1
+6,6,6.6,6.2,CaSing 2,6,-6.2
+7,7,7.7,7.8,all lowercase,-7,7.8
+8,8,8.8,8.9,ALL UPPERCASE,8,-8.9
+-300,9,-300.5,9.1,Pseudopseudohypoparathyroidism,-30,9.1
+9,8,9.9,10.2,abc,9,-10.2
+10,10,10.2,11.8,def,-10,11.8
