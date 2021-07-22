@@ -123,7 +123,15 @@ class ExpectColumnValuesToNotContainCasingSmell(ColumnMapExpectation, DataSmell)
                     "2.5",  # Floats
                     "-3.8",
                     ""  # Empty string
-                ]
+                ],
+                # Strings which should not trigger a Casing Smell
+                "negative2": [
+                    "",  # Empty string
+                    "www.google.de",  # All lowercase but may not be seen as a data smell
+                    "WWW.GOOGLE.DE",  # All uppercase but may not be seen as a data smell
+                    "www.gOogle.de",  # Mixed but may not be seen as a data smell
+                    "www.GooGle.de"   # Mixed but may not be seen as a data smell
+                ],
             },
             "tests": [
                 {
@@ -300,6 +308,18 @@ class ExpectColumnValuesToNotContainCasingSmell(ColumnMapExpectation, DataSmell)
                     "exact_match_out": False,
                     "include_in_gallery": True,
                     "in": {"column": "negative", "same_case_wordcount_threshold": 1, "mostly": 1},
+                    "out": {
+                        "success": True,
+                        "partial_unexpected_list": [],
+                    },
+                },
+                {
+                    # Ensure no Casing Smell is detected for strings in the
+                    # "negative2" column.
+                    "title": "test_negative2_wordcount2_mostly1",
+                    "exact_match_out": False,
+                    "include_in_gallery": True,
+                    "in": {"column": "negative2", "same_case_wordcount_threshold": 2, "mostly": 1},
                     "out": {
                         "success": True,
                         "partial_unexpected_list": [],
