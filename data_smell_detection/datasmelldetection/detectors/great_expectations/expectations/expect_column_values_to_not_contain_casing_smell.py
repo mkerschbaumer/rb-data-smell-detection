@@ -22,8 +22,17 @@ class ColumnValuesDontContainCasingSmell(ColumnMapMetricProvider):
 
     @classmethod
     def _contains_casing_smell(cls, element: str, same_case_wordcount_threshold: int) -> bool:
-        # NOTE: An element can be an entry in a row.
-        words: List[str] = re.findall(r"[a-zA-Z]+", element)
+        # Extract substrings of the input string by splitting on spaces
+        word_candidates: List[str] = re.split(r"\s+", element)
+
+        words: List[str] = list()
+        for word in word_candidates:
+            # Find consecutive alphabetical characters. Require matching to
+            # start at the begin of a string to consider cases like
+            # "word." where only "word" should be extracted.
+            substrings = list(re.findall(r"^[a-zA-Z]+", word))
+            words = words + substrings
+
         word_count: int = len(words)
 
         # Case 1: All words are in lowercase or uppercase (e.g. "abc def ghi" or
