@@ -140,7 +140,9 @@ class ExpectColumnValuesToNotContainCasingSmell(ColumnMapExpectation, DataSmell)
                 ],
                 # Strings which should not trigger a Casing Smell
                 "negative2": [
-                    "",  # Empty string
+                    # All words are either all lowercase or all uppercase
+                    # => Should still not be flagged.
+                    "A test sentence which should not be flagged.",
                     "www.google.de",  # All lowercase but may not be seen as a data smell
                     "WWW.GOOGLE.DE",  # All uppercase but may not be seen as a data smell
                     "www.gOogle.de",  # Mixed but may not be seen as a data smell
