@@ -35,14 +35,28 @@ class ColumnValuesDontContainCasingSmell(ColumnMapMetricProvider):
 
         word_count: int = len(words)
 
-        # Case 1: All words are in lowercase or uppercase (e.g. "abc def ghi" or
-        # "ABC DEF GHI")
-        def is_all_same_case(x: str) -> bool:
-            return x.lower() == x or x.upper() == x
+        # Case 1: Function for testing if all words are in lowercase
+        # (e.g. "abc def ghi")
+        def is_all_lower_case(word: str) -> bool:
+            return word.lower() == word
+
+        # Case 1: Function for testing if all words are in uppercase
+        # (e.g. "ABC DEF GHI")
+        def is_all_upper_case(word: str) -> bool:
+            return word.upper() == word
+
+        is_all_words_lowercase: bool = all(map(is_all_lower_case, words))
+        is_all_words_uppercase: bool = all(map(is_all_upper_case, words))
+
         # At least `same_case_wordcount_threshold` lowercase or uppercase words
         # have to be present to flag a casing smell. This is required since
         # strings like "abc" should not be flagged.
-        if word_count >= same_case_wordcount_threshold and all(map(is_all_same_case, words)):
+        #
+        # NOTE: Only consider a Casing Smell to be present if all words are
+        # lower case or all are upper case. This is done to avoid that
+        # inputs like "A test string" are not flagged.
+        if word_count >= same_case_wordcount_threshold and \
+                (is_all_words_lowercase or is_all_words_uppercase):
             return True
 
         # Case 2: Some words are in mixed case (e.g. "AbC dEf gHI")
