@@ -71,5 +71,4 @@ class ConfigurableDetector(Detector):
 
     @configuration.setter
     def configuration(self, new_configuration: Optional[Configuration]):
-        # TODO: Validate argument
         self._configuration = new_configuration
