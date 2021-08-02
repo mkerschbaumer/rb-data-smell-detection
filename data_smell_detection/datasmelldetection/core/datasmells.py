@@ -2,7 +2,12 @@ from enum import Enum
 
 
 class DataSmellType(Enum):
-    """An enum which contains the data smells which detectors can find in datasets."""
+    """
+    An enum which contains the data smells which detectors can find in datasets.
+
+    Source of definitions: Harald Foidl and Michael Felderer. Data smells.
+    Technical report, University of Innsbruck, 2021.
+    """
 
     DUMMY_VALUE_SMELL = "Dummy Value Smell"
     """
