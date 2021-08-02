@@ -7,7 +7,7 @@ import great_expectations
 import datasmelldetection.core
 
 
-class GreatExpectationsDataset(datasmelldetection.core.Dataset):
+class DatasetWrapper(datasmelldetection.core.Dataset):
     """
     A thin wrapper around :class:`great_expectations.dataset.Dataset`.
 
@@ -101,7 +101,7 @@ class GreatExpectationsDatasetManager(datasmelldetection.core.DatasetManager):
         filenames: Iterator[str] = map(extract_filename, batch_definitions)
         return set(filenames)
 
-    def get_dataset(self, dataset_identifier: str) -> GreatExpectationsDataset:
+    def get_dataset(self, dataset_identifier: str) -> DatasetWrapper:
         """
         :param dataset_identifier: The dataset identifier (e.g. file name of the CSV file)
             to import.
@@ -113,4 +113,4 @@ class GreatExpectationsDatasetManager(datasmelldetection.core.DatasetManager):
         dataset: great_expectations.dataset.Dataset = PandasDataset(batch.data.dataframe)
         # Construct internal dataset wrapper to enable consistent column name
         # access.
-        return GreatExpectationsDataset(dataset, batch_request=batch_request)
+        return DatasetWrapper(dataset, batch_request=batch_request)

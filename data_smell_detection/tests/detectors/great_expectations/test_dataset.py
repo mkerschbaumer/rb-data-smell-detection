@@ -41,7 +41,7 @@ class TestGreatExpectationsDatasetManager:
         assert isinstance(dataset, Dataset)
 
 
-class TestGreatExpectationsDataset:
+class TestDatasetWrapper:
     def test_get_column_names(self):
         dataset = manager.get_dataset("Titanic.csv")
 

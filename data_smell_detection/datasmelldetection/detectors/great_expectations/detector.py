@@ -9,7 +9,7 @@ from datasmelldetection.core.detector import (
     ConfigurableDetector,
     DetectionResult, Configuration
 )
-from .dataset import GreatExpectationsDataset
+from .dataset import DatasetWrapper
 from .datasmell import DataSmellRegistry, default_registry
 from .converter import (
     DetectionResultConverter,
@@ -40,7 +40,7 @@ class GreatExpectationsDetector(ConfigurableDetector):
     def __init__(
             self,
             context: DataContext,
-            dataset: GreatExpectationsDataset,
+            dataset: DatasetWrapper,
             profiler: DatasetProfiler,
             registry: DataSmellRegistry,
             converter: DetectionResultConverter,
@@ -53,12 +53,12 @@ class GreatExpectationsDetector(ConfigurableDetector):
         self.converter = converter
 
     @property
-    def dataset(self) -> GreatExpectationsDataset:
+    def dataset(self) -> DatasetWrapper:
         """The dataset to use."""
         return self._dataset
 
     @dataset.setter
-    def dataset(self, new_dataset: GreatExpectationsDataset):
+    def dataset(self, new_dataset: DatasetWrapper):
         # TODO: Validate argument
         self._dataset = new_dataset
 
@@ -150,7 +150,7 @@ class DetectorBuilder:
     def __init__(
             self,
             context: DataContext,
-            dataset: GreatExpectationsDataset):
+            dataset: DatasetWrapper):
         # Great Expectations context
         self._context = context
         # Dataset which should be checked for data smells
@@ -171,7 +171,7 @@ class DetectorBuilder:
         self._context = context
         return self
 
-    def set_dataset(self, dataset: GreatExpectationsDataset):
+    def set_dataset(self, dataset: DatasetWrapper):
         self._dataset = dataset
         return self
 
