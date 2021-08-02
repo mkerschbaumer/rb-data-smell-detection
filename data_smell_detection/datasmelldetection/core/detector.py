@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from abc import ABC, abstractmethod
-from typing import Optional, Set, Iterable
+from typing import Optional, Set, Iterable, List, Any
 
 from datasmelldetection.core import DataSmellType
 
@@ -31,7 +31,7 @@ class DetectionResult:
     statistics: DetectionStatistics
     """Statistics regarding the presence of the detected data smell."""  # pylint: disable=W0105
 
-    faulty_elements: list
+    faulty_elements: List[Any]
     """A subset of elements which contain the corresponding data smell."""  # pylint: disable=W0105
 
 
