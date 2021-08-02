@@ -20,7 +20,7 @@ from .profiler import DataSmellAwareProfiler
 
 
 @dataclass
-class GreatExpectationsConfiguration(Configuration):
+class DataSmellAwareConfiguration(Configuration):
     """
     A configuration class which controls how data smell detection is performed
     by the :class:`.GreatExpectationsDetector`.
@@ -114,8 +114,8 @@ class GreatExpectationsDetector(ConfigurableDetector):
         if self.configuration is not None:
             # Use the data_smell_configuration key if it was provided by the
             # user.
-            if isinstance(self.configuration, GreatExpectationsConfiguration):
-                configuration_: GreatExpectationsConfiguration = self.configuration
+            if isinstance(self.configuration, DataSmellAwareConfiguration):
+                configuration_: DataSmellAwareConfiguration = self.configuration
                 profiler_configuration["data_smell_configuration"] = \
                     configuration_.data_smell_configuration
 

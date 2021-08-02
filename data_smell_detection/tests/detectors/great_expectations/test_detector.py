@@ -16,7 +16,7 @@ from datasmelldetection.detectors.great_expectations.datasmell import (
 )
 from datasmelldetection.detectors.great_expectations.detector import (
     DetectorBuilder,
-    GreatExpectationsConfiguration,
+    DataSmellAwareConfiguration,
 )
 from datasmelldetection.detectors.great_expectations.expectations import (
     ExpectColumnValuesToNotContainExtremeValueSmell,
@@ -52,7 +52,7 @@ class DetectorTestCase:
     title: str
 
     # The configuration used for profiling
-    configuration: GreatExpectationsConfiguration
+    configuration: DataSmellAwareConfiguration
 
     # All detection results which must be returned by the data smell detection
     # process.
@@ -62,7 +62,7 @@ class DetectorTestCase:
 testcases: List[DetectorTestCase] = [
     DetectorTestCase(
         title="parameterset1",
-        configuration=GreatExpectationsConfiguration(
+        configuration=DataSmellAwareConfiguration(
             column_names=None,  # All columns
             data_smell_configuration={
                 DataSmellType.EXTREME_VALUE_SMELL: {"mostly": 1, "threshold": 3},
