@@ -9,7 +9,7 @@ from datasmelldetection.core.detector import (
     DetectionResult
 )
 from datasmelldetection.detectors.great_expectations.context import GreatExpectationsContextBuilder
-from datasmelldetection.detectors.great_expectations.dataset import GreatExpectationsDatasetManager
+from datasmelldetection.detectors.great_expectations.dataset import FileBasedDatasetManager
 from datasmelldetection.detectors.great_expectations.datasmell import (
     DataSmellRegistry,
     DataSmellType
@@ -40,7 +40,7 @@ context_builder = GreatExpectationsContextBuilder(
 )
 context = context_builder.build()
 
-dataset_manager = GreatExpectationsDatasetManager(context=context)
+dataset_manager = FileBasedDatasetManager(context=context)
 # Import dataset which has been created to test the detection of data smells.
 data_smell_testset = dataset_manager.get_dataset("data_smell_testset.csv")
 

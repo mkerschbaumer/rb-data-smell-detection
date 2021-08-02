@@ -2,7 +2,7 @@ import os
 import great_expectations
 from great_expectations.core.batch import BatchRequest
 
-from datasmelldetection.detectors.great_expectations.dataset import GreatExpectationsDatasetManager
+from datasmelldetection.detectors.great_expectations.dataset import FileBasedDatasetManager
 from datasmelldetection.detectors.great_expectations.context import GreatExpectationsContextBuilder
 from datasmelldetection.core import Dataset
 
@@ -17,12 +17,12 @@ context_builder = GreatExpectationsContextBuilder(
 )
 context = context_builder.build()
 
-manager = GreatExpectationsDatasetManager(context=context)
+manager = FileBasedDatasetManager(context=context)
 
 
-class TestGreatExpectationsDatasetManager:
+class TestFileBasedDatasetManager:
     def test_creation(self):
-        GreatExpectationsDatasetManager(context=context)
+        FileBasedDatasetManager(context=context)
 
     def test_get_available_dataset_identifiers(self):
         identifiers = manager.get_available_dataset_identifiers()

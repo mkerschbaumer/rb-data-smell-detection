@@ -67,7 +67,7 @@ def _build_batch_request(filename: Optional[str]) -> BatchRequest:
     )
 
 
-class GreatExpectationsDatasetManager(datasmelldetection.core.DatasetManager):
+class FileBasedDatasetManager(datasmelldetection.core.DatasetManager):
     """
     A class for managing :class:`.Dataset` instances.
 

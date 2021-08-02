@@ -8,7 +8,7 @@ class GreatExpectationsContextBuilder:
     :class:`great_expectations.DataContext` instances.
 
     The reason why the context creation is abstracted using a builder is that the
-    :class:`~.dataset.GreatExpectationsDatasetManager`
+    :class:`~.dataset.FileBasedDatasetManager`
     class internally uses Great Expectations batch requests which assume that a
     specific CSV-file data source exists. The mentioned data source has a
     dynamic base_directory parameter which is set using a runtime parameter.
