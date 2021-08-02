@@ -12,8 +12,8 @@ class GreatExpectationsContextBuilder:
     class internally uses Great Expectations batch requests which assume that a
     specific CSV-file data source exists. The mentioned data source has a
     dynamic base_directory parameter which is set using a runtime parameter.
-    This builder class abstracts the initialization in order to simplify context
-    creation.
+    This builder class abstracts the initialization in order to simplify the
+    context creation.
     """
 
     def __init__(self, context_root_dir: str, data_directory: str):
