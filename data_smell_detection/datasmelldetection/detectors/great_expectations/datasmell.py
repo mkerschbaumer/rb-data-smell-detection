@@ -23,28 +23,6 @@ class DataSmellMetadata:
     profiler_data_types: Set[ProfilerDataType]
     """Column types for which smell detection should be performed."""  # pylint: disable=W0105
 
-    def validate_configuration(self):
-        """
-        Raise exceptions if the configuration is invalid.
-
-        :return: True if the configuration is valid.
-        """
-
-        if not isinstance(self.data_smell_type, DataSmellType):
-            raise InvalidExpectationConfigurationError("The data_smell_type field must be set!")
-        if not isinstance(self.profiler_data_types, (list, tuple)):
-            raise InvalidExpectationConfigurationError(
-                "The profiler_data_types field must be set to a list or a tuple!")
-        # Ensure the profiler data type field only contains the corresponding type
-        # (only profiler data types of the corresponding Great Expectations type
-        # are allowed)
-        for profiler_data_type in self.profiler_data_types:
-            if not isinstance(profiler_data_type, ProfilerDataType):
-                raise InvalidExpectationConfigurationError(
-                    "All elements of profiler_data_types must be valid ProfilerDataType instances!")
-
-        return True
-
 
 class DataSmellRegistry:
     """Store expectations for specific column types."""
