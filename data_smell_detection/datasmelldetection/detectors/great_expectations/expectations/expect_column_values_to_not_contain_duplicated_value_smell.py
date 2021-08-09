@@ -1,3 +1,5 @@
+from typing import Dict, Any
+
 from great_expectations.expectations.core import ExpectColumnValuesToBeUnique
 from great_expectations.profile.base import ProfilerDataType
 
@@ -25,6 +27,9 @@ class ExpectColumnValuesToNotContainDuplicatedValueSmell(ExpectColumnValuesToBeU
     # NOTE: library_metadata not set since the ExpectColumnValuesToBeUnique
     # expectation sets it.
 
+    default_kwarg_values: Dict[str, Any] = {
+        "mostly": 0.95
+    }
 
 # Perform registration of data smell at DataSmellRegistry
 expectation = ExpectColumnValuesToNotContainDuplicatedValueSmell()

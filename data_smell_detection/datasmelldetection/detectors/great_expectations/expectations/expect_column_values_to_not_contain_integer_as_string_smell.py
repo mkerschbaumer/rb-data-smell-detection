@@ -134,7 +134,8 @@ class ExpectColumnValuesToNotContainIntegerAsStringSmell(ColumnMapExpectation, D
 
     default_kwarg_values = {
         "catch_exceptions": True,
-        "regex": r'^(?:\+|-)?\d+$'
+        "regex": r'^(?:\+|-)?\d+$',
+        "mostly": 0.1
     }
 
     def validate_configuration(self, configuration: Optional[ExpectationConfiguration]):

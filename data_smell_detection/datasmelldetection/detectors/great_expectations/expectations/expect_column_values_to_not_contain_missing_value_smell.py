@@ -1,4 +1,6 @@
 import json
+from typing import Dict, Any
+
 from great_expectations.expectations.core import ExpectColumnValuesToNotBeNull
 from great_expectations.profile.base import ProfilerDataType
 
@@ -26,6 +28,9 @@ class ExpectColumnValuesToNotContainMissingValueSmell(ExpectColumnValuesToNotBeN
     # NOTE: library_metadata not set since the ExpectColumnValuesToNotBeNull
     # expectation sets it.
 
+    default_kwarg_values: Dict[str, Any] = {
+        "mostly": 0.95
+    }
 
 # Perform registration of data smell at DataSmellRegistry
 expectation = ExpectColumnValuesToNotContainMissingValueSmell()

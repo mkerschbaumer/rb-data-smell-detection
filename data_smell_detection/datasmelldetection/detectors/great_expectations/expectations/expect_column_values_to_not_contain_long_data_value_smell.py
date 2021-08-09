@@ -255,7 +255,7 @@ class ExpectColumnValuesToNotContainLongDataValueSmell(ColumnMapExpectation, Dat
 
     default_kwarg_values = {
         "length_threshold": 30,
-        "mostly": 1
+        "mostly": 0.95
     }
 
     def get_validation_dependencies(

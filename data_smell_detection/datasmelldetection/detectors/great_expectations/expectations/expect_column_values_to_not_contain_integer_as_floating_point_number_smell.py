@@ -165,7 +165,10 @@ class ExpectColumnValuesToNotContainIntegerAsFloatingPointNumberSmell(ColumnMapE
 
     success_keys = ("mostly", "epsilon")
 
-    default_kwarg_values = {"epsilon": 1e-6}
+    default_kwarg_values = {
+        "epsilon": 1e-6,
+        "mostly": 0.1
+    }
 
 
 expectation = ExpectColumnValuesToNotContainIntegerAsFloatingPointNumberSmell()

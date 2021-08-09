@@ -362,7 +362,8 @@ class ExpectColumnValuesToNotContainCasingSmell(ColumnMapExpectation, DataSmell)
     success_keys = ("mostly", "same_case_wordcount_threshold")
 
     default_kwarg_values: Dict[str, Any] = {
-        "same_case_wordcount_threshold": 2
+        "same_case_wordcount_threshold": 2,
+        "mostly": 0.95
     }
 
 

@@ -227,7 +227,8 @@ class ExpectColumnValuesToNotContainFloatingPointNumberAsStringSmell(ColumnMapEx
 
     default_kwarg_values = {
         "catch_exceptions": True,
-        "regex": r'^(?:\+|-)?\d+\.\d*$'
+        "regex": r'^(?:\+|-)?\d+\.\d*$',
+        "mostly": 0.1
     }
 
     def validate_configuration(self, configuration: Optional[ExpectationConfiguration]):

@@ -254,7 +254,10 @@ class ExpectColumnValuesToNotContainSuspectSignSmell(ColumnMapExpectation, DataS
     # for more information about domain and success keys, and other arguments to Expectations
     success_keys = ("mostly", "percentile_threshold")
 
-    default_kwarg_values = {"percentile_threshold": 0.25}
+    default_kwarg_values = {
+        "percentile_threshold": 0.25,
+        "mostly": 0.95
+    }
 
 
 expectation = ExpectColumnValuesToNotContainSuspectSignSmell()

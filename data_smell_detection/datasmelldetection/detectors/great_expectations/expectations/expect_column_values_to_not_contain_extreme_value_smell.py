@@ -46,7 +46,8 @@ class ExpectColumnValuesToNotContainExtremeValueSmell(ColumnMapExpectation, Data
     default_kwarg_values = {
         "threshold": 3,
         "double_sided": True,
-        "catch_exceptions": True
+        "catch_exceptions": True,
+        "mostly": 0.95
     }
 
     def validate_configuration(self, configuration: Optional[ExpectationConfiguration]):
