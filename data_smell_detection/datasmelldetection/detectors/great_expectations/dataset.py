@@ -50,23 +50,6 @@ class DatasetWrapper(datasmelldetection.core.Dataset):
         return self._batch_request
 
 
-# Internal convenience function for constructing batch request (for default Great
-# Expectations setup)
-def _build_batch_request(filename: Optional[str]) -> BatchRequest:
-    if filename is None:
-        # No filename specified => construct BatchRequest to get all available batches
-        batch_identifiers = {}
-    else:
-        batch_identifiers = {"filename": filename}
-
-    return BatchRequest(
-        datasource_name="csv_data_source",
-        data_connector_name="csv_data_connector",
-        data_asset_name="csv_asset",
-        partition_request={"batch_identifiers": batch_identifiers}
-    )
-
-
 class FileBasedDatasetManager(datasmelldetection.core.DatasetManager):
     """
     A class for managing :class:`.Dataset` instances.
@@ -83,6 +66,22 @@ class FileBasedDatasetManager(datasmelldetection.core.DatasetManager):
         """
         self._datasource = context.get_datasource("csv_data_source")
 
+    # Convenience function for constructing batch request (for default Great
+    # Expectations setup)
+    def build_batch_request(self, filename: Optional[str]) -> BatchRequest:
+        if filename is None:
+            # No filename specified => construct BatchRequest to get all available batches
+            batch_identifiers = {}
+        else:
+            batch_identifiers = {"filename": filename}
+
+        return BatchRequest(
+            datasource_name="csv_data_source",
+            data_connector_name="csv_data_connector",
+            data_asset_name="csv_asset",
+            partition_request={"batch_identifiers": batch_identifiers}
+        )
+
     def get_available_dataset_identifiers(self) -> Set[str]:
         """
         :return: The set of available dataset identifiers (e.g. file names) which are present
@@ -91,7 +90,7 @@ class FileBasedDatasetManager(datasmelldetection.core.DatasetManager):
 
         # Build batch request with no filename => needed to get all available
         # batch definitions
-        batch_request = _build_batch_request(None)
+        batch_request = self.build_batch_request(None)
         batch_definitions = self._datasource.get_available_batch_definitions(batch_request)
 
         def extract_filename(x):
@@ -108,7 +107,7 @@ class FileBasedDatasetManager(datasmelldetection.core.DatasetManager):
         :return: The imported dataset.
         """
 
-        batch_request = _build_batch_request(filename=dataset_identifier)
+        batch_request = self.build_batch_request(filename=dataset_identifier)
         batch = self._datasource.get_single_batch_from_batch_request(batch_request)
         dataset: great_expectations.dataset.Dataset = PandasDataset(batch.data.dataframe)
         # Construct internal dataset wrapper to enable consistent column name
