@@ -274,7 +274,7 @@ class ExpectColumnValuesToNotContainLongDataValueSmell(ColumnMapExpectation, Dat
 
         pattern = re.compile(r"^column_values\.not_match_regex\.")
         length_threshold = success_kwargs["length_threshold"]
-        regex: str = r"\w{" + str(length_threshold) + r",}"
+        regex: str = r"\w{" + str(int(length_threshold)) + r",}"
 
         # Override regex for internally used metric
         # (column_values.not_match_regex). This is required since the regex is
