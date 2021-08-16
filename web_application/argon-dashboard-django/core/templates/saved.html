@@ -29,7 +29,7 @@
             {% for f, smells in results.items %}
             <h1>{{ f }}</h1>
             <br>
-            <h3>Selected parameters</h3>
+            <h3>Selected parameters for detected data smells</h3>
             {% for k in parameter_dict|get_item:f%}
             <div class="table-responsive">
                <div>
@@ -60,7 +60,7 @@
             <br>
             {% endfor %}
             <br>
-            <h3>Columns</h3>
+            <h3>Columns with data smells</h3>
             {% for column, smell in smells.items %}
             {% if smell %}
             {{ column.column_name }}<br><br>

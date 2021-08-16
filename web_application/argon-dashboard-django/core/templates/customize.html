@@ -369,10 +369,11 @@
                                     <br>
                                     
                                     {% for key, value in forms.items %}
-                                    {% if value %}
-                                    <div class="smell-name">{{key}}</div>
-                                    {% endif %}
+                                    
                                     <table class="table align-items-center">
+                                       {% if value %}
+                                       <div class="smell-name">{{key}}</div>
+                                       {% endif %}
                                        <tbody class="list">
                                           <tr>
                                              {% for v, parameters in value.items %}
@@ -396,12 +397,10 @@
                                                          {%else%}
                                                          {% if parameter.0.max_value == -1 %}
                                                          <span data-tooltip="{{doc|get_item:v.value|get_item:'Parameters'|get_item:name}}"><div class="parnames">{{name}} [{{parameter.0.min_value}} - inf]:</div></span>
-                                                         <br><br>
                                                          {{parameter.1.value}}
                                                          {{parameter.1.value.errors}}
                                                          {% else %}
                                                          <span data-tooltip="{{doc|get_item:v.value|get_item:'Parameters'|get_item:name}}"><div class="parnames">{{name}} [{{parameter.0.min_value}} - {{parameter.0.max_value}}]:</div></span>
-                                                         <br><br>
                                                          {{parameter.1.value}}
                                                          {{parameter.1.value.errors}}
                                                          {% endif %}

@@ -98,12 +98,12 @@
                {% if not delete_message %}
                <h2>{{ file }}</h2>
                <br>
-               <p>Click on the column you wish to view.</p>
+               <p>Click on the column you wish to view.<br>Only columns which have data smells are shown below.</p>
                <div class="nav-wrapper">
                   <ul class="nav nav-pills nav-fill flex-column flex-md-row" id="tabs-icons-text" role="tablist">
-                     {% for item in column_names%}  
+                     {% for column, value in results.items %}  
                      <li class="nav-item">
-                        <a class="nav-link mb-sm-3 mb-md-0" id="tabs-icons-text-3-tab" data-toggle="tab" href='#{{ item }}' role="tab" aria-controls="tabs-icons-text-3" aria-selected="false">{{ item }}</a>
+                        <a class="nav-link mb-sm-3 mb-md-0" id="tabs-icons-text-3-tab" data-toggle="tab" href='#{{ column }}' role="tab" aria-controls="tabs-icons-text-3" aria-selected="false">{{ column }}</a>
                      </li>
                      {% endfor %}
                   </ul>
