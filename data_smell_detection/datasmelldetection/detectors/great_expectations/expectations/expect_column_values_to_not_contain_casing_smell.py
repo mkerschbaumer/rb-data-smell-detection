@@ -22,6 +22,7 @@ class ColumnValuesDontContainCasingSmell(ColumnMapMetricProvider):
 
     @classmethod
     def _contains_casing_smell(cls, element: str, same_case_wordcount_threshold: int) -> bool:
+        same_case_wordcount_threshold = int(same_case_wordcount_threshold)
         # Extract substrings of the input string by splitting on spaces
         word_candidates: List[str] = re.split(r"\s+", element)
 
