@@ -16705,6 +16705,7 @@ textarea[resize="horizontal"] {
   padding: 1rem 0;
   border-top-left-radius: 0.375rem;
   border-top-right-radius: 0.375rem;
+  overflow: scroll;
 }
 
 
@@ -18457,7 +18458,7 @@ textarea[resize="horizontal"] {
 
 .table.align-items-center td,
 .table.align-items-center th {
-  vertical-align: middle;
+  vertical-align: top;
 }
 
 .table .thead-dark th {
@@ -20973,4 +20974,52 @@ ul.errorlist{
   font-size: 0.75rem !important;
 }
 
-/*# sourceMappingURL=dashboard-free.css.map */
+.tooltip_custom {
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px dotted black;
+  display: inline-block;
+
+}
+
+.tooltip_custom .tooltiptext_custom {
+  visibility: hidden;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  width: auto;
+  top: -5px;
+  left: 105%; 
+  display: inline-block;
+  /* Position the tooltip */
+  position: absolute;
+  z-index: 1;
+  white-space: pre-wrap;
+}
+
+.tooltip_custom:hover .tooltiptext_custom {
+  visibility: visible;
+  
+}
+
+[data-tooltip] {
+  cursor: default;
+  font: normal 0.8em sans-serif;
+  position: absolute;
+  z-index: 1;
+}
+
+[data-tooltip]:hover:after {
+  display: inline-block;
+  content: attr(data-tooltip);
+  white-space: pre-wrap;
+  background-color: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  padding: 1em;
+  z-index: 1;
+  border-radius: 6px;
+  top: -10px;
+  left: 105%; 
+}
