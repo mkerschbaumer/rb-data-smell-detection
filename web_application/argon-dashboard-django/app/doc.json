@@ -1,0 +1,61 @@
+{
+    "Duplicated Value Smell": {
+        "Description": "This smell occurs when data values are syntactically equal across several data instances. Example: 12, 2, 2, 2, 2, 2, 2, 2, 2, 3, 6, 13"
+        ,"Parameters": {
+            "mostly": "The mostly parameter defines that data is valid, if it is above a specific percentage value."
+        }
+    },
+    "Extreme Value Smell": {
+        "Description": "This smell occurs when data instances have extreme data values relating to other data instances. Example: 1, 5, 10, 12, 6, 7, 2300, 13, 17",
+        "Parameters": {
+            "threshold": "The threshold to use regarding the z-score. This parameter can be configured by users but is set to 3 by default. It is assumed that this parameter is a positive number."
+            ,"mostly": "The mostly parameter defines that data is valid, if it is above a specific percentage value."
+        }
+    },
+    "Suspect Sign Smell": {
+        "Description": "This smell occurs when data instances have a different sign (+/-) than the rest of the instances. Example: 2, 7, 22, 13, 95, -5, 65, 20",
+        "Parameters": {
+            "percentile_threshold": "This parameter must be in the interval [0,1]. It controls which quantiles are computed. The computed quantiles are used to determine whether the majority of the column values are positive or negative."
+            ,"mostly": "The mostly parameter defines that data is valid, if it is above a specific percentage value."
+        }
+    },
+    "Integer As String Smell": {
+        "Description": "This smell occurs when an integer is encoded as a string. Example: \"3\""
+        ,"Parameters": {
+            "mostly": "The mostly parameter defines that data is valid, if it is above a specific percentage value."
+        }
+    },
+    "Floating Point Number As String Smell": {
+        "Description": "This smell occurs when a floating-point number is encoded as a string. Example: \"3.5\""
+        ,"Parameters": {
+            "mostly": "The mostly parameter defines that data is valid, if it is above a specific percentage value."
+        }
+    },
+    "Integer As Floating Point Number Smell": {
+        "Description": "This smell occurs when an integer is encoded as a floating-point number. Example: 3.0",
+        "Parameters": {
+            "epsilon": "The threshold for the absolute difference of a floating point number. to the nearest integer. This parameter must be a floating point value greater than zero."
+            ,"mostly": "The mostly parameter defines that data is valid, if it is above a specific percentage value."
+        }
+    },
+    "Casing Smell": {
+        "Description": "This smell occurs when data values represent an unusual use of upper and lower case (Mixed Case, Upper Only, Lower Only). Example: GoOD MorNiNg, GOOD MORNING, good morning",
+        "Parameters": {
+            "same_case_wordcount_threshold": "This parameter controls how many words must be contained in a string for a casing smell, where all words are of the same case, to exist. For instance, strings like ”all lowercase” or ”ALL UPPERCASE” with `same_case_wordcount_threshold = 2` would trigger this case while ”string” would not."
+            ,"mostly": "The mostly parameter defines that data is valid, if it is above a specific percentage value."
+        }
+    },
+    "Missing Value Smell": {
+        "Description": "This smell arises when data instances have no data values. Example: 12, 2, 3, , , 4, 55",
+        "Parameters": {
+            "mostly": "The mostly parameter defines that data is valid, if it is above a specific percentage value."
+        }
+    },
+    "Long Data Value Smell": {
+        "Description": "This smell arises when data values are too long to understand. Example: Pneumonoultramicroscopicsilicovolcanoconiosis, 12Am12-12-20highpressalarmset0 ",
+        "Parameters": {
+            "mostly": "The mostly parameter defines that data is valid, if it is above a specific percentage value.",
+            "length_threshold": "The minimum number of characters a word must consist of to be considered \"long\". This parameter must be an integer greater than zero."
+        }
+    }
+}

@@ -19,12 +19,12 @@ from django.contrib.auth.models import User
 import json
 cwd = os.getcwd()
 sys.path.append(LIBRARY_DIR+"/data_smell_detection/")
-from datasmelldetection.detectors.great_expectations.dataset import GreatExpectationsDatasetManager
+from datasmelldetection.detectors.great_expectations.dataset import FileBasedDatasetManager
 from datasmelldetection.detectors.great_expectations.context import GreatExpectationsContextBuilder
 from datasmelldetection.detectors.great_expectations.detector import DetectorBuilder
 from datasmelldetection.detectors.great_expectations.detector import GreatExpectationsDetector
 from datasmelldetection.detectors.great_expectations.profiler import DataSmellAwareProfiler
-from datasmelldetection.detectors.great_expectations.detector import GreatExpectationsConfiguration
+from datasmelldetection.detectors.great_expectations.detector import DataSmellAwareConfiguration
 from datasmelldetection.core.detector import DetectionStatistics, DetectionResult
 from datasmelldetection.core.datasmells import DataSmellType
 from django.contrib import messages 
@@ -37,11 +37,15 @@ with open(SMELL_FOLDER+'smells.json') as json_file:
 with open(SMELL_FOLDER+'presettings.json') as json_file:
     presettings_smells = json.load(json_file)
 
+with open(SMELL_FOLDER+'doc.json') as json_file:
+    doc_file = json.load(json_file)
+
 all_smells = {i: {DataSmellType(a):b for a,b in j.items()} for i,j in data.items()}
 believability_smells = all_smells['Believability Smells']
 syntactic_understandability_smells = all_smells['Encoding Understandability Smells']
 encoding_understandability_smells = all_smells['Syntactic Understandability Smells']
 consistency_smells = all_smells['Consistency Smells']
+
 
 def index(request):
     context = {}
@@ -82,7 +86,7 @@ def upload(request):
         os.path.join(cwd, "core/media")
     )
     con = context_builder.build()
-    manager = GreatExpectationsDatasetManager(context=con)
+    manager = FileBasedDatasetManager(context=con)
     context = {}
 
     # File upload
@@ -107,15 +111,15 @@ def upload(request):
                 smell = SmellType(smell_type=s.value)
                 smell.save()
                 smell.belonging_file.add(file1)
-                
+                default = data['Believability Smells'].get(s.value) or data['Encoding Understandability Smells'].get(s.value) or data['Syntactic Understandability Smells'].get(s.value) or data['Consistency Smells'].get(s.value)
                 # Save parameters for smells
                 parameters = believability_smells.get(s) or syntactic_understandability_smells.get(s) or encoding_understandability_smells.get(s) or consistency_smells.get(s)
                 if parameters is not None:
                     for p,v in parameters.items():
                         if v["max"] != "inf":
-                            par = Parameter(name=p, value=1.0, belonging_smell=smell, belonging_file=file1, min_value=v["min"], max_value=v["max"])
+                            par = Parameter(name=p, value=default[p]["min"], belonging_smell=smell, belonging_file=file1, min_value=v["min"], max_value=v["max"])
                         else: 
-                            par = Parameter(name=p, value=1.0, belonging_smell=smell, belonging_file=file1, min_value=v["min"], max_value=-1)
+                            par = Parameter(name=p, value=default[p]["min"], belonging_smell=smell, belonging_file=file1, min_value=v["min"], max_value=-1)
                         par.save()
 
             # Save columns to database
@@ -283,6 +287,7 @@ def customize(request):
 
     context['forms'] = forms
     context['forms_easy'] = forms
+    context['doc'] = doc_file
 
     return render(request, 'customize.html', context)
 
@@ -297,7 +302,7 @@ def result(request):
         os.path.join(cwd, "core/media")
     )
     con = context_builder.build()
-    manager = GreatExpectationsDatasetManager(context=con)
+    manager = FileBasedDatasetManager(context=con)
     
     if request.user.is_authenticated:
         current_user_id = request.user.id
@@ -305,56 +310,59 @@ def result(request):
         current_user_id = dummy_user.id
 
     # Get file for detection
-    try:
-        file1 = File.objects.filter(user_id=current_user_id).latest("uploaded_time")
-        dataset = manager.get_dataset(file1.file_name)
-        column_names = [c.column_name for c in list(Column.objects.all().filter(belonging_file=file1))]
-        smells = list(SmellType.objects.all().filter(belonging_file=file1))
-        
-        # Build dict for data smell configuration
-        ds_config = {}
-        for s in smells:
-            pars = list(Parameter.objects.all().filter(belonging_smell=s))
-            par_dict = {}
-            for p in pars:
-                par_dict[p.name] = p.value
+    #try:
+    file1 = File.objects.filter(user_id=current_user_id).latest("uploaded_time")
+    dataset = manager.get_dataset(file1.file_name)
+    column_names = [c.column_name for c in list(Column.objects.all().filter(belonging_file=file1))]
+    smells = list(SmellType.objects.all().filter(belonging_file=file1))
+    
+    # Build dict for data smell configuration
+    ds_config = {}
+    for s in smells:
+        pars = list(Parameter.objects.all().filter(belonging_smell=s))
+        par_dict = {}
+        for p in pars:
+            par_dict[p.name] = p.value
 
-            temp = DataSmellType(s.smell_type)
-            ds_config[temp] = dict(par_dict)
+        temp = DataSmellType(s.smell_type)
+        ds_config[temp] = dict(par_dict)
 
-        conf = GreatExpectationsConfiguration(
-            column_names=column_names,
-            data_smell_configuration=ds_config
-        )
-        detector = DetectorBuilder(context=con, dataset=dataset).set_configuration(conf).build() 
+    conf = DataSmellAwareConfiguration(
+        column_names=column_names,
+        data_smell_configuration=ds_config
+    )
+    detector = DetectorBuilder(context=con, dataset=dataset).set_configuration(conf).build() 
 
-        # Detect smells and sort result
-        detected_smells = detector.detect()
-        sorted_results = {}
-        for c in column_names:
-            sorted_results[c] = []
-            for s in detected_smells:
-                if s.column_name == c:
-                    sorted_results[c].append(s)
+    # Detect smells and sort result
+    detected_smells = detector.detect()
+    sorted_results = {}
+    for c in column_names:
+        sorted_results[c] = []
+        # if c in [for i.column_name in detected_smells]
+        for s in detected_smells:
+            print(s.column_name + "  " + str(s.data_smell_type) + "   " + str(s.expectation_kwargs))
+            if s.column_name == c:
+                sorted_results[c].append(s)
 
-        # Save detected smell to database
-        for key, value in sorted_results.items():
-            column1 = Column.objects.get(column_name=key, belonging_file=file1)
-            for v in value:
-                data_smell_t = SmellType.objects.get(smell_type=v.data_smell_type.value)
-                DetectedSmell.objects.create(data_smell_type=data_smell_t, total_element_count=v.statistics.total_element_count, faulty_element_count=v.statistics.faulty_element_count, faulty_list=v.faulty_elements, belonging_column=column1)
-        
-        context['column_names'] = column_names
-        context['results'] = sorted_results
-        context['file'] = file1.file_name
+    # Save detected smell to database
+    for key, value in sorted_results.items():
+        column1 = Column.objects.get(column_name=key, belonging_file=file1)
+        for v in value:
+            data_smell_t = SmellType.objects.get(smell_type=v.data_smell_type.value)
+            DetectedSmell.objects.create(data_smell_type=data_smell_t, total_element_count=v.statistics.total_element_count, faulty_element_count=v.statistics.faulty_element_count, faulty_list=v.faulty_elements, belonging_column=column1)
+    
+    context['column_names'] = column_names
+    context['results'] = sorted_results
+    context['file'] = file1.file_name
 
-        # Delete file and detection result if button submit
-        if request.method == 'POST':
-            File.objects.get(file_name=file1.file_name).delete()
-            context['delete_message'] = 'Result deleted and not viewable in Saved Results.'
+    # Delete file and detection result if button submit
+    if request.method == 'POST':
+        File.objects.get(file_name=file1.file_name).delete()
+        context['delete_message'] = 'Result deleted and not viewable in Saved Results.'
 
-    except:
-       context['no_result'] = 'No detection result for this user available.'
+    #except:
+    #  context['no_result'] = 'No detection result for this user available.'
+
 
     return render(request, 'results.html', context)
 
@@ -377,7 +385,7 @@ def saved(request):
         os.path.join(cwd, "core/media")
     )
     con = context_builder.build()
-    manager = GreatExpectationsDatasetManager(context=con)
+    manager = FileBasedDatasetManager(context=con)
 
     current_user_id = request.user.id if request.user.is_authenticated else dummy_user.id
 

@@ -1,5 +1,5 @@
 {
-	"Tolerant": {
+	"tolerant": {
 	  "Duplicated Value Smell": {
 		"mostly": 0.9
 	  },
@@ -9,15 +9,15 @@
 	  },
 	  "Suspect Sign Smell": {
 		"mostly": 0.9,
-		"percentile_threshold": 0
+		"percentile_threshold": 0.25
 	  },
 	  "Casing Smell": {
 		"mostly": 0.9,
-		"same_case_wordcount_threshold": 0
+		"same_case_wordcount_threshold": 2
 	  },
 	  "Long Data Value Smell": {
 		"mostly": 0.9,
-		"length_threshold": 0
+		"length_threshold": 30
 	  },
 	  "Missing Value Smell": {
 		"mostly": 0.9
@@ -27,13 +27,13 @@
 	  },
 	  "Integer As Floating Point Number Smell": {
 		"mostly": 0.01,
-		"epsilon": 0
+		"epsilon": 1e-6
 	  },
 	  "Integer As String Smell": {
 		"mostly": 0.01
 	  }
 	},
-	"Medium": {
+	"medium": {
 	  "Duplicated Value Smell": {
 		"mostly": 0.95
 	  },
@@ -42,13 +42,16 @@
 		"threshold": 3
 	  },
 	  "Suspect Sign Smell": {
-		"mostly": 0.95
+		"mostly": 0.95,
+		"percentile_threshold": 0.25
 	  },
 	  "Casing Smell": {
-		"mostly": 0.95
+		"mostly": 0.95,
+		"same_case_wordcount_threshold": 2
 	  },
 	  "Long Data Value Smell": {
-		"mostly": 0.95
+		"mostly": 0.95,
+		"length_threshold": 30
 	  },
 	  "Missing Value Smell": {
 		"mostly": 0.95
@@ -57,13 +60,14 @@
 		"mostly": 0.1
 	  },
 	  "Integer As Floating Point Number Smell": {
-		"mostly": 0.1
+		"mostly": 0.1,
+		"epsilon": 1e-6
 	  },
 	  "Integer As String Smell": {
 		"mostly": 0.1
 	  }
 	},
-	"Strict": {
+	"strict": {
 	  "Duplicated Value Smell": {
 		"mostly": 1
 	  },
@@ -72,13 +76,16 @@
 		"threshold": 3
 	  },
 	  "Suspect Sign Smell": {
-		"mostly": 1
+		"mostly": 1,
+		"percentile_threshold": 0.25
 	  },
 	  "Casing Smell": {
-		"mostly": 1
+		"mostly": 1,
+		"same_case_wordcount_threshold": 2
 	  },
 	  "Long Data Value Smell": {
-		"mostly": 1
+		"mostly": 1,
+		"length_threshold": 30
 	  },
 	  "Missing Value Smell": {
 		"mostly": 1
@@ -87,7 +94,8 @@
 		"mostly": 0.2
 	  },
 	  "Integer As Floating Point Number Smell": {
-		"mostly": 0.2
+		"mostly": 0.2,
+		"epsilon": 1e-6
 	  },
 	  "Integer As String Smell": {
 		"mostly": 0.2
