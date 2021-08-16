@@ -114,7 +114,8 @@
       <div class="card shadow">
          <div class="card-header bg-transparent">
             <h3 class="mb-0">Customize your detection</h3>
-            <p>Choose presettings, data smells and columns for detection.</p>
+            <p>Choose presettings, data smells and columns for detection.<br>For a detailed description of the data smells have a look at the documentation page which can be found in the side navigation.
+            </p>
          </div>
          <div class="card-body">
             <div class="nav-wrapper">
@@ -366,6 +367,7 @@
                               <div class="table-responsive" style="overflow: auto;">
                                  <div>
                                     <br>
+                                    
                                     {% for key, value in forms.items %}
                                     {% if value %}
                                     <div class="smell-name">{{key}}</div>
@@ -381,7 +383,7 @@
                                                          {% if parameters|get_item:'checkbox' == 'smell_checked' %}
                                                          <div class="custom-control custom-checkbox mb-3">
                                                             <input class="custom-control-input" id="expert{{v}}" type="checkbox" value={{v}} checked name="smells"/>
-                                                            <label class="custom-control-label" for="expert{{v}}">{{ v.value }}</label>
+                                                            <label class="custom-control-label" for="expert{{v}}">{{v.value}}</label>
                                                          </div>
                                                          {% else %}
                                                          <div class="custom-control custom-checkbox mb-3">
@@ -393,11 +395,13 @@
                                                          {% if name == 'checkbox'%}
                                                          {%else%}
                                                          {% if parameter.0.max_value == -1 %}
-                                                         <div class="parnames">{{name}} [{{parameter.0.min_value}} - inf]:</div>
+                                                         <span data-tooltip="{{doc|get_item:v.value|get_item:'Parameters'|get_item:name}}"><div class="parnames">{{name}} [{{parameter.0.min_value}} - inf]:</div></span>
+                                                         <br><br>
                                                          {{parameter.1.value}}
                                                          {{parameter.1.value.errors}}
                                                          {% else %}
-                                                         <div class="parnames">{{name}} [{{parameter.0.min_value}} - {{parameter.0.max_value}}]:</div>
+                                                         <span data-tooltip="{{doc|get_item:v.value|get_item:'Parameters'|get_item:name}}"><div class="parnames">{{name}} [{{parameter.0.min_value}} - {{parameter.0.max_value}}]:</div></span>
+                                                         <br><br>
                                                          {{parameter.1.value}}
                                                          {{parameter.1.value.errors}}
                                                          {% endif %}
