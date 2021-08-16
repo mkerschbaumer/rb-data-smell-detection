@@ -132,11 +132,6 @@ class ViewsTest(TestCase):
 
         request1 = self.client.post(reverse('result'), {'del': [self.file1.file_name]})
         self.assertEquals(request1.context['delete_message'], 'Result deleted and not viewable in Saved Results.')
-        
-        self.file1 = None
-        response = self.client.get(reverse('result'))
-        self.assertEquals(response.context['no_file'], 'No detection result for this user available.')
-        self.assertEquals(response.status_code, 200)
         self.assertTemplateUsed(response, 'results.html')
 
     def test_saved_results(self):

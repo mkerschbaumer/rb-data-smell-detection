@@ -337,12 +337,11 @@ def result(request):
     detected_smells = detector.detect()
     sorted_results = {}
     for c in column_names:
-        sorted_results[c] = []
-        # if c in [for i.column_name in detected_smells]
-        for s in detected_smells:
-            print(s.column_name + "  " + str(s.data_smell_type) + "   " + str(s.expectation_kwargs))
-            if s.column_name == c:
-                sorted_results[c].append(s)
+        if c in [i.column_name for i in detected_smells]:
+            sorted_results[c] = []
+            for s in detected_smells:
+                if s.column_name == c:
+                    sorted_results[c].append(s)
 
     # Save detected smell to database
     for key, value in sorted_results.items():
@@ -361,7 +360,7 @@ def result(request):
         context['delete_message'] = 'Result deleted and not viewable in Saved Results.'
 
     #except:
-    #  context['no_result'] = 'No detection result for this user available.'
+    # context['no_result'] = 'No detection result for this user available.'
 
 
     return render(request, 'results.html', context)
