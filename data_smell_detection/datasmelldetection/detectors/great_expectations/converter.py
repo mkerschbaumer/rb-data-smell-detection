@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from copy import deepcopy
 from dataclasses import dataclass
 from typing import Iterable, List, Dict, Any
 
@@ -82,6 +83,7 @@ class StandardResultConverter(DetectionResultConverter):
             should be detected.
         """
         self._registry = registry
+        self._invalid_validation_results: List[ExpectationValidationResult] = list()
 
     @property
     def registry(self) -> DataSmellRegistry:
@@ -109,6 +111,16 @@ class StandardResultConverter(DetectionResultConverter):
         """
         return result.success is False
 
+    def get_invalid_validation_results(self) -> List[ExpectationValidationResult]:
+        """
+        Get the expectation validation results which could not be converted
+        to detection result instances.
+
+        :return: The list of ExpectationValidationResult instances which could
+        not be converted to ExtendedDetectionResult objects.
+        """
+        return deepcopy(self._invalid_validation_results)
+
     def convert(
             self,
             validation_suite_result: ExpectationSuiteValidationResult
@@ -135,30 +147,37 @@ class StandardResultConverter(DetectionResultConverter):
             filter(self.filter_callback, expectation_validation_results)
 
         for validation_result in filtered_validation_results:
-            detection_statistics = DetectionStatistics(
-                total_element_count=validation_result.result["element_count"],
-                faulty_element_count=validation_result.result["unexpected_count"]
-            )
+            # At the time of writing exceptions are ignored
+            # since the detection result conversion should proceed even if a
+            # minor number of exceptions were raised. The invalid validation
+            # results are stored in the _invalid_validation_results list.
+            try:
+                detection_statistics = DetectionStatistics(
+                    total_element_count=validation_result.result["element_count"],
+                    faulty_element_count=validation_result.result["unexpected_count"]
+                )
 
-            # Column where the data smell is present
-            column_name = validation_result.expectation_config["kwargs"]["column"]
-            # A subset of fault elements which contain the data smell.
-            faulty_elements = validation_result.result["partial_unexpected_list"]
-            # The type of the data smell which is present in the corresponding
-            # column.
-            expectation_type: str = validation_result.expectation_config["expectation_type"]
-            data_smell_type = data_smell_type_dict[expectation_type]
-            # Get column type from passed meta information
-            column_type: ProfilerDataType = self.meta["column_types"][column_name]
+                # Column where the data smell is present
+                column_name = validation_result.expectation_config["kwargs"]["column"]
+                # A subset of fault elements which contain the data smell.
+                faulty_elements = validation_result.result["partial_unexpected_list"]
+                # The type of the data smell which is present in the corresponding
+                # column.
+                expectation_type: str = validation_result.expectation_config["expectation_type"]
+                data_smell_type = data_smell_type_dict[expectation_type]
+                # Get column type from passed meta information
+                column_type: ProfilerDataType = self.meta["column_types"][column_name]
 
-            detection_result = ExtendedDetectionResult(
-                column_name=column_name,
-                statistics=detection_statistics,
-                faulty_elements=faulty_elements,
-                data_smell_type=data_smell_type,
-                column_type=column_type,
-                expectation_kwargs=validation_result.expectation_config["kwargs"]
-            )
-            detected_data_smells.append(detection_result)
+                detection_result = ExtendedDetectionResult(
+                    column_name=column_name,
+                    statistics=detection_statistics,
+                    faulty_elements=faulty_elements,
+                    data_smell_type=data_smell_type,
+                    column_type=column_type,
+                    expectation_kwargs=validation_result.expectation_config["kwargs"]
+                )
+                detected_data_smells.append(detection_result)
+            except:
+                self._invalid_validation_results.append(validation_result)
 
         return detected_data_smells
