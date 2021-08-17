@@ -9,6 +9,7 @@ from datasmelldetection.core.detector import (
     DetectionResult
 )
 from datasmelldetection.detectors.great_expectations.context import GreatExpectationsContextBuilder
+from datasmelldetection.detectors.great_expectations.converter import StandardResultConverter
 from datasmelldetection.detectors.great_expectations.dataset import FileBasedDatasetManager
 from datasmelldetection.detectors.great_expectations.datasmell import (
     DataSmellRegistry,
@@ -28,6 +29,7 @@ from datasmelldetection.detectors.great_expectations.expectations import (
     ExpectColumnValuesToNotContainCasingSmell,
     ExpectColumnValuesToNotContainDuplicatedValueSmell
 )
+from great_expectations.core import ExpectationValidationResult
 
 cwd = os.getcwd()
 
@@ -196,12 +198,17 @@ class TestDetectorBuilder:
     def test_creation(self, registry):
         builder = DetectorBuilder(context=context, dataset=data_smell_testset)
         for testcase in testcases:
+            converter: StandardResultConverter = StandardResultConverter(registry)
             detector = builder.\
                 set_registry(registry).\
                 set_configuration(testcase.configuration).\
+                set_converter(converter).\
                 build()
             detection_results = detector.detect()
             assert len(detection_results) == len(testcase.expected_detection_results), testcase.title
+            invalid_elements: List[ExpectationValidationResult] = \
+                converter.get_invalid_validation_results()
+            assert len(invalid_elements) == 0
 
             # Ensure that for each expected DetectionResult there is a DetectionResult
             # returned by the data smell detection process.
