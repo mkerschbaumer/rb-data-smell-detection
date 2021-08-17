@@ -111,15 +111,15 @@ def upload(request):
                 smell = SmellType(smell_type=s.value)
                 smell.save()
                 smell.belonging_file.add(file1)
-                default = data['Believability Smells'].get(s.value) or data['Encoding Understandability Smells'].get(s.value) or data['Syntactic Understandability Smells'].get(s.value) or data['Consistency Smells'].get(s.value)
+
                 # Save parameters for smells
                 parameters = believability_smells.get(s) or syntactic_understandability_smells.get(s) or encoding_understandability_smells.get(s) or consistency_smells.get(s)
                 if parameters is not None:
                     for p,v in parameters.items():
                         if v["max"] != "inf":
-                            par = Parameter(name=p, value=default[p]["min"], belonging_smell=smell, belonging_file=file1, min_value=v["min"], max_value=v["max"])
+                            par = Parameter(name=p, value=presettings_smells["tolerant"][s.value][p], belonging_smell=smell, belonging_file=file1, min_value=v["min"], max_value=v["max"])
                         else: 
-                            par = Parameter(name=p, value=default[p]["min"], belonging_smell=smell, belonging_file=file1, min_value=v["min"], max_value=-1)
+                            par = Parameter(name=p, value=presettings_smells["tolerant"][s.value][p], belonging_smell=smell, belonging_file=file1, min_value=v["min"], max_value=-1)
                         par.save()
 
             # Save columns to database
@@ -310,57 +310,57 @@ def result(request):
         current_user_id = dummy_user.id
 
     # Get file for detection
-    #try:
-    file1 = File.objects.filter(user_id=current_user_id).latest("uploaded_time")
-    dataset = manager.get_dataset(file1.file_name)
-    column_names = [c.column_name for c in list(Column.objects.all().filter(belonging_file=file1))]
-    smells = list(SmellType.objects.all().filter(belonging_file=file1))
-    
-    # Build dict for data smell configuration
-    ds_config = {}
-    for s in smells:
-        pars = list(Parameter.objects.all().filter(belonging_smell=s))
-        par_dict = {}
-        for p in pars:
-            par_dict[p.name] = p.value
+    try:
+        file1 = File.objects.filter(user_id=current_user_id).latest("uploaded_time")
+        dataset = manager.get_dataset(file1.file_name)
+        column_names = [c.column_name for c in list(Column.objects.all().filter(belonging_file=file1))]
+        smells = list(SmellType.objects.all().filter(belonging_file=file1))
+        
+        # Build dict for data smell configuration
+        ds_config = {}
+        for s in smells:
+            pars = list(Parameter.objects.all().filter(belonging_smell=s))
+            par_dict = {}
+            for p in pars:
+                par_dict[p.name] = p.value
 
-        temp = DataSmellType(s.smell_type)
-        ds_config[temp] = dict(par_dict)
+            temp = DataSmellType(s.smell_type)
+            ds_config[temp] = dict(par_dict)
 
-    conf = DataSmellAwareConfiguration(
-        column_names=column_names,
-        data_smell_configuration=ds_config
-    )
-    detector = DetectorBuilder(context=con, dataset=dataset).set_configuration(conf).build() 
+        conf = DataSmellAwareConfiguration(
+            column_names=column_names,
+            data_smell_configuration=ds_config
+        )
+        detector = DetectorBuilder(context=con, dataset=dataset).set_configuration(conf).build() 
 
-    # Detect smells and sort result
-    detected_smells = detector.detect()
-    sorted_results = {}
-    for c in column_names:
-        if c in [i.column_name for i in detected_smells]:
-            sorted_results[c] = []
-            for s in detected_smells:
-                if s.column_name == c:
-                    sorted_results[c].append(s)
+        # Detect smells and sort result
+        detected_smells = detector.detect()
+        sorted_results = {}
+        for c in column_names:
+            if c in [i.column_name for i in detected_smells]:
+                sorted_results[c] = []
+                for s in detected_smells:
+                    if s.column_name == c:
+                        sorted_results[c].append(s)
 
-    # Save detected smell to database
-    for key, value in sorted_results.items():
-        column1 = Column.objects.get(column_name=key, belonging_file=file1)
-        for v in value:
-            data_smell_t = SmellType.objects.get(smell_type=v.data_smell_type.value)
-            DetectedSmell.objects.create(data_smell_type=data_smell_t, total_element_count=v.statistics.total_element_count, faulty_element_count=v.statistics.faulty_element_count, faulty_list=v.faulty_elements, belonging_column=column1)
-    
-    context['column_names'] = column_names
-    context['results'] = sorted_results
-    context['file'] = file1.file_name
+        # Save detected smell to database
+        for key, value in sorted_results.items():
+            column1 = Column.objects.get(column_name=key, belonging_file=file1)
+            for v in value:
+                data_smell_t = SmellType.objects.get(smell_type=v.data_smell_type.value)
+                DetectedSmell.objects.create(data_smell_type=data_smell_t, total_element_count=v.statistics.total_element_count, faulty_element_count=v.statistics.faulty_element_count, faulty_list=v.faulty_elements, belonging_column=column1)
+        
+        context['column_names'] = column_names
+        context['results'] = sorted_results
+        context['file'] = file1.file_name
 
-    # Delete file and detection result if button submit
-    if request.method == 'POST':
-        File.objects.get(file_name=file1.file_name).delete()
-        context['delete_message'] = 'Result deleted and not viewable in Saved Results.'
+        # Delete file and detection result if button submit
+        if request.method == 'POST':
+            File.objects.get(file_name=file1.file_name).delete()
+            context['delete_message'] = 'Result deleted and not viewable in Saved Results.'
 
-    #except:
-    # context['no_result'] = 'No detection result for this user available.'
+    except:
+        context['no_result'] = 'No detection result for this user available.'
 
 
     return render(request, 'results.html', context)
