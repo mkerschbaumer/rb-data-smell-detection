@@ -196,19 +196,29 @@ def registry() -> DataSmellRegistry:
 
 class TestDetectorBuilder:
     def test_creation(self, registry):
-        builder = DetectorBuilder(context=context, dataset=data_smell_testset)
         for testcase in testcases:
+            # Perform test where converter is passed
             converter: StandardResultConverter = StandardResultConverter(registry)
-            detector = builder.\
+            detection_results1 = DetectorBuilder(context=context, dataset=data_smell_testset).\
                 set_registry(registry).\
                 set_configuration(testcase.configuration).\
                 set_converter(converter).\
-                build()
-            detection_results = detector.detect()
-            assert len(detection_results) == len(testcase.expected_detection_results), testcase.title
+                build().\
+                detect()
+            assert len(detection_results1) == len(testcase.expected_detection_results), \
+                testcase.title
             invalid_elements: List[ExpectationValidationResult] = \
                 converter.get_invalid_validation_results()
             assert len(invalid_elements) == 0
+
+            # Don't pass converter => only configuration and registry
+            detection_results2 = DetectorBuilder(context=context, dataset=data_smell_testset). \
+                set_registry(registry).\
+                set_configuration(testcase.configuration).\
+                build().\
+                detect()
+            assert len(detection_results2) == len(testcase.expected_detection_results), \
+                testcase.title
 
             # Ensure that for each expected DetectionResult there is a DetectionResult
             # returned by the data smell detection process.
@@ -225,6 +235,9 @@ class TestDetectorBuilder:
                            other_element_count == expected_element_count and \
                            expected_faulty_elements == set(other.faulty_elements)
 
-                # Ensure a matching DetectionResult object was returned
-                assert any(map(is_match_expected_detection_result, detection_results)), \
+                # Ensure a matching DetectionResult object was returned for first testcase
+                assert any(map(is_match_expected_detection_result, detection_results1)), \
+                    testcase.title
+                # Ensure a matching DetectionResult object was returned for second testcase
+                assert any(map(is_match_expected_detection_result, detection_results2)), \
                     testcase.title
