@@ -27,7 +27,7 @@ It is assumed that all the following steps are executed inside the root director
 #### Setup Web Application
 ```bash
 
-      $ cd argon-dashboard-django # application root folder
+      $ cd ../web_application/argon-dashboard-django/ # application root folder
       $
       $ # Install modules - SQLite Database
       $ pip3 install -r requirements.txt
