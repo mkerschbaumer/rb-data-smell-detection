@@ -14,12 +14,10 @@ It is assumed that all the following steps are executed inside the root director
 ```bash
 
       $ # Virtualenv modules installation (Unix based systems)
-      $ virtualenv --no-site-packages env
+      $ sudo apt-get install python3-pip
+      $ sudo pip3 install virtualenv 
+      $ virtualenv env 
       $ source env/bin/activate
-      $
-      $ # Virtualenv modules installation (Windows based systems)
-      $ # virtualenv --no-site-packages env
-      $ # .\env\Scripts\activate
       $
       $ cd data_smell_detection
       $ pip install -r requirements-dev.in
