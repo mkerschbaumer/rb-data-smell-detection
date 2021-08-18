@@ -13,36 +13,36 @@ It is assumed that all the following steps are executed inside the root director
 #### Setup Data Smell Detection Library
 ```bash
 
-      $ # Virtualenv modules installation (Unix based systems)
-      $ sudo apt-get install python3-pip
-      $ sudo pip3 install virtualenv 
-      $ virtualenv env 
-      $ source env/bin/activate
-      #
-      $ cd data_smell_detection
-      $ pip install -r requirements-dev.in
-      $ python3 setup.py install
+$ # Virtualenv modules installation (Unix based systems)
+$ sudo apt-get install python3-pip
+$ sudo pip3 install virtualenv 
+$ virtualenv env 
+$ source env/bin/activate
+
+$ cd data_smell_detection
+$ pip install -r requirements-dev.in
+$ python3 setup.py install
      
 ```
 #### Setup Web Application
 ```bash
 
-      $ cd ../web_application/argon-dashboard-django/ # application root folder
-      #
-      $ # Install modules - SQLite Database
-      $ pip3 install -r requirements.txt
-      #
-      $ # Create tables
-      $ python manage.py makemigrations
-      $ python manage.py migrate
-      #
-      $ # Start the application (development mode)
-      $ python manage.py runserver # default port 8000
-      #
-      $ # Start the app - custom port
-      $ # python manage.py runserver 0.0.0.0:<your_port>
-      #
-      $ # Access the web app in browser: http://127.0.0.1:8000/
+$ cd ../web_application/argon-dashboard-django/ # application root folder
+
+$ # Install modules - SQLite Database
+$ pip3 install -r requirements.txt
+
+$ # Create tables
+$ python manage.py makemigrations
+$ python manage.py migrate
+
+$ # Start the application (development mode)
+$ python manage.py runserver # default port 8000
+
+$ # Start the app - custom port
+$ python manage.py runserver 0.0.0.0:<your_port>
+
+$ # Access the web app in browser: http://127.0.0.1:8000/
       
 ```
 Source: https://demos.creative-tim.com/argon-dashboard-django/docs/getting-started/getting-started-django.html
